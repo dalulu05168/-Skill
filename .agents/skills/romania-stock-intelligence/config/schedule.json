@@ -1,0 +1,27 @@
+{
+  "skill": "romania-stock-intelligence",
+  "version": "1.0.0",
+  "timezone": "Europe/Bucharest",
+  "secondary_display_timezone": "Asia/Kuala_Lumpur",
+  "notification_channel": "chatgpt_only",
+  "email_enabled": false,
+  "schedule_policy": "daily_with_nontrading_day_annotation",
+  "require_check_existing_tasks_before_activation": true,
+  "runs": [
+    {"id": "morning_0800", "time_local": "08:00", "label": "罗马尼亚早间金融简报", "template": "templates/brief-0800.md", "purpose": "preopen_global_and_bvb_context"},
+    {"id": "midday_1300", "time_local": "13:00", "label": "罗马尼亚盘中金融简报", "template": "templates/brief-1300.md", "purpose": "verified_intraday_market_structure"},
+    {"id": "close_1800", "time_local": "18:00", "label": "罗马尼亚盘后时点金融简报", "template": "templates/brief-1800.md", "purpose": "close_time_snapshot_until_official_confirmation"}
+  ],
+  "delivery_requirements": {
+    "source_link_required_per_value": true,
+    "timestamp_timezone_required_per_value": true,
+    "baseline_required_per_value": true,
+    "previous_report_comparison_required": true,
+    "delay_status_required": true,
+    "facts_inference_scenarios_separated": true,
+    "missing_information_policy": "report_unavailable_never_invent",
+    "report_frequency_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "outside_market_days": "non_trading_day_context_only",
+    "at_close": "mark_provisional_until_official_final_quote"
+  }
+}

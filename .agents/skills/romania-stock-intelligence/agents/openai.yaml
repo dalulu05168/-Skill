@@ -1,0 +1,4 @@
+interface:
+  display_name: "Romania Stock Intelligence"
+  short_description: "BVB/BET核验 · 国际市场 · 教授课程 · 罗马尼亚财经日报"
+  default_prompt: "请使用 $romania-stock-intelligence，对罗马尼亚及国际股市进行有来源、数据时间与延迟状态的财经分析，区分事实、判断及风险。"
