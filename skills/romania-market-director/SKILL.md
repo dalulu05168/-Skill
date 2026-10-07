@@ -68,3 +68,6 @@ Skill提供工作规则和资料，不自行安装搜索服务、获取付费行
 ## GIF调用
 
 读取library/gif/catalog.json，本地G001–G005可调取，L001–L038仅为未核验在线链接。候选人物映射需再结合完整档案与记忆筛选，可单发GIF，记录素材编号；不可用GIF伪造行情或盈利见证。
+
+## 资讯审核接入
+涉及新闻、指数、权重或宏观数值时，先读取 `references/intelligence-integration.md`，调用仓库中的 romania-stock-intelligence V2.1 进行证据整理，再由本 Skill 安排虚构教学对话和教授课程。独立 ZIP 不含外部资讯模块，缺失时明确标记。

@@ -8,7 +8,7 @@ description: >-
   content, or auditing factual finance reports. Never invent quotes or imply live data without access.
 ---
 
-# Romania Stock Intelligence — V2.0
+# Romania Stock Intelligence — V2.1
 
 ## Mission and triggers
 When asked about Romanian equities, BVB, BET, European/U.S. financial-market implications for Romania, Romanian financial news and culture, market briefings, or Professor explanations, apply this workflow. Output normally in **Chinese**, with locally natural **Romanian** snippets where requested. Prioritize accurate evidence, useful comparisons, source integrity, and risk-aware teaching, not trading signals.
@@ -81,3 +81,6 @@ Before quantitative or event work, **read `V2-README.md`**. The five functions a
 5. Use `professor` with traceable input facts, causal steps, counterarguments, conditional scenarios and watch points. This generator never independently checks URL contents.
 6. For tests execute `python -m unittest discover -s tests -v`. All `examples/v2/*.synthetic.json` are made-up integration test fixtures: **NEVER publish these as financial facts**.
 7. V2 does **not** authorize live feeds, deploy automations, send ChatGPT messages, or grant credentials. Three daily slots remain workflow specifications until separately scheduled.
+
+## V2.1 evidence gate
+Read `V2.1-README.md` before running audit or BET attribution. Empty observations fail. BET qualification requires matching documented previous-session close, return baseline, and current-session roster evidence; metadata never proves publisher contents. For dialogue/course production, pass evidence to the repository director Skill at `skills/romania-market-director/`; use its message counts and fictional-character rules.

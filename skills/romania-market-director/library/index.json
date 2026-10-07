@@ -59,6 +59,13 @@
       "status": "待授权或确认地址，未导入",
       "evidence": "现有平台Git访问返回Repository not found；网页返回HTTP404",
       "note": "无法判断私有权限不足或地址不存在；不编素材内容"
+    },
+    {
+      "type": "资讯审核Skill",
+      "path": ".agents/skills/romania-stock-intelligence/",
+      "path_base": "repository_root",
+      "version": "2.1",
+      "status": "本仓库可调用；55项测试通过；不是实时数据源"
     }
   ]
 }

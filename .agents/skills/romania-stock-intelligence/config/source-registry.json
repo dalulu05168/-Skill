@@ -1,16 +1,186 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "policy": "entrypoints_not_live_feed_guarantees",
   "sources": [
-    {"id": "BVB_INDICES", "publisher": "Bursa de Valori Bucuresti", "uri": "https://www.bvb.ro/FinancialInstruments/Indices/Overview", "covers": ["index_methodology", "BET", "BET-TR", "BET-NG"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "BVB_BET", "publisher": "Bursa de Valori Bucuresti", "uri": "https://bvb.ro/FinancialInstruments/Indices/IndicesProfiles.aspx?i=BET_", "covers": ["constituents", "weights", "BET"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "BVB_SESSIONS", "publisher": "Bursa de Valori Bucuresti", "uri": "https://www.bvb.ro/TradingAndStatistics/TradingSessionsSchedule", "covers": ["sessions", "holidays"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "BVB_CALENDAR", "publisher": "Bursa de Valori Bucuresti", "uri": "https://www.bvb.ro/FinancialInstruments/SelectedData/FinancialCalendar", "covers": ["earnings", "ex_date", "corporate_calendar"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "BNR", "publisher": "Banca Nationala a Romaniei", "uri": "https://www.bnr.ro/", "covers": ["FX_fix", "rates", "Romania_policy"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "ECB_FX", "publisher": "European Central Bank", "uri": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html", "covers": ["EUR_RON", "EUR_USD", "reference_fx"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "ECB_POLICY", "publisher": "European Central Bank", "uri": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html", "covers": ["ECB_policy"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "EUROSTAT", "publisher": "Eurostat", "uri": "https://ec.europa.eu/eurostat/databrowser/", "covers": ["Romania_CPI", "Romania_GDP", "EU_comparisons"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "EIA", "publisher": "US Energy Information Administration", "uri": "https://www.eia.gov/", "covers": ["energy_historical", "energy_reports"], "priority": "official", "real_time_claim_permitted": false},
-    {"id": "FED", "publisher": "Federal Reserve Board", "uri": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", "covers": ["FOMC", "calendar"], "priority": "official", "real_time_claim_permitted": false}
+    {
+      "id": "BVB_INDICES",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://www.bvb.ro/FinancialInstruments/Indices/Overview",
+      "covers": [
+        "index_methodology",
+        "BET",
+        "BET-TR",
+        "BET-NG"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ]
+    },
+    {
+      "id": "BVB_BET",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://bvb.ro/FinancialInstruments/Indices/IndicesProfiles.aspx?i=BET_",
+      "covers": [
+        "constituents",
+        "weights",
+        "BET"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ]
+    },
+    {
+      "id": "BVB_SESSIONS",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://www.bvb.ro/TradingAndStatistics/TradingSessionsSchedule",
+      "covers": [
+        "sessions",
+        "holidays"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ]
+    },
+    {
+      "id": "BVB_CALENDAR",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://www.bvb.ro/FinancialInstruments/SelectedData/FinancialCalendar",
+      "covers": [
+        "earnings",
+        "ex_date",
+        "corporate_calendar"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ]
+    },
+    {
+      "id": "BNR",
+      "publisher": "Banca Nationala a Romaniei",
+      "uri": "https://www.bnr.ro/",
+      "covers": [
+        "FX_fix",
+        "rates",
+        "Romania_policy"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "ECB_FX",
+      "publisher": "European Central Bank",
+      "uri": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html",
+      "covers": [
+        "EUR_RON",
+        "EUR_USD",
+        "reference_fx"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "ECB_POLICY",
+      "publisher": "European Central Bank",
+      "uri": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+      "covers": [
+        "ECB_policy"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "EUROSTAT",
+      "publisher": "Eurostat",
+      "uri": "https://ec.europa.eu/eurostat/databrowser/",
+      "covers": [
+        "Romania_CPI",
+        "Romania_GDP",
+        "EU_comparisons"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "EIA",
+      "publisher": "US Energy Information Administration",
+      "uri": "https://www.eia.gov/",
+      "covers": [
+        "energy_historical",
+        "energy_reports"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "FED",
+      "publisher": "Federal Reserve Board",
+      "uri": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "covers": [
+        "FOMC",
+        "calendar"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false
+    },
+    {
+      "id": "INS",
+      "publisher": "Institutul National de Statistica",
+      "uri": "https://insse.ro/",
+      "covers": [
+        "Romania_CPI",
+        "Romania_GDP",
+        "unemployment",
+        "industrial_production"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "access_status": "entrypoint_only_not_fetched_or_feed_verified"
+    },
+    {
+      "id": "SP_DJI",
+      "publisher": "S&P Dow Jones Indices",
+      "uri": "https://www.spglobal.com/spdji/",
+      "covers": [
+        "SP500",
+        "DJIA"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "access_status": "entrypoint_only_not_fetched_or_feed_verified"
+    },
+    {
+      "id": "NASDAQ",
+      "publisher": "Nasdaq",
+      "uri": "https://indexes.nasdaqomx.com/",
+      "covers": [
+        "NASDAQ_COMPOSITE"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "access_status": "entrypoint_only_not_fetched_or_feed_verified"
+    },
+    {
+      "id": "US_TREASURY",
+      "publisher": "US Treasury",
+      "uri": "https://home.treasury.gov/",
+      "covers": [
+        "US_yields"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "access_status": "entrypoint_only_not_fetched_or_feed_verified"
+    }
   ]
 }

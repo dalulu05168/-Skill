@@ -44,8 +44,37 @@ def analyze_bet(doc):
     neg = sorted((r for r in out if r["contribution_pp"] < 0), key=lambda r:r["contribution_pp"])
     positive_total = sum(x["contribution_pp"] for x in pos)
     concentration = (sum(x["contribution_pp"] for x in pos[:3]) / positive_total * 100) if positive_total > 0 else None
-    basis_usable = basis == "prior_close" and complete
+    # Qualification needs explicit session/return baseline and roster evidence.
+    # Supplied metadata still requires external verification by the caller.
+    timing_supported = False
+    if doc.get("previous_trading_close_at") is not None:
+        close = timestamp(doc["previous_trading_close_at"], doc.get("timezone", "Europe/Bucharest"), "previous_trading_close_at")
+        baseline = timestamp(doc.get("returns_baseline_at"), doc.get("timezone", "Europe/Bucharest"), "returns_baseline_at")
+        web_url(doc.get("session_source_url"), "session_source_url")
+        nonempty(doc.get("session_evidence_locator"), "session_evidence_locator")
+        if close >= time or close.date() >= time.date() or wt != close or baseline != close:
+            raise DataError("weights and returns baseline must match the documented previous trading close")
+        timing_supported = True
+    roster_supported = False
+    if doc.get("official_roster") is not None:
+        roster = doc["official_roster"]
+        if not isinstance(roster, list) or not roster:
+            raise DataError("official_roster must be a non-empty ticker list")
+        roster_set = {nonempty(x, "official_roster ticker").upper() for x in roster}
+        if len(roster_set) != len(roster):
+            raise DataError("duplicate official roster ticker")
+        web_url(doc.get("roster_source_url"), "roster_source_url")
+        nonempty(doc.get("roster_evidence_locator"), "roster_evidence_locator")
+        roster_time = timestamp(doc.get("roster_as_of"), doc.get("timezone", "Europe/Bucharest"), "roster_as_of")
+        if roster_time.date() != time.date() or roster_time > time:
+            raise DataError("roster must be observed for the returns session, no later than returns_as_of")
+        if not seen.issubset(roster_set) or (complete and seen != roster_set):
+            raise DataError("constituents do not match supplied official roster")
+        roster_supported = seen == roster_set
+    basis_usable = basis == "prior_close" and complete and timing_supported and roster_supported
     flags = ["估算：不是交易所公布的正式成分贡献。可能受成分调整、复权、权重时间不匹配等影响。"]
+    if not timing_supported: flags.append("缺少上一交易日收盘及回报基准证据，禁止完整指数归因。")
+    if not roster_supported: flags.append("缺少本交易日完整成分名单证据，禁止完整指数归因。")
     if not complete: flags.append("成分或权重覆盖不完整，只能报告样本贡献，不得标为完整 BET 归因。")
     if basis != "prior_close": flags.append("权重并非上一个收盘时点，贡献估计误差可能较大。")
     if doc.get("actual_index_return_pct") is not None:

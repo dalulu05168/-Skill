@@ -30,6 +30,15 @@ class QualityTest(unittest.TestCase):
     def setUp(self): self.input = load("observations.synthetic.json")
     def audit(self): return audit_observations(self.input, REGISTRY, now=CLOCK)
     def test_valid_metadata(self): self.assertEqual(self.audit()["gate"], "pass")
+    def test_empty_fails(self):
+        self.input["observations"] = []
+        self.assertEqual(self.audit()["gate"], "fail")
+    def test_bvb_bare_alias(self):
+        self.input["observations"][0]["source_url"] = "https://bvb.ro/FinancialInstruments/Indices/Overview"
+        self.assertEqual(self.audit()["gate"], "pass")
+    def test_unlisted_subdomain_fails(self):
+        self.input["observations"][0]["source_url"] = "https://fake.www.bvb.ro/x"
+        self.assertEqual(self.audit()["gate"], "fail")
     def test_missing_url(self):
         del self.input["observations"][0]["source_url"]
         self.assertEqual(self.audit()["gate"], "fail")
@@ -77,6 +86,21 @@ class BETTest(unittest.TestCase):
         self.assertEqual((x["advancers"],x["decliners"],x["unchanged"]),(1,1,1))
         self.assertEqual(x["top_positive"][0]["ticker"],"A")
         self.assertTrue(x["qualified_full_index_attribution"])
+    def test_stale_weights_rejected(self):
+        self.input["weights_as_of"]="2025-01-02T17:00:00+02:00"
+        with self.assertRaises(DataError): analyze_bet(self.input)
+    def test_missing_session_unqualified(self):
+        del self.input["previous_trading_close_at"]
+        self.assertFalse(analyze_bet(self.input)["qualified_full_index_attribution"])
+    def test_wrong_return_baseline_rejected(self):
+        self.input["returns_baseline_at"]="2026-09-04T17:50:00+03:00"
+        with self.assertRaises(DataError): analyze_bet(self.input)
+    def test_missing_roster_unqualified(self):
+        del self.input["official_roster"]
+        self.assertFalse(analyze_bet(self.input)["qualified_full_index_attribution"])
+    def test_wrong_roster_rejected(self):
+        self.input["official_roster"]=["A","B","D"]
+        with self.assertRaises(DataError): analyze_bet(self.input)
     def test_missing_member_partial(self):
         self.input["complete_roster"]=False
         self.input["constituents"].pop()
@@ -177,6 +201,12 @@ class PersistenceTest(unittest.TestCase):
 class CliTest(unittest.TestCase):
     def cmd(self,*a):
         return subprocess.run([sys.executable,str(ROOT/"scripts/rsi_v2.py"),*a],capture_output=True,text=True)
+    def test_empty_audit_command(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)/"empty.json";p.write_text('{"observations": []}')
+            x=self.cmd("audit",str(p))
+            self.assertEqual(x.returncode,1,x.stderr)
+            self.assertEqual(json.loads(x.stdout)["gate"],"fail")
     def test_bet_command(self):
         x=self.cmd("bet",str(FIX/"bet.synthetic.json"))
         self.assertEqual(x.returncode,0,x.stderr)

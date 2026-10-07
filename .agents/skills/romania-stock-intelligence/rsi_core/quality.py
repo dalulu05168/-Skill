@@ -23,6 +23,8 @@ def audit_observations(payload, registry=None, now=None, tolerance_pct=0.5, max_
     refs = {s["id"]: s for s in (registry or {}).get("sources", [])}
     clock = now or datetime.now(timezone.utc)
     entries, findings = [], []
+    if not payload["observations"]:
+        findings.append({"code":"NO_OBSERVATIONS", "severity":"error", "path":"observations", "message":"No observations supplied; market data unavailable"})
     for i, rec in enumerate(payload["observations"]):
         name = f"observations[{i}]"
         try:
@@ -45,9 +47,9 @@ def audit_observations(payload, registry=None, now=None, tolerance_pct=0.5, max_
             if refs:
                 if source_id not in refs:
                     raise DataError(f"unregistered source_id {source_id}")
-                allowed = urlparse(refs[source_id]["uri"]).hostname
+                allowed = refs[source_id].get("allowed_hosts", [urlparse(refs[source_id]["uri"]).hostname])
                 actual = urlparse(url).hostname
-                if actual != allowed and not actual.endswith("." + allowed):
+                if actual not in allowed:
                     raise DataError("source URL host differs from declared source")
             if observed > clock:
                 findings.append({"code":"FUTURE_OBSERVATION", "severity":"error", "path":name, "message":"Observation is later than audit time"})
