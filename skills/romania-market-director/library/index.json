@@ -45,5 +45,14 @@
     "外部教授技术课Skill或讲稿",
     "用户提到的GIF图片"
   ],
-  "approved_scenes": []
+  "approved_scenes": [],
+  "external_sources": [
+    {
+      "type": "GIF与表情素材仓库",
+      "url": "https://github.com/productos-agents/productos-nuvexa-romania-finance-gif-lib-85d31c78",
+      "status": "待授权或确认地址，未导入",
+      "evidence": "现有平台Git访问返回Repository not found；网页返回HTTP404",
+      "note": "无法判断私有权限不足或地址不存在；不编素材内容"
+    }
+  ]
 }
