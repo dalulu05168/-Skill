@@ -17,10 +17,10 @@
 
 ## 正式版本与成员记忆
 
-版本1.4.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
+版本1.5.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
 
 上午50段、下午45段。新闻组合与计数标准见references/daytime-rhythm.md。
 
 1.3.0加入助理专业资讯影响分析、签到私下联系助理本人及每日研究/市场主线介绍。
 
-统一资料索引：library/index.json。原始聊天及表情DOCX已入库；每日新闻、外部技术课和GIF尚未收到。新任务先读索引，按需读取资料，不依赖多个角色窗口。
+统一资料索引：library/index.json。原始聊天及表情DOCX已入库；每日新闻、外部技术课尚未收到；5个GIF和5个MP4已入库，另有38条未核验在线链接。新任务先读索引，按需读取资料，不依赖多个角色窗口。

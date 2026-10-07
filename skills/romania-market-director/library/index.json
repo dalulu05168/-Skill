@@ -30,6 +30,11 @@
       "path": "library/drafts/2026-10-08_待核验编辑稿.md",
       "type": "编辑草稿",
       "status": "未采用；行情待核验"
+    },
+    {
+      "path": "library/gif/catalog.json",
+      "type": "上传GIF资料及在线索引",
+      "status": "5个GIF+5个MP4已导入；38条在线链接未下载核验"
     }
   ],
   "reusable_resources": {
@@ -38,12 +43,13 @@
     "emoji_reference": "references/emoji-reference.txt",
     "director_rules": "references/director-workflow.md",
     "ideology_courses": "references/course-plan.md",
-    "memory": "memory/state.json"
+    "memory": "memory/state.json",
+    "gif_catalog": "library/gif/catalog.json",
+    "gif_assets": "library/gif/assets/"
   },
   "missing_inputs": [
     "每日GPT推送新闻及指标原始资料",
-    "外部教授技术课Skill或讲稿",
-    "用户提到的GIF图片"
+    "外部教授技术课Skill或讲稿"
   ],
   "approved_scenes": [],
   "external_sources": [

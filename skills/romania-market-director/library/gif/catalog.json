@@ -1,0 +1,480 @@
+{
+  "local_assets": [
+    {
+      "id": "G001",
+      "file": "library/gif/assets/01_dorel_las_fierbinti.gif",
+      "mp4_fallback": "library/gif/assets/01_dorel_las_fierbinti.mp4",
+      "meaning": "本地熟人幽默",
+      "scene": "熟悉角色梗的成员轻松接话；不代替正式说明",
+      "candidate_characters": [
+        "09",
+        "15",
+        "28",
+        "34"
+      ],
+      "selection_note": "候选非绑定，使用前读取完整档案、当前情绪和近期记忆；不能仅凭国籍选梗",
+      "avoid": [
+        "正式指标、规则或风险说明",
+        "真实损失求助",
+        "虚构盈利见证或群体背书"
+      ],
+      "gif_size": [
+        360,
+        203
+      ],
+      "frames": 50,
+      "sha256": "834fcbc4704958fbdaba3f98482a66666ce99a73e55e118a398dff058cfd29d8",
+      "inspection": "已解析全部帧，并人工查看首帧和中间帧；未逐帧人工审阅",
+      "rights_status": "来源包未逐项核实第三方授权，非授权已确认声明"
+    },
+    {
+      "id": "G002",
+      "file": "library/gif/assets/02_market_rollercoaster.gif",
+      "mp4_fallback": "library/gif/assets/02_market_rollercoaster.mp4",
+      "meaning": "行情起伏",
+      "scene": "已提供事实支持的波动讨论或明确假设案例",
+      "candidate_characters": [
+        "15",
+        "28",
+        "38"
+      ],
+      "selection_note": "候选非绑定，使用前读取完整档案、当前情绪和近期记忆；不能仅凭国籍选梗",
+      "avoid": [
+        "正式指标、规则或风险说明",
+        "真实损失求助",
+        "虚构盈利见证或群体背书"
+      ],
+      "gif_size": [
+        200,
+        200
+      ],
+      "frames": 30,
+      "sha256": "7b953fa79e49a9b523c987ef12454e627298999abc346f05aa909b5f64c17211",
+      "inspection": "已解析全部帧，并人工查看首帧和中间帧；未逐帧人工审阅",
+      "rights_status": "来源包未逐项核实第三方授权，非授权已确认声明"
+    },
+    {
+      "id": "G003",
+      "file": "library/gif/assets/03_patiently_waiting.gif",
+      "mp4_fallback": "library/gif/assets/03_patiently_waiting.mp4",
+      "meaning": "耐心等待",
+      "scene": "等待资讯或教授回应，不催促参与",
+      "candidate_characters": [
+        "03",
+        "08",
+        "17"
+      ],
+      "selection_note": "候选非绑定，使用前读取完整档案、当前情绪和近期记忆；不能仅凭国籍选梗",
+      "avoid": [
+        "正式指标、规则或风险说明",
+        "真实损失求助",
+        "虚构盈利见证或群体背书"
+      ],
+      "gif_size": [
+        220,
+        220
+      ],
+      "frames": 15,
+      "sha256": "999516e52a065bc44eaa09ceb411b11abdbfd31ba8a272892ffce1ff4d04e832",
+      "inspection": "已解析全部帧，并人工查看首帧和中间帧；未逐帧人工审阅",
+      "rights_status": "来源包未逐项核实第三方授权，非授权已确认声明"
+    },
+    {
+      "id": "G004",
+      "file": "library/gif/assets/04_rising_chart_reaction.gif",
+      "mp4_fallback": "library/gif/assets/04_rising_chart_reaction.mp4",
+      "meaning": "上涨观察",
+      "scene": "已核验上涨背景下的轻度反应，不代表个人盈利",
+      "candidate_characters": [
+        "16",
+        "28",
+        "33"
+      ],
+      "selection_note": "候选非绑定，使用前读取完整档案、当前情绪和近期记忆；不能仅凭国籍选梗",
+      "avoid": [
+        "正式指标、规则或风险说明",
+        "真实损失求助",
+        "虚构盈利见证或群体背书"
+      ],
+      "gif_size": [
+        220,
+        122
+      ],
+      "frames": 88,
+      "sha256": "ff8e18fc7ad8dbdb099df78672ebc243515ba41b19e0dc00ef21d6337b1a5828",
+      "inspection": "已解析全部帧，并人工查看首帧和中间帧；未逐帧人工审阅",
+      "rights_status": "来源包未逐项核实第三方授权，非授权已确认声明"
+    },
+    {
+      "id": "G005",
+      "file": "library/gif/assets/05_congratulations.gif",
+      "mp4_fallback": "library/gif/assets/05_congratulations.mp4",
+      "meaning": "祝贺",
+      "scene": "明确发生的学习成果或生活事件，不编交易成绩",
+      "candidate_characters": [
+        "09",
+        "21",
+        "27"
+      ],
+      "selection_note": "候选非绑定，使用前读取完整档案、当前情绪和近期记忆；不能仅凭国籍选梗",
+      "avoid": [
+        "正式指标、规则或风险说明",
+        "真实损失求助",
+        "虚构盈利见证或群体背书"
+      ],
+      "gif_size": [
+        220,
+        220
+      ],
+      "frames": 14,
+      "sha256": "8a4ed186384b14bc1c7287e6b34d8672bb9d81abd077def36fa2f0a918c58271",
+      "inspection": "已解析全部帧，并人工查看首帧和中间帧；未逐帧人工审阅",
+      "rights_status": "来源包未逐项核实第三方授权，非授权已确认声明"
+    }
+  ],
+  "online_links": [
+    {
+      "cat": "01 早盘问候",
+      "name": "Bună dimineața — 倒咖啡",
+      "meaning": "早上好；适合开盘前第一次问候",
+      "gif": "https://media1.tenor.com/m/rNMboUseoJ8AAAAd/buna-dimineata.gif",
+      "source": "https://tenor.com/view/buna-dimineata-gif-27365050",
+      "id": "L001",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "01 早盘问候",
+      "name": "Bună dimineața — 咖啡笑脸",
+      "meaning": "友好、轻松的早盘问候",
+      "gif": "https://media1.tenor.com/m/ZNnfgyHKkcYAAAAd/bun%C4%83-diminea%C8%9Ba.gif",
+      "source": "https://tenor.com/view/bun%C4%83-diminea%C8%9Ba-gif-7267085228039639494",
+      "id": "L002",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "01 早盘问候",
+      "name": "Bună dimineața — 咖啡杯",
+      "meaning": "成熟群聊日常早安",
+      "gif": "https://media1.tenor.com/m/goLbf58nfywAAAAd/buna-dimineata.gif",
+      "source": "https://tenor.com/view/buna-dimineata-gif-27365057",
+      "id": "L003",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "01 早盘问候",
+      "name": "O zi frumoasă — 心形咖啡",
+      "meaning": "祝今天顺利；适合早盘问候结束",
+      "gif": "https://media1.tenor.com/m/8VsKiE_i9u0AAAAd/o-zi-frumoasa-buna-dimineata.gif",
+      "source": "https://tenor.com/view/o-zi-frumoasa-buna-dimineata-la-cafea-gif-20074353",
+      "id": "L004",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "01 早盘问候",
+      "name": "Bună dimineața — 咖啡鲜花",
+      "meaning": "罗马尼亚语早安；偏成熟社交风格",
+      "gif": "https://media1.tenor.com/m/QF5LStOnSCMAAAAd/buna-dimineata.gif",
+      "source": "https://tenor.com/search/bun%C4%83-diminea%C8%9Ba-gifs",
+      "id": "L005",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "02 思考与认可",
+      "name": "Thinking / Hmm",
+      "meaning": "先思考，不急着认同或反对",
+      "gif": "https://media1.tenor.com/m/-AII38AzbGoAAAAd/thinking-reaction.gif",
+      "source": "https://tenor.com/view/thinking-reaction-hmm-gif-15925819",
+      "id": "L006",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "02 思考与认可",
+      "name": "Facepalm — 西装反应",
+      "meaning": "对明显失误、离谱消息表示无语",
+      "gif": "https://media1.tenor.com/m/XWXoX_no0awAAAAd/epic-facepalm.gif",
+      "source": "https://tenor.com/view/epic-facepalm-reaction-emotion-feelings-gif-7504965",
+      "id": "L007",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "02 思考与认可",
+      "name": "Bravo — 鼓掌",
+      "meaning": "认可分析、预测或执行",
+      "gif": "https://media1.tenor.com/m/gHYsQF4yETcAAAAd/bravo-applause.gif",
+      "source": "https://tenor.com/view/bravo-applause-gif-gif-26632271",
+      "id": "L008",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "02 思考与认可",
+      "name": "Leonardo — 克制鼓掌",
+      "meaning": "成熟群里表示认可/不错",
+      "gif": "https://media.tenor.com/NabW5Fd7IgsAAAAM/clapping-leonardo-dicaprio.gif",
+      "source": "https://tenor.com/view/bravo-applause-gif-gif-26632271",
+      "id": "L009",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel & Giani — 微笑",
+      "meaning": "轻松回应、熟人调侃",
+      "gif": "https://media1.tenor.com/m/bG7vHUl3c7AAAAAd/dorel-las-fierbinti.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L010",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Bă, ești nebun?",
+      "meaning": "“真的假的/疯了吧”；适合突然暴涨暴跌",
+      "gif": "https://media.tenor.com/7Y4Erg2ZwF8AAAAM/ba-esti.gif",
+      "source": "https://tenor.com/view/ba-esti-prost-nebun-ba-esti-nebun-gif-17117624379280834655",
+      "id": "L011",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Cărămidă",
+      "meaning": "本地幽默反应；适合成员开玩笑",
+      "gif": "https://media.tenor.com/JviKNv2to9sAAAAM/dorel-caramida.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L012",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Vlad și",
+      "meaning": "疑惑/反应类本地梗",
+      "gif": "https://media.tenor.com/YJ1WbmmDEc0AAAAM/vlad-si.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L013",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Happy",
+      "meaning": "判断正确或轻松好消息",
+      "gif": "https://media.tenor.com/Nmt9Tmr6iZ4AAAAM/dorel-happy.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L014",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Soos 笑",
+      "meaning": "小范围玩笑/吐槽",
+      "gif": "https://media.tenor.com/kyl7qNjSZFwAAAAM/dorel-soos.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L015",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Soos 无奈",
+      "meaning": "看不懂市场/无奈",
+      "gif": "https://media.tenor.com/_u5BOwROE70AAAAM/dorel-soos.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L016",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — 近脸反应",
+      "meaning": "惊讶/疑惑",
+      "gif": "https://media.tenor.com/zt4-U3oG5XgAAAAM/dorel.gif",
+      "source": "https://tenor.com/view/dorel-las-fierbinti-lasfierbinti-gif-7813445312600044464",
+      "id": "L017",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Ce-ai făcut, Bobiță?",
+      "meaning": "“你干了什么”；调侃误操作或判断失误",
+      "gif": "https://media1.tenor.com/m/N0nlYWaIGg0AAAAd/las-fierbinti-dorel.gif",
+      "source": "https://tenor.com/view/las-fierbinti-dorel-dorel-plange-ce-ai-facut-bobita-gif-3983967551880698381",
+      "id": "L018",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — milioane",
+      "meaning": "谈到金额/收益时的轻松本地梗",
+      "gif": "https://media.tenor.com/CZ4oMDqwv_AAAAAM/dorel-milioane.gif",
+      "source": "https://tenor.com/view/las-fierbinti-dorel-dorel-plange-ce-ai-facut-bobita-gif-3983967551880698381",
+      "id": "L019",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "03 罗马尼亚本地反应",
+      "name": "Dorel — Japoniaa",
+      "meaning": "轻松吐槽/群聊梗",
+      "gif": "https://media.tenor.com/3qKdb9ZacIEAAAAM/japoniaa.gif",
+      "source": "https://tenor.com/view/las-fierbinti-dorel-dorel-plange-ce-ai-facut-bobita-gif-3983967551880698381",
+      "id": "L020",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Gigi Becali — 大笑",
+      "meaning": "好消息、判断正确后的轻松反应",
+      "gif": "https://media1.tenor.com/m/pO5m-83IbH4AAAAd/gigi-becali.gif",
+      "source": "https://tenor.com/view/gigi-becali-laugh-gif-13564376",
+      "id": "L021",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — 跳舞",
+      "meaning": "盈利后偶尔庆祝；不建议高频",
+      "gif": "https://media1.tenor.com/m/GN0yQeRcTHgAAAAd/becali-gigi-becali.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L022",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — 站立反应",
+      "meaning": "强调/自信回应",
+      "gif": "https://media.tenor.com/gBo4jaTt6HsAAAAM/becali-gigi-becali.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L023",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — Antena Direct",
+      "meaning": "观察/听消息后的反应",
+      "gif": "https://media.tenor.com/xaj4A8eUtZ0AAAAM/becali.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L024",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — 强烈反应",
+      "meaning": "对重大消息或剧烈波动反应",
+      "gif": "https://media.tenor.com/Jua1lATtN1cAAAAM/becali-gigi-becali.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L025",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — 握手",
+      "meaning": "认可、达成共识",
+      "gif": "https://media.tenor.com/eEukci10LBMAAAAM/becali.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L026",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — mafiot 1",
+      "meaning": "调侃式自信/强势",
+      "gif": "https://media.tenor.com/Aa-KwJt9rGMAAAAM/becali-mafiot.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L027",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — mafiot 2",
+      "meaning": "群内玩笑，不宜正式场景高频使用",
+      "gif": "https://media.tenor.com/N9gFXRwlL6wAAAAM/becali-mafiot.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L028",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "04 Becali 本地反应",
+      "name": "Becali — matematică",
+      "meaning": "“算一算/分析一下”的幽默反应",
+      "gif": "https://media.tenor.com/QGEGfCbfpUcAAAAM/becali-matematica.gif",
+      "source": "https://tenor.com/view/becali-gigi-becali-gif-23776541",
+      "id": "L029",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "05 行情上涨/盈利",
+      "name": "Stonks — Stocks Up",
+      "meaning": "上涨/走强；轻度幽默",
+      "gif": "https://media.tenor.com/jw92b2HUuTAAAAAM/stonks-stocks.gif",
+      "source": "https://tenor.com/view/stock-market-crash-gif-20581305",
+      "id": "L030",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "05 行情上涨/盈利",
+      "name": "Froge 看上涨图",
+      "meaning": "关注上涨但仍保持观察",
+      "gif": "https://media.tenor.com/4qcLxD7DenUAAAAM/worry-froge-froge.gif",
+      "source": "https://tenor.com/view/stock-market-crash-gif-20581305",
+      "id": "L031",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "05 行情上涨/盈利",
+      "name": "Stock screen / 行情屏幕",
+      "meaning": "盘中行情变化",
+      "gif": "https://media1.tenor.com/m/ThADbNtGWcwAAAAd/stock-market.gif",
+      "source": "https://tenor.com/view/stock-market-crash-gif-20581305",
+      "id": "L032",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "06 下跌/风险控制",
+      "name": "Bear Market — 红箭头",
+      "meaning": "熊市/风险升高",
+      "gif": "https://media1.tenor.com/m/QExMlbL2yGMAAAAd/stock-market-stock-market-crash.gif",
+      "source": "https://tenor.com/view/stock-market-stock-market-crash-bear-market-gif-4633162322493753443",
+      "id": "L033",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "06 下跌/风险控制",
+      "name": "Stock Price Dropping",
+      "meaning": "明显下行或回撤",
+      "gif": "https://media1.tenor.com/m/dImi4w4Vvz4AAAAd/stock-market-crash.gif",
+      "source": "https://tenor.com/view/stock-market-crash-stock-price-dropping-going-down-gif-19950059",
+      "id": "L034",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "06 下跌/风险控制",
+      "name": "Stocks Down — 红线",
+      "meaning": "下跌/弱势走势",
+      "gif": "https://media.tenor.com/LwFztVJLFh4AAAAM/oz-stocks-down.gif",
+      "source": "https://tenor.com/view/stock-market-crash-stock-price-dropping-going-down-gif-19950059",
+      "id": "L035",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "06 下跌/风险控制",
+      "name": "Let Me Fix This — 分析",
+      "meaning": "下跌时先分析，不慌乱",
+      "gif": "https://media1.tenor.com/m/VatzVL8hRRUAAAAd/stock-market-crash-let-me-fix-this.gif",
+      "source": "https://tenor.com/view/stock-market-crash-let-me-fix-this-calculating-analyze-gif-16439000",
+      "id": "L036",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "07 收盘/庆祝",
+      "name": "Cheers — Whiskey",
+      "meaning": "收盘不错、周末或好消息后轻度庆祝",
+      "gif": "https://media1.tenor.com/m/HLtr8Z2uWjwAAAAd/cheers-toast.gif",
+      "source": "https://tenor.com/view/cheers-toast-gif-21106967",
+      "id": "L037",
+      "availability": "仅链接，未下载或核验"
+    },
+    {
+      "cat": "07 收盘/庆祝",
+      "name": "Cheers — Beer",
+      "meaning": "盈利或好消息后碰杯",
+      "gif": "https://media.tenor.com/2axGXG0EF3UAAAAM/namit.gif",
+      "source": "https://tenor.com/view/cheers-toast-gif-21106967",
+      "id": "L038",
+      "availability": "仅链接，未下载或核验"
+    }
+  ],
+  "usage": "虚构角色表达；GIF不是行情证据或交易信号；MP4为备用视频，不保证WhatsApp自动识别为GIF"
+}
