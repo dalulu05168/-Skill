@@ -1,0 +1,17 @@
+{
+  "fixture_type": "synthetic_demo_only_not_market_data",
+  "observations": [
+    {
+      "instrument": "BET",
+      "value": 100,
+      "unit": "points",
+      "timezone": "Europe/Bucharest",
+      "observed_at": "2026-09-08T12:30:00+03:00",
+      "source_id": "BVB_INDICES",
+      "source_url": "https://www.bvb.ro/FinancialInstruments/Indices/Overview",
+      "evidence_locator": "SYNTHETIC: no claim this figure appears at URL",
+      "delay_status": "end_of_day",
+      "status": "provisional"
+    }
+  ]
+}

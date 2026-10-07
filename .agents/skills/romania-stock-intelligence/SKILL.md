@@ -8,7 +8,7 @@ description: >-
   content, or auditing factual finance reports. Never invent quotes or imply live data without access.
 ---
 
-# Romania Stock Intelligence — V1.0
+# Romania Stock Intelligence — V2.0
 
 ## Mission and triggers
 When asked about Romanian equities, BVB, BET, European/U.S. financial-market implications for Romania, Romanian financial news and culture, market briefings, or Professor explanations, apply this workflow. Output normally in **Chinese**, with locally natural **Romanian** snippets where requested. Prioritize accurate evidence, useful comparisons, source integrity, and risk-aware teaching, not trading signals.
@@ -69,3 +69,15 @@ Maintain a mature, respectful, fluent and evidence-heavy professor-like educatio
 
 ## Smoke check before release
 [ ] Date/time/zone verified; [ ] exchange session verified; [ ] primary links point to item-level evidence; [ ] all quoted numerics have seven mandatory metadata elements; [ ] previous brief comparison or unavailable; [ ] fact/analysis separated; [ ] no invented quotes, events, credentials or trades; [ ] educational tone; [ ] no email; [ ] no duplicate automation claim.
+
+
+## V2.0 executable engine (added without removing V1 functionality)
+Before quantitative or event work, **read `V2-README.md`**. The five functions are implemented as local, executable Python 3.11+ stdlib commands (`scripts/rsi_v2.py`): `audit`, `bet`, `events`, `store` / `compare`, `professor`.
+
+1. Gather genuinely published, licensed/source-permitted data; use `audit` with `config/source-registry.json` to identify missing evidence, stale observations, invalid DST, and source conflicts. `audit=pass` is *structural assurance only*, not proof a website actually lists those values. Never synthesize a current observation from a fixture.
+2. Estimate BET constituent contributions only with correctly timed weights, period-matched returns, full current membership and official sources; mark the result as an approximation. Source methodology: <https://bvb.ro/info/indices/2025/BVB-EN_Manual-BET_V_01-2022.pdf>. Distinguish BET from BET-TR.
+3. Run `events --db <persistent_db_path>` for an evidence-linked event **review queue**, not a price prediction. The event novelty status is based on records actually saved to that DB.
+4. Run `store --db <persistent_db_path>` only after the existing report validation, and `compare` to measure change against the preceding actually stored report; no DB = no claim about earlier briefings.
+5. Use `professor` with traceable input facts, causal steps, counterarguments, conditional scenarios and watch points. This generator never independently checks URL contents.
+6. For tests execute `python -m unittest discover -s tests -v`. All `examples/v2/*.synthetic.json` are made-up integration test fixtures: **NEVER publish these as financial facts**.
+7. V2 does **not** authorize live feeds, deploy automations, send ChatGPT messages, or grant credentials. Three daily slots remain workflow specifications until separately scheduled.

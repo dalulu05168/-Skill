@@ -1,0 +1,39 @@
+{
+  "fixture_type": "synthetic_demo_only_not_market_data",
+  "topic": "利率变化如何影响罗马尼亚银行股（教学样例）",
+  "facts": [
+    {
+      "text": "假设：政策利率发生变化（并非实际事件）",
+      "observed_at": "2026-09-08T12:30:00+03:00",
+      "timezone": "Europe/Bucharest",
+      "source_url": "https://www.bnr.ro/",
+      "evidence_locator": "SYNTHETIC hypothetical scenario"
+    }
+  ],
+  "mechanisms": [
+    "贷款利率调整与存款成本调整的时间差，可能影响净息差",
+    "信贷需求、资产质量和估值折现率可能朝不同方向变化"
+  ],
+  "counterarguments": [
+    "银行可调整资产负债期限结构，实际影响取决于具体财报",
+    "市场可能已经提前消化政策预期"
+  ],
+  "scenarios": {
+    "favorable": {
+      "condition": "贷款回报增长快于存款成本",
+      "implication": "净息差改善"
+    },
+    "base": {
+      "condition": "资产和负债利率同步调整",
+      "implication": "净息差基本稳定"
+    },
+    "adverse": {
+      "condition": "不良贷款压力明显上升",
+      "implication": "信用损失抵消利息收入"
+    }
+  },
+  "watch_next": [
+    "BNR 政策声明与时间",
+    "上市银行的季度净息差及不良贷款率"
+  ]
+}
