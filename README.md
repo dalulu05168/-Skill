@@ -19,3 +19,15 @@ Skill入口：[SKILL.md](skills/romania-market-director/SKILL.md)。完整人物
 Skill本身不自动运行、不自动群发、不永久保存对话。实时检索取决于GPT工具与网络权限。新GPT实际端到端生成尚未测试，不能保证所有平台自动加载本仓库。
 
 [上午离线试稿](skills/romania-market-director/examples/上午离线试稿.md)仅使用明确标注的假设数值，用于检查人设和结构，不是今日行情。
+
+
+## Romania Stock Intelligence — Codex 金融分析技能
+
+已加入 Codex 可自动发现的项目级 Skill：[.agents/skills/romania-stock-intelligence/SKILL.md](.agents/skills/romania-stock-intelligence/SKILL.md)。与原有 [罗马尼亚财经资讯与课程编剧](skills/romania-market-director/SKILL.md) 并列、相互独立。
+
+使用：在 Codex 打开本仓库，重新开启会话，输入 `$romania-stock-intelligence` 加上任务；或者参考 [Codex 安装说明](.agents/skills/romania-stock-intelligence/CODEX-README.md) 安装到用户级 `~/.agents/skills`，以供其他仓库调用。Skill 本身不会生成实时行情或创建自动任务。
+
+
+## V2.0 升级：罗马尼亚金融情报引擎（Codex）
+
+[SKILL.md](.agents/skills/romania-stock-intelligence/SKILL.md) 已升级至 V2.0，保留既有 `romania-market-director` 人设与课程。新增 [V2-README.md](.agents/skills/romania-stock-intelligence/V2-README.md) 与 `scripts/rsi_v2.py`，实现本地数据核验、BET成分贡献估算、事件雷达、SQLite 历史记录、证据驱动教授课程。Python 3.11+ 标准库即可执行；通过 `python -m unittest discover -s tests -v` 验收。合成测试样例非真实行情，实时市场数据、定时推送与自动群发不在本次部署范围。

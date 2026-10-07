@@ -1,0 +1,31 @@
+{
+  "fixture_type": "synthetic_demo_only_not_market_data",
+  "index": "BET",
+  "timezone": "Europe/Bucharest",
+  "weights_basis": "prior_close",
+  "returns_as_of": "2026-09-08T12:30:00+03:00",
+  "weights_as_of": "2026-09-07T17:50:00+03:00",
+  "weights_source_url": "https://bvb.ro/FinancialInstruments/Indices/IndicesProfiles.aspx?i=BET_",
+  "returns_source_url": "https://www.bvb.ro/FinancialInstruments/Indices/Overview",
+  "complete_roster": true,
+  "constituents": [
+    {
+      "ticker": "A",
+      "sector": "banking",
+      "weight_pct": 60,
+      "return_pct": 2
+    },
+    {
+      "ticker": "B",
+      "sector": "energy",
+      "weight_pct": 30,
+      "return_pct": -1
+    },
+    {
+      "ticker": "C",
+      "sector": "utilities",
+      "weight_pct": 10,
+      "return_pct": 0
+    }
+  ]
+}

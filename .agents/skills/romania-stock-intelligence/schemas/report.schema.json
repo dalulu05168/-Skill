@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:romania-stock-intelligence:schema:report:v1",
+  "title": "Romania Stock Intelligence Report (data model)",
+  "type": "object",
+  "required": ["report_id", "kind", "produced_at", "timezone", "market_status", "previous_report_id", "metrics", "events", "themes", "coverage_gaps", "notification_channel"],
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {"type": "string", "pattern": "^RSI-[0-9]{8}-(0800|1300|1800|BREAKING)$"},
+    "kind": {"enum": ["morning_0800", "midday_1300", "close_1800", "breaking"]},
+    "produced_at": {"type": "string", "format": "date-time"},
+    "timezone": {"const": "Europe/Bucharest"},
+    "market_status": {"enum": ["preopen", "open", "close_snapshot", "confirmed_close", "non_trading_day", "unknown"]},
+    "official_close_confirmed": {"type": "boolean"},
+    "previous_report_id": {"type": ["string", "null"]},
+    "notification_channel": {"const": "chatgpt_only"},
+    "metrics": {"type": "array", "items": {"$ref": "#/$defs/metric"}},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}},
+    "themes": {"type": "array", "items": {"$ref": "#/$defs/theme"}},
+    "coverage_gaps": {"type": "array", "items": {"type": "object", "required": ["series", "reason", "next_action"], "properties": {"series": {"type": "string"}, "reason": {"type": "string"}, "next_action": {"type": "string"}}}}
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "required": ["series", "value", "unit", "baseline", "observed_at", "timezone", "source_url", "delay_status", "vs_previous_brief", "quality"],
+      "properties": {
+        "series": {"type": "string"},
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1},
+        "baseline": {"type": "object", "required": ["description", "status"], "properties": {"description": {"type": "string"}, "status": {"enum": ["compared", "not_available"]}, "value": {"type": ["number", "null"]}, "observed_at": {"type": ["string", "null"]}}},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "timezone": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "format": "uri"},
+        "delay_status": {"enum": ["realtime", "delayed", "end_of_day", "unknown"]},
+        "delay_minutes": {"type": ["integer", "null"], "minimum": 0},
+        "vs_previous_brief": {"type": "object", "required": ["status"], "properties": {"status": {"enum": ["compared", "not_available"]}, "previous_report_id": {"type": "string"}, "previous_value": {"type": "number"}, "change_value": {"type": "number"}, "change_unit": {"type": "string"}, "reason": {"type": "string"}}},
+        "quality": {"enum": ["verified", "provisional"]}
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": ["headline", "published_at", "effective_at", "timezone", "source_url", "change_status"],
+      "properties": {
+        "headline": {"type": "string"},
+        "published_at": {"type": "string", "format": "date-time"},
+        "effective_at": {"type": ["string", "null"], "format": "date-time"},
+        "timezone": {"type": "string"},
+        "source_url": {"type": "string", "format": "uri"},
+        "change_status": {"enum": ["new", "revised", "unchanged"]}
+      }
+    },
+    "theme": {
+      "type": "object",
+      "required": ["title", "facts", "analysis", "scenario", "risk"],
+      "properties": {
+        "title": {"type": "string"},
+        "facts": {"type": "string"},
+        "analysis": {"type": "string"},
+        "scenario": {"type": "string"},
+        "risk": {"type": "string"}
+      }
+    }
+  }
+}

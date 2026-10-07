@@ -1,0 +1,15 @@
+{
+  "report_id": "RSI-20261008-0800",
+  "kind": "morning_0800",
+  "produced_at": "2026-10-08T08:00:00+03:00",
+  "timezone": "Europe/Bucharest",
+  "market_status": "preopen",
+  "previous_report_id": null,
+  "notification_channel": "chatgpt_only",
+  "metrics": [],
+  "events": [],
+  "themes": [],
+  "coverage_gaps": [
+    {"series": "BET", "reason": "测试样例没有联网获取行情；不含任何虚构市场数值", "next_action": "正式执行时核对BVB官方BET指数观测记录"}
+  ]
+}

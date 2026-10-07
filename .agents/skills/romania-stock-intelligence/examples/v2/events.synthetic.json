@@ -1,0 +1,25 @@
+{
+  "fixture_type": "synthetic_demo_only_not_real_event",
+  "events": [
+    {
+      "event_id": "DEMO-0001",
+      "title": "测试事件：央行政策调整（虚构）",
+      "category": "central_bank",
+      "published_at": "2026-09-08T11:00:00+03:00",
+      "effective_at": null,
+      "timezone": "Europe/Bucharest",
+      "source_url": "https://www.bnr.ro/",
+      "evidence_locator": "SYNTHETIC: no actual announcement",
+      "relevance_tags": [
+        "ROMANIA",
+        "RON",
+        "BANKS"
+      ],
+      "transmission_path": [
+        "货币政策可能影响贷款融资成本",
+        "融资成本变化可能影响上市企业估值"
+      ],
+      "uncertainty": "传导强度未经估计，仅用于演示"
+    }
+  ]
+}

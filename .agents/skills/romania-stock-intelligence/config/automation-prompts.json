@@ -1,0 +1,28 @@
+{
+  "important": "PROMPTS ONLY. Importing this file does not create jobs. Confirm current tasks to prevent duplicates. Schedule in Europe/Bucharest and deliver in ChatGPT only, not email.",
+  "timezone": "Europe/Bucharest",
+  "channel": "chatgpt_only",
+  "tasks": [
+    {
+      "id": "RSI-0800",
+      "title": "罗马尼亚早间市场简报",
+      "local_time": "08:00",
+      "repeat": "DAILY",
+      "prompt": "以 Europe/Bucharest 当前日期和08:00为基准，按照 Romania Stock Intelligence Skill 的早间模版，核验官方BVB交易日历、最近有效BET收盘、隔夜美股三大指数、欧股背景、Brent、欧洲天然气、EUR/RON、EUR/USD、罗马尼亚/德国/美债收益率及当日经济与财报事件。每个可发布的数值都要带数值与单位、比较基准、数据时间及时区、原始来源链接、是否延迟、相较上一份已送达简报有什么变化。事实/分析/情景明确分开，缺失数据标记待核验，不能编造。提供罗马尼亚市场传导分析及教授式一句教学。只在ChatGPT中发送，不发送邮件。休市日明确标记。"
+    },
+    {
+      "id": "RSI-1300",
+      "title": "罗马尼亚盘中市场简报",
+      "local_time": "13:00",
+      "repeat": "DAILY",
+      "prompt": "以 Europe/Bucharest 当前日期和13:00为基准，按 Romania Stock Intelligence Skill 盘中模版核查BVB是否开市、BET最新官方可见数据和观测时间、BET成分与权重、涨跌持平家数、成交额、个股活跃度及是否少数权重股推动。核对Brent、欧洲天然气、EUR/RON、EUR/USD、罗马尼亚/德国/美债收益率、欧股及海外消息。所有数值必带单位、比较基准、时间/时区、来源URL、延迟状态及对前一已送达简报变化；事件带发布时间、生效时间及新增/修订/未变。缺数据不得杜撰，不得使用旧数据冒充当前行情。输出事实/分析/风险条件及一段教授教育解读，仅在ChatGPT中发送，不用邮箱。"
+    },
+    {
+      "id": "RSI-1800",
+      "title": "罗马尼亚晚间市场复盘",
+      "local_time": "18:00",
+      "repeat": "DAILY",
+      "prompt": "以 Europe/Bucharest 当前日期和18:00为基准，根据 Romania Stock Intelligence Skill 晚间模版复盘BVB/BET、BET-TR、成分股广度、权重集中度、板块、成交、重大财报/除息/央行事件以及能源、汇率、债券收益率、欧洲和美股背景。18:00可能是收盘时点，未核对官方最终报价时必须标记临时快照，不能称最终收盘。每项数字都附值/单位、基准、观测时间和时区、原始来源、延迟情况、相对上一份已送达简报的变化；每项事件带发布和生效时间、来源、新增/修订/未变。区分事实、传导机制及不确定情景；一段教授式教育课程，不给确定买卖建议。仅在ChatGPT推送，不发送邮件；非交易日标记休市。"
+    }
+  ]
+}
