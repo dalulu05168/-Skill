@@ -17,4 +17,6 @@
 
 ## 正式版本与成员记忆
 
-版本1.1.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
+版本1.2.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
+
+上午50段、下午45段。新闻组合与计数标准见references/daytime-rhythm.md。
