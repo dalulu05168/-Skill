@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "scope": "fictional_simulation_only",
+  "说明": "初始空状态；示例和聊天草稿尚未迁移为正式发言记忆，也不代表已授课",
+  "adopted_scenes": [],
+  "characters": {},
+  "unresolved_questions": [],
+  "pending_conflicts": []
+}

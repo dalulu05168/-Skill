@@ -1,0 +1,24 @@
+{
+  "character_id": null,
+  "说明": "仅虚构剧情，不改固定档案",
+  "daily_state": {},
+  "speech_events": [],
+  "understood_points": [],
+  "unresolved_questions": [],
+  "view_changes": [],
+  "recent_expressions": [],
+  "recent_emojis": [],
+  "next_scene_hooks": [],
+  "event_schema": {
+    "scene_id": null,
+    "message_ref": null,
+    "date": null,
+    "period": null,
+    "topic": null,
+    "key_view": null,
+    "responded_by": [],
+    "response_summary": null,
+    "change_reason": null,
+    "status": "待采用"
+  }
+}
