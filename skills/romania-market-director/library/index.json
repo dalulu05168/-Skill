@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "scope": "当前仓库及能访问本仓库的任务",
+  "sources": [
+    {
+      "path": "library/source-chats/WhatsApp表情素材库.docx",
+      "type": "原始上传素材",
+      "status": "素材，非已核验行情",
+      "sha256": "63bfcbf96ca67f958ac5412ff8d45a7ecb7214c97ea8104760adee4c3d4d2f09"
+    },
+    {
+      "path": "library/source-chats/资讯助理1.txt",
+      "type": "原始上传素材",
+      "status": "素材，非已核验行情",
+      "sha256": "a2932141e2dea8c322c261116247a942041a40302a18270ca417723397d5eb0b"
+    },
+    {
+      "path": "library/source-chats/资讯助理2.txt",
+      "type": "原始上传素材",
+      "status": "素材，非已核验行情",
+      "sha256": "73d3ddcfa07d1ff464e97f858f1482b74763beac2e90db683710667abca37b4e"
+    },
+    {
+      "path": "library/source-chats/资讯助理3.txt",
+      "type": "原始上传素材",
+      "status": "素材，非已核验行情",
+      "sha256": "12a47cbf89b204f03da395c027943af54b2a71b87ca3f9a32ea27a58a41c302d"
+    },
+    {
+      "path": "library/drafts/2026-10-08_待核验编辑稿.md",
+      "type": "编辑草稿",
+      "status": "未采用；行情待核验"
+    }
+  ],
+  "reusable_resources": {
+    "characters": "characters/profiles/",
+    "character_index": "characters/index.json",
+    "emoji_reference": "references/emoji-reference.txt",
+    "director_rules": "references/director-workflow.md",
+    "ideology_courses": "references/course-plan.md",
+    "memory": "memory/state.json"
+  },
+  "missing_inputs": [
+    "每日GPT推送新闻及指标原始资料",
+    "外部教授技术课Skill或讲稿",
+    "用户提到的GIF图片"
+  ],
+  "approved_scenes": []
+}
