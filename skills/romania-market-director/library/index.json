@@ -47,6 +47,14 @@
       "path": "library/news/2026-10-08_ECB汇率核验.json",
       "type": "实际访问官方XML的核验记录",
       "status": "2026-10-07参考汇率已读取；不是今日实时价；精确观察时刻未给"
+    },
+    {
+      "path": "library/news/2026-10-08_1300_GPT盘中原文_待核验.txt",
+      "type": "用户提供GPT盘中推送原文",
+      "date": "2026-10-08",
+      "brief_time": "13:00 Europe/Bucharest",
+      "status": "待独立核验；与实际收到早报的比较基准存在不一致",
+      "sha256": "b103cc232360767556c72a58075b207e42d3f18192fc4d30a2ab4d0c87ce7919"
     }
   ],
   "reusable_resources": {
