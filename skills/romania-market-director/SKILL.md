@@ -71,3 +71,5 @@ Skill提供工作规则和资料，不自行安装搜索服务、获取付费行
 
 ## 资讯审核接入
 涉及新闻、指数、权重或宏观数值时，先读取 `references/intelligence-integration.md`，调用仓库中的 romania-stock-intelligence V2.1 进行证据整理，再由本 Skill 安排虚构教学对话和教授课程。独立 ZIP 不含外部资讯模块，缺失时明确标记。
+
+指标数值准确性为用户固定要求：遵守 references/market-priorities.md 中发布门槛，未核验数字留底稿，不进入正式助理/教授资讯对白。

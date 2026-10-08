@@ -84,3 +84,5 @@ Before quantitative or event work, **read `V2-README.md`**. The five functions a
 
 ## V2.1 evidence gate
 Read `V2.1-README.md` before running audit or BET attribution. Empty observations fail. BET qualification requires matching documented previous-session close, return baseline, and current-session roster evidence; metadata never proves publisher contents. For dialogue/course production, pass evidence to the repository director Skill at `skills/romania-market-director/`; use its message counts and fictional-character rules.
+
+用户固定要求：指标数值必须准确。执行 references/verification.md 的原文核对与精度规则；本地 audit 通过不等于数字真实。
