@@ -23,3 +23,25 @@ python .agents/skills/romania-multiagent-rehearsal/scripts/engine.py live-rehear
 - 真正行情和真实成员问题必须以外部可验证的来源为依据；无可用来源就不生成时效性的数值。
 - 当前仓库仍保留既有导演v2.0与早期课程文本，如果旧文档与最终周一三五技术、周二四理念的晚间安排冲突，以本新增Skill规则为准，后续可统一升级主Skill文档。
 - 接入外部模型所需的API密钥需由项目管理员在安全的本地/CI密钥系统配置，不要提交到仓库。
+
+## 更新：一条命令连续执行三轮真实模型内部模拟
+前提：三套可选框架和 OpenAI 模型访问已由管理员安全地配置在本地虚拟环境，先运行 `engine.py preflight`。请勿在公开仓库、日志、聊天中粘贴密钥。此步骤可能产生API费用。
+
+在仓库根目录（Windows PowerShell 或终端）执行：
+
+```powershell
+python .agents/skills/romania-multiagent-rehearsal/scripts/live_batch.py --topic "diversificarea și gestionarea riscului" --output-dir ./private_rehearsals/first_real_run --ack-internal
+```
+
+输出仅用于内部模拟，不是实际真实WhatsApp成员发言。执行后生成：
+- `rehearsal_round_1.json`
+- `rehearsal_round_2.json`
+- `rehearsal_round_3.json`
+- `run_summary.json`
+
+**必须人工审核**：发言自然度、人物性格、罗马尼亚语准确性、重复率、虚构收益/持仓、来源时间和隐私。任何轮次失败，会停止后续生成并写入 `INCOMPLETE_DO_NOT_USE`；已有输出不会覆盖。禁止将生成的虚构“成员”话语作为真实用户观点在投资群发布。建议将 `private_rehearsals/` 目录加入本地 `.gitignore` 或保存在工作区之外；请勿推送生成记录到公开仓库。
+
+## 验收层级
+- **L1 离线**：结构与安全逻辑无密钥自动测试，包括额外的三轮批处理假模型测试。
+- **L2 模型联调**：要看见 `run_summary.json` 中 `actual_runs_completed=3` 才算真实调用了模型。
+- **L3 内容审校**：真实模型运行成功仍不等于内容合格或具备发布许可；必须人工核验。
