@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "people": 65,
+  "field_assertions": "per-person mandatory/personality/language/style/emoji/media/finances/relationships; package references tested",
+  "issues": [],
+  "gif_count": 12,
+  "png_count": 8,
+  "french_first": 3,
+  "romanian_first": 62,
+  "gif_allowed": 51,
+  "gif_disabled": 14
+}

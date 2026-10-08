@@ -35,3 +35,9 @@ Skill本身不自动运行、不自动群发、不永久保存对话。实时检
 ## 当前导演流程：2.0.0
 
 上午建立背景与理解，下午根据新证据推进；现行流程只读取 [daytime-rhythm.md](skills/romania-market-director/references/daytime-rhythm.md)，对话节奏读取 [director-workflow.md](skills/romania-market-director/references/director-workflow.md)。旧示例与草稿不作为当前格式规范。保留上午50条、下午45条，不能拆句凑数。
+
+## 65人角色库 v4.1（2026-10-09）
+
+`skills/romania-market-director/characters/profiles/` 中65份JSON已升级为逐人审校的 v4.1，含短句、问候、Emoji、GIF/PNG许可、沉默及个人语言优先级。读取规则：[persona-media-v4.1.md](skills/romania-market-director/references/persona-media-v4.1.md)；审校报告：[characters/v4.1/](skills/romania-market-director/characters/v4.1/)。
+
+**媒体存放说明**：本仓库已保存65份角色JSON、审核与媒体索引；12个GIF和8个PNG的原始二进制当前位于[Google云盘v4.1目录](https://drive.google.com/drive/folders/1VmWPcnbmLc5UNomI-S3QPBRPa93TtxTs)，尚未作为二进制写入本GitHub仓库。`dist/romania-market-director-skill.zip` 尚未由此提交重新构建，请优先读取仓库中的实时文件，不要把历史ZIP当作v4.1。

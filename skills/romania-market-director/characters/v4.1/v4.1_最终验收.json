@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "version": "4.1",
+  "profiles_checked": 65,
+  "all_unique_ids_01_65": true,
+  "all_original_attributes_kept": true,
+  "fixed_inconsistent_media_permission_profiles": 14,
+  "fixed_french_priority_profiles": 3,
+  "per_person_language_priority": 65,
+  "per_person_short_emoji_gif_rules": 65,
+  "asset_counts": {
+    "GIF": 12,
+    "PNG": 8
+  },
+  "media_persona_files": 65,
+  "fix_count": 17,
+  "source_v4_zip": "65人AI人物档案_v4_自然群聊与GIF图片表情完整版.zip",
+  "limitations": [
+    "机器校验字段存在、范围、跨字段逻辑、基础人设一致性；不保证实际文本生成长期符合所有人物个性，仍需场景回归测试。",
+    "资料为明确标注虚构的教育或剧本演练，非真人或真实客户互动。"
+  ]
+}

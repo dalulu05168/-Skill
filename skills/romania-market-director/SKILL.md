@@ -14,8 +14,8 @@ description: 罗马尼亚优先的准确财经资讯、灵活早午节奏、完�
 1. 读取[云端资料规则](references/cloud-library.md)、library/index.json及memory/state.json；选当日资讯，已采用历史与草稿分开。
 2. 按[市场准确性规则](references/market-priorities.md)核对原始证据、指标身份、数值、单位、时间、基准、延迟。使用[资讯审核接入](references/intelligence-integration.md)；格式审核不等于事实真实，缺项不补猜。
 3. 确定当天主线、要发布的新闻及深入解释的重点，按[白天流程](references/daytime-rhythm.md)推进；不预设每幕消息数量或固定分钟排班。
-4. 按[导演工作流程](references/director-workflow.md)安排完整助理发言，读取characters/index.md及入选人物完整characters/profiles/档案；不固定人数、不逐人问答。
-5. 读取references/emoji-reference.txt与library/gif/catalog.json，实际安排适合的表情/GIF，并写清角色、文件与出现位置，不为了数量滥用。
+4. 按[导演工作流程](references/director-workflow.md)安排完整助理发言，读取characters/index.md及入选人物完整characters/profiles/档案（65人均已更新v4.1）；遵守[65人v4.1语言、短句与媒体规则](references/persona-media-v4.1.md)，不固定人数、不逐人问答。
+5. 读取references/emoji-reference.txt、library/gif/catalog.json、[v4.1媒体规则](references/persona-media-v4.1.md)和各自完整人物档案，按本人GIF/PNG许可安排媒体；素材未实际下载或上传时不得声称已发送，不为了数量滥用。
 6. 按[八项内容](references/community-content.md)自然穿插；周二/周四理念课程读取[课程计划](references/course-plan.md)，教授正文13–15段默认14段。技术课程仅使用用户提供的讲稿。
 7. 检查[助理表达](references/assistant-analysis.md)、[导演边界](references/director-rules.md)、消息计数与前后时间，再交付对白稿及独立制作说明。按[记忆规则](references/memory-rules.md)提供可追溯拟增记录，草稿不写已采用历史。
 
