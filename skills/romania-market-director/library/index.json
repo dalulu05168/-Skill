@@ -55,6 +55,11 @@
       "brief_time": "13:00 Europe/Bucharest",
       "status": "待独立核验；与实际收到早报的比较基准存在不一致",
       "sha256": "b103cc232360767556c72a58075b207e42d3f18192fc4d30a2ab4d0c87ce7919"
+    },
+    {
+      "path": "library/drafts/2026-10-08_上午50条_证据待补编辑稿.md",
+      "type": "上午50条完整编辑稿",
+      "status": "未采用；8处编辑位待补证据，不可直接发布"
     }
   ],
   "reusable_resources": {
