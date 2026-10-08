@@ -65,6 +65,12 @@
       "path": "library/drafts/2026-10-08_上午长助理主题稿_待补全.md",
       "type": "长助理主题编辑稿",
       "status": "结构已合并；尚未补齐50条与资讯证据；未采用"
+    },
+    {
+      "path": "library/source-chats/前期上午下午规划_用户原文.docx",
+      "type": "用户规划素材",
+      "status": "原件保留；按用户后续确认的精简方向重写，不逐条执行原始时间/人数/买卖环节",
+      "sha256": "5a50c1604c33955c3f703a1a1b515413c2e4ca70c55f2d4e7785146520d6e108"
     }
   ],
   "reusable_resources": {
@@ -97,5 +103,11 @@
       "version": "2.1",
       "status": "本仓库可调用；55项测试通过；不是实时数据源"
     }
-  ]
+  ],
+  "current_rules": {
+    "version": "2.0.0",
+    "entry": "SKILL.md",
+    "daytime": "references/daytime-rhythm.md",
+    "dialogue": "references/director-workflow.md"
+  }
 }
