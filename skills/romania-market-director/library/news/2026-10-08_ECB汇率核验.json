@@ -1,0 +1,10 @@
+{
+  "source_url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+  "fetched_at": "2026-10-08T09:36:34.371272+00:00",
+  "observation_date": "2026-10-07",
+  "observation_time": "publisher_xml_does_not_specify",
+  "rate_basis": "currency_units_per_EUR_ECB_reference_not_BNR_or_intraday",
+  "EUR_RON": "5.3528",
+  "EUR_USD": "1.1177",
+  "original_response": "2026-10-08_ECB汇率原始响应.xml"
+}

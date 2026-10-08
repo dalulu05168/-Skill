@@ -35,6 +35,18 @@
       "path": "library/gif/catalog.json",
       "type": "上传GIF资料及在线索引",
       "status": "5个GIF+5个MP4已导入；38条在线链接未下载核验"
+    },
+    {
+      "path": "library/news/2026-10-08_GPT推送原文_待核验.txt",
+      "type": "用户提供的GPT资讯推送原文",
+      "date": "2026-10-08",
+      "status": "已收到，尚未独立核验；引用编号不可解析；不是官方原始数据",
+      "sha256": "67381c872729a358dee1cc02a69de39c1be3873573728d8bcc875bb7f83b3a9d"
+    },
+    {
+      "path": "library/news/2026-10-08_ECB汇率核验.json",
+      "type": "实际访问官方XML的核验记录",
+      "status": "2026-10-07参考汇率已读取；不是今日实时价；精确观察时刻未给"
     }
   ],
   "reusable_resources": {
@@ -48,7 +60,7 @@
     "gif_assets": "library/gif/assets/"
   },
   "missing_inputs": [
-    "每日GPT推送新闻及指标原始资料",
+    "当日推送的可访问原始新闻链接及指标证据",
     "外部教授技术课Skill或讲稿"
   ],
   "approved_scenes": [],
