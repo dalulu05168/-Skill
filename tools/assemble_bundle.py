@@ -65,6 +65,7 @@ def main():
         "tools/finance_skill_api.py",
         "tools/finance_skill_generate.py",
         "docs/UNIFIED-FINANCE-SKILL-HUB.md",
+        "docs/CHATGPT-FIRST-WORKFLOW.md",
     ]))
     with ZipFile(large) as z:
         assert ".agents/skills/romania-stock-intelligence/scripts/rss_intake.py" in z.namelist()
