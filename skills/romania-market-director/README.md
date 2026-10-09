@@ -17,7 +17,7 @@
 
 ## 正式版本与成员记忆
 
-版本2.2.1。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
+版本2.3.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
 
 旧50/45条硬指标已废止；最新弹性目标为**工作日上午40–45条、下午约40条、晚上约45条（各时段多栏目累计）**，特殊行情灵活调整、删重复不凑数；优先阅读references/operating-standard-2026-10-09.md中的16节点提前30分钟及中文剧本规则。
 
@@ -27,3 +27,6 @@
 
 ## 最新执行入口
 [统一用户执行标准](references/operating-standard-2026-10-09.md) · [国际新闻16:9配图](references/news-visual-standard.md)
+
+## v2.3.0 关键必读
+[严格身份核验、GIF/新闻配图、定稿记忆流程](references/identity-media-memory-workflow.md)；目录中另有`scripts/validate_persona_roster.py`机器验证器（执行前需有Python和完整仓库）。先独立核用户新闻数据、再校验角色身份；上午下午晚上助理各一条八项，GIF由合法素材中按场景随机出现，配图标记必须执行实际生成。明确采用用户每日修订定稿后再回写角色动态记忆。原教授技术课历史Skill路径目前不在本库，晚课沿用可读框架与19:30新时刻，周一三五技术/周二四理念，少数适合学员互动。

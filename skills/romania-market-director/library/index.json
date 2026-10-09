@@ -98,11 +98,14 @@
     "gif_catalog": "library/gif/catalog.json",
     "gif_assets": "library/gif/assets/",
     "quality_pipeline": "references/quality-pipeline.md",
-    "skill_research": "library/skill-research/sources.json"
+    "skill_research": "library/skill-research/sources.json",
+    "identity_validator": "scripts/validate_persona_roster.py",
+    "identity_gif_news_memory": "references/identity-media-memory-workflow.md"
   },
   "missing_inputs": [
     "当日推送的可访问原始新闻链接及指标证据",
-    "外部教授技术课Skill或讲稿"
+    "外部教授技术课Skill或讲稿",
+    "外部教授技术课原技能和完整讲稿（历史仅有路径引用，主仓库无原件）"
   ],
   "approved_scenes": [],
   "external_sources": [
@@ -122,9 +125,13 @@
     }
   ],
   "current_rules": {
-    "version": "2.1.1",
+    "version": "2.3.0",
     "entry": "SKILL.md",
     "daytime": "references/daytime-rhythm.md",
-    "dialogue": "references/director-workflow.md"
+    "dialogue": "references/director-workflow.md",
+    "identity_gif_news_memory": "references/identity-media-memory-workflow.md",
+    "validation": "scripts/validate_persona_roster.py",
+    "memory": "memory/state.json",
+    "professor": "19:30; MWF technical, TuTh philosophy; external skill original missing in repo"
   }
 }

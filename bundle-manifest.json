@@ -1,10 +1,10 @@
 {
   "name": "罗马尼亚财经导演资料包",
-  "bundle_version": "2.2.1",
+  "bundle_version": "2.3.0",
   "entry": "skills/romania-market-director/SKILL.md",
   "modules": {
     "director": {
-      "version": "2.2.1",
+      "version": "2.3.0",
       "path": "skills/romania-market-director/"
     },
     "personas": {
@@ -17,7 +17,7 @@
       "path": ".agents/skills/romania-stock-intelligence/"
     }
   },
-  "workflow": "原始来源核验→新闻影响范围分析→16节点提前30分钟→中文自然导演稿与配图→批准后记忆",
+  "workflow": "独立核用户财经事实→16节点→四重人物身份验证→脚本短线研究→GIF合规语义随机/新闻图实质生成→三时段各1条八项→用户修改定稿采用后动态角色记忆归档",
   "community_topics_retained": 8,
   "media": {
     "legacy_local_gif": 5,
@@ -48,5 +48,46 @@
     },
     "exception_policy": "Flex on material events; prioritize quality, cut low-value repeats, no padding",
     "weekend": "flex based on event and verified content"
+  },
+  "identity_gate": {
+    "strict": true,
+    "validator": "skills/romania-market-director/scripts/validate_persona_roster.py"
+  },
+  "gif": {
+    "selection": "contextual randomized/rotated after persona/media rights and availability gate"
+  },
+  "news_visual": {
+    "trigger": "publication image instruction",
+    "language": "ro-RO",
+    "aspect_ratio": "16:9",
+    "data_chart": "source-backed real series required"
+  },
+  "assistant_eight_content": {
+    "morning": 1,
+    "afternoon": 1,
+    "evening": 1
+  },
+  "professor": {
+    "local_start": "19:30",
+    "technical_days": [
+      "Mon",
+      "Wed",
+      "Fri"
+    ],
+    "philosophy_days": [
+      "Tue",
+      "Thu"
+    ],
+    "members": "few relevant validated",
+    "legacy_original_skill_files": "not present in current repository"
+  },
+  "character_memory": {
+    "trigger": "user explicitly approved edited final script",
+    "repository_targets": [
+      "library/approved/",
+      "memory/state.json",
+      "library/index.json"
+    ],
+    "cloud": "only connected and authorized with verified upload"
   }
 }
