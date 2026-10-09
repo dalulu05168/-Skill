@@ -53,36 +53,40 @@ def info_for_model(person: dict) -> dict:
     }
 
 
+ROLE_GUIDANCE_RO={
+    "01":"Eşti un inginer prudent; înainte de orice concluzie verifici logica şi ce date lipsesc.",
+    "06":"Eşti un manager competitiv şi nerăbdător; pui scurt întrebarea esenţială, dar recunoşti riscul.",
+    "15":"Eşti profesor de liceu, prietenos şi cu umor discret; explici uneori ca în clasă, fără jargon.",
+    "38":"Eşti profesor, salariat realist, sarcastic uneori; nu-ţi permiţi să tratezi riscul ca pe o glumă.",
+    "57":"Eşti ingineră de software; verifici dacă schimbarea e un semnal real sau doar zgomot."
+}
+
 def instruction(c:dict, topic:str, round_number:int,
                 prior_words:list[str], recent_group:list[str]) -> str:
     if c["language"] != "ro-RO":
         raise ValueError("This Romanian-only smoke scene requires ro-RO characters")
-    persona = {
-       "name":c["name"],"age":c["age"],"profession":c["job"],
-       "home":c["city"],"traits":c["personality"][:6],
-       "thinking_style":c["speech_style"],"length":c["usual_length"],
-       "prior":str(c["investment_experiences"])[:220],
-       "emoji":c["emoji_preference"][:4],
-       "general_emotion":c["emotional_baseline"],
-       "knowledge_score":c["investing_knowledge_score"]
-    }
-    other_lines = "\n".join(recent_group[-3:]) or "(începutul discuţiei)"
-    own_lines = "\n".join(prior_words[-2:]) or "(nu ai vorbit încă)"
-    return f"""You are writing ONE message in a clearly FICTIONAL educational screenplay.
-A realistic adult Romanian character speaks in informal Romanian, not in Chinese.
-Persona data (do not print this JSON): {json.dumps(persona,ensure_ascii=False)}
-Your own fictional previous lines: {own_lines}
-Other characters' latest fictional comments: {other_lines}
-Round {round_number}, teacher's subject: {topic}
-Think and respond to what someone just said; a question or disagreement is fine.
-Retain memory of what you said earlier, but do not repeat the sentence.
-Write ONE Romanian-language line of 3-23 words, conversational, usually one
-sentence; optional greeting, at most ONE emoji only if natural for your character.
-No role label, no quotes around the line, no markdown, no made-up statistics,
-earnings or client testimonials, no particular stock advice, no buy/sell order.
-Remember this is a simulation, NOT real investors in a WhatsApp group.
-MESSAGE IN ROMANIAN ONLY:"""
-
+    distinct=ROLE_GUIDANCE_RO.get(c["id"],"Ai o voce naturală, potrivită meseriei şi personalităţii tale.")
+    old=" | ".join(prior_words[-2:]) or "nicio replică anterioară"
+    others=" | ".join(recent_group[-2:]) or "nimeni nu a vorbit încă"
+    emoji="/".join(c["emoji_preference"][:3]) if c["emoji_preference"] else "fără"
+    # Every field below is extracted from that person's ORIGINAL complete v4.1 JSON.
+    return f"""Scrii o SINGURĂ replică într-o scenă de EDUCAŢIE FINANCIARĂ FICTIVĂ.
+Este teatru educativ, nu discuţie între investitori reali.
+Identitate: {c["name"]}, {c["age"]} de ani, ocupaţia {c["job"]},
+oraşul {c["city"]}. {distinct}
+Personalitate din fişa originală: {", ".join(c["personality"][:4])}.
+Temperament: {c["emotional_baseline"]}. Exemplu de structură: {c["speech_style"]}.
+Emoji preferate: {emoji}; foloseşte ZERO sau CEL MULT UNUL doar dacă vine natural.
+Replica ta anterioară: {old}
+Ce tocmai au spus alţii: {others}
+Runda {round_number}; tema profesorului: {topic}
+Citeşte conversaţia şi răspunde firesc la ideea de mai sus. Într-o
+singură propoziţie SCURTĂ de 5-20 cuvinte, în ROMÂNĂ CORECTĂ cu diacritice.
+Poţi întreba, contrazice politicos sau adăuga o nuanţă, fără a repeta ce s-a spus.
+NU-ţi scrie numele. Fără etichetă, ghilimele, emoji multiple, procente,
+promisiuni de profit, preţuri inventate, sfaturi de cumpărare/vânzare.
+IMPORTANT: tema este diversificarea riscurilor, nu investiţii deja făcute.
+Scrie DOAR replica scurtă, naturală, în limba română:"""
 
 def text_issues(text:str, earlier:list[str], c:dict)->list[str]:
     flags=safety_flags(text)
@@ -92,6 +96,10 @@ def text_issues(text:str, earlier:list[str], c:dict)->list[str]:
         flags.append("bad_message_length")
     if text.strip().casefold() in [x.strip().casefold() for x in earlier]:
         flags.append("duplicate_message")
+    if re.search(re.escape(c["name"]),text,re.I):
+        flags.append("self_identification_in_message")
+    if len(re.findall(r"[\\U0001F300-\\U0001FAFF]",text))>1:
+        flags.append("more_than_one_emoji")
     if not re.search("[ăâîșşțţ]",text,flags=re.I):
         flags.append("romanian_diacritics_not_detected_check_manually")
     return flags
@@ -154,10 +162,10 @@ def produce(model:str, output:Path,*, llm=query_model, ids=TEST_CAST)->dict:
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--model",default="qwen2.5:1.5b")
+    p.add_argument("--model",default="qwen2.5:3b")
     p.add_argument("--output",type=Path,required=True)
     a=p.parse_args()
-    if a.model not in ("qwen2.5:1.5b","qwen2.5:0.5b"):
+    if a.model not in ("qwen2.5:1.5b","qwen2.5:0.5b","qwen2.5:3b"):
         raise SystemExit("Only approved free local models")
     r=produce(a.model,a.output)
     print("SUMMARY",json.dumps({
