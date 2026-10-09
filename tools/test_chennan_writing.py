@@ -1,4 +1,4 @@
-"""Chen Nan merged writing module tests; no network, no external account changes."""
+"""Trading Center merged 65-person tests; no network, no external account changes."""
 import json
 import sys
 import tempfile
@@ -16,7 +16,7 @@ import chennan_writing as writing
 import finance_skill_api as api
 
 
-class ChenNan65Tests(unittest.TestCase):
+class TradingCenter65Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.profiles = writing.load_profiles()
@@ -106,7 +106,7 @@ class ChenNan65Tests(unittest.TestCase):
                 writing.read_state(p)
 
 
-class ChenNanApiTests(unittest.TestCase):
+class TradingCenterApiTests(unittest.TestCase):
     def test_module_route_and_real_local_endpoints(self):
         with tempfile.TemporaryDirectory() as folder:
             with ThreadingHTTPServer(("127.0.0.1", 0), api.make_handler(Path(folder))) as srv:
@@ -121,19 +121,19 @@ class ChenNanApiTests(unittest.TestCase):
                         return json.load(result)
                 try:
                     with urlopen(url + "/") as r:
-                        self.assertIn('href="/writing"', r.read().decode("utf-8"))
-                    with urlopen(url + "/writing") as r:
+                        self.assertIn('href="/trading"', r.read().decode("utf-8"))
+                    with urlopen(url + "/trading") as r:
                         page = r.read().decode("utf-8")
-                        self.assertIn("辰南撰写", page)
+                        self.assertIn("交易中心", page)
                         self.assertIn('id="peoplelist"', page)
-                    with urlopen(url + "/api/writing/people") as r:
+                    with urlopen(url + "/api/trading/people") as r:
                         roster = json.load(r)
                         self.assertEqual(roster["count"], 65)
                     p = roster["people"][0]
-                    with urlopen(url + "/api/writing/profile?character_id=" + p["character_id"]) as r:
+                    with urlopen(url + "/api/trading/profile?character_id=" + p["character_id"]) as r:
                         full = json.load(r)
                         self.assertTrue(full["profile"]["simulation_only"])
-                    generated = post("/api/writing/prompt", {
+                    generated = post("/api/trading/prompt", {
                         "date": "2026-10-10", "node": "RO-08",
                         "source_kind": "assistant", "source_text": "用于测试的虚构讨论",
                         "selected_ids": [p["character_id"]], "topic": "短句验证"
@@ -141,23 +141,23 @@ class ChenNanApiTests(unittest.TestCase):
                     did = generated["prompt"]["draft_id"]
                     msg = {"character_id": p["character_id"], "name": p["name"],
                            "gender": p["gender"], "role": p["role"], "text": "我还需要确认一下。"}
-                    result = post("/api/writing/validate", {"draft_id": did, "response": {"messages": [msg]}})
+                    result = post("/api/trading/validate", {"draft_id": did, "response": {"messages": [msg]}})
                     self.assertTrue(result["valid"], result["errors"])
-                    with urlopen(url + "/api/writing/state") as r:
+                    with urlopen(url + "/api/trading/state") as r:
                         self.assertEqual(json.load(r)["sessions"], [])
                     with self.assertRaises(HTTPError) as err:
-                        post("/api/writing/adopt", {"draft_id": did, "response": {"messages": [msg]}})
+                        post("/api/trading/adopt", {"draft_id": did, "response": {"messages": [msg]}})
                     self.assertEqual(err.exception.code, 400)
-                    saved = post("/api/writing/adopt", {"draft_id": did,
+                    saved = post("/api/trading/adopt", {"draft_id": did,
                                                         "response": {"messages": [msg]},
                                                         "confirmed": True})
                     self.assertEqual(len(saved["session"]["messages"]), 1)
-                    document = post("/api/writing/docs", {"title": "大纲", "content": "草稿"})
-                    with urlopen(url + "/api/writing/state") as r:
+                    document = post("/api/trading/docs", {"title": "大纲", "content": "草稿"})
+                    with urlopen(url + "/api/trading/state") as r:
                         current = json.load(r)
                         self.assertEqual(len(current["sessions"]), 1)
                         self.assertEqual(current["docs"][0]["id"], document["doc"]["id"])
-                    request = Request(url + "/api/writing/docs",
+                    request = Request(url + "/api/trading/docs",
                                       data=json.dumps({"title": "x", "content": "y"}).encode(),
                                       headers={"Origin": "https://evil.example",
                                                "Content-Type": "application/json"})
