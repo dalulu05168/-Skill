@@ -61,6 +61,9 @@ def main():
         "skills/script-qa",
         "third_party/orchestra-research",
         "tools/test_accuracy_pack.py",
+        "tools/finance_skill_hub.py",
+        "tools/finance_skill_api.py",
+        "docs/UNIFIED-FINANCE-SKILL-HUB.md",
     ]))
     with ZipFile(large) as z:
         assert ".agents/skills/romania-stock-intelligence/scripts/rss_intake.py" in z.namelist()

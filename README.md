@@ -2,6 +2,10 @@
 
 统一入口：[导演SKILL.md](skills/romania-market-director/SKILL.md)。完整版本和模块位置只看[bundle-manifest.json](bundle-manifest.json)，模块编号不是功能数量。
 
+## 统一财经 SKILL 工作台（新增）
+
+**不再需要每天下载ZIP**：在已取得的仓库源码目录内，Windows可双击 `START-FINANCE-SKILL.cmd` 启动本地浏览器工作台；其他系统执行 `python tools/finance_skill_api.py --open-browser`。入口自动路由 BVB 新闻候审、行情数据结构检查、16节点课程、65人身份与最终人工审稿门禁，完整能力与限制见 [统一工作台说明](docs/UNIFIED-FINANCE-SKILL-HUB.md)。这只是本机运行，不表示网址已部署或真实AI模型已生成台词。
+
 ## 当前内容
 
 - 导演流程：2.3.0；原表发布/备料各提前30分钟，中文自然信息，改为上午40–45条、下午约40条、晚上约45条的弹性合计目标，特殊情况调整，助理完整主题长话，成员自然短句互动，不固定轮流发言。
