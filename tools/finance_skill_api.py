@@ -4,6 +4,7 @@ import argparse
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from threading import Lock
 from urllib.parse import urlparse
 
 from finance_skill_hub import run_pipeline, rss_intake
@@ -75,6 +76,7 @@ document.querySelector('#copy').onclick=()=>{if(last&&navigator.clipboard)naviga
 def make_handler(data_dir):
     state_path = data_dir / "bvb-news-review-state.json"
     report_path = data_dir / "latest-internal-review.json"
+    run_lock = Lock()  # Avoid concurrent RSS/state writes from separate browser tabs.
 
     class Handler(BaseHTTPRequestHandler):
         def respond(self, code, payload):
@@ -125,9 +127,10 @@ def make_handler(data_dir):
                 fetch = request.get("fetch_rss", False)
                 if not isinstance(fetch, bool):
                     raise ValueError("fetch_rss must be boolean")
-                result = run_pipeline(spec, node_id=request.get("node"), fetch_rss=fetch,
-                                      state_file=state_path if fetch else None)
-                rss_intake.write_json(report_path, result)
+                with run_lock:
+                    result = run_pipeline(spec, node_id=request.get("node"), fetch_rss=fetch,
+                                          state_file=state_path if fetch else None)
+                    rss_intake.write_json(report_path, result)
                 self.respond(200, result)
             except (ValueError, TypeError, KeyError, OSError, json.JSONDecodeError) as exc:
                 self.respond(400, {"error": str(exc)})
