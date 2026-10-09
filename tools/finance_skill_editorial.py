@@ -1,4 +1,5 @@
 """Structural editorial triage only; submitted evidence still needs human review."""
+from dialogue_quality import audit_dialogue
 
 def audit_editorial(packet, messages):
     if packet is None:
@@ -53,7 +54,8 @@ def audit_editorial(packet, messages):
             issues.append(f"message {i}: fictional member cannot claim real experience")
         if msg.get("experience_kind") == "hypothetical" and "假设" not in text:
             issues.append(f"message {i}: hypothetical example label required")
-        if msg.get("intent") in ("question", "answer") and msg.get("reply_to") not in seen:
+        # A member may ask an independent question; only explicit references need validation.
+        if msg.get("reply_to") not in (None, "", "source") and msg.get("reply_to") not in seen:
             issues.append(f"message {i}: reply_to must reference an earlier message")
         praise = member and msg.get("intent") == "praise"
         if praise and last_praise:
@@ -63,6 +65,10 @@ def audit_editorial(packet, messages):
             issues.append(f"message {i}: single_focus editorial attestation required")
         if isinstance(mid, str):
             seen.add(mid)
+    dialogue = audit_dialogue(messages)
+    issues.extend(dialogue["issues"])
+    issues = list(dict.fromkeys(issues))
     return {"status": "fail" if issues else "needs_human_review", "issues": issues,
+            "warnings": dialogue["warnings"], "dialogue_quality": dialogue,
             "human_review_required": True, "facts_verified": False,
             "scope": "structure_and_editor_attestations_only"}
