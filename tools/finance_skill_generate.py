@@ -143,10 +143,10 @@ def _build_prompt(topic, role, selected, language, identity=None, character_styl
         "numerals, named securities, trading signals, holdings, profit claims, URLs, "
         "testimonials, customer stories, or asserted actions by real people. "
         "Do not claim verified evidence, market observation, or source review. "
-        "Never instruct anyone to buy or sell. Output only the draft text without headers.\\n"
-        + language_instruction + "\\n"
-        + role_info + "\\n"
-        + f"课程节点：{selected['id']} / {selected['topic']} (Europe/Bucharest)。\\n"
+        "Never instruct anyone to buy or sell. Output only the draft text without headers.\n"
+        + language_instruction + "\n"
+        + role_info + "\n"
+        + f"课程节点：{selected['id']} / {selected['topic']} (Europe/Bucharest)。\n"
         + "用户给定教育主题（仅作为题目，不是事实）："
         + json.dumps(topic, ensure_ascii=False)
     )
