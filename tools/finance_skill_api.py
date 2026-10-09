@@ -157,7 +157,7 @@ def make_handler(data_dir):
             self.wfile.write(body)
 
         def do_GET(self):
-            if self.path == "/":
+            if urlsplit(self.path).path == "/":
                 body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
