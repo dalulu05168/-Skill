@@ -54,9 +54,7 @@ def audit_editorial(packet, messages):
             issues.append(f"message {i}: fictional member cannot claim real experience")
         if msg.get("experience_kind") == "hypothetical" and "假设" not in text:
             issues.append(f"message {i}: hypothetical example label required")
-        # A member may ask an independent question; only explicit references need validation.
-        if msg.get("reply_to") not in (None, "", "source") and msg.get("reply_to") not in seen:
-            issues.append(f"message {i}: reply_to must reference an earlier message")
+        # Independent questions and delayed peer replies are checked by audit_dialogue below.
         praise = member and msg.get("intent") == "praise"
         if praise and last_praise:
             issues.append(f"message {i}: praise chorus requires editing")
