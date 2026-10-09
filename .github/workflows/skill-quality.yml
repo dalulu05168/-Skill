@@ -1,0 +1,30 @@
+name: Romanian Skill Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate Romania stock-intelligence tests and RSS
+        run: python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v
+      - name: Validate 65 complete character identities
+        run: python skills/romania-market-director/scripts/validate_persona_roster.py
+      - name: Build current SKILL ZIP bundles
+        run: python tools/assemble_bundle.py --out-dir build/skill-bundles
+      - name: Upload validated bundles (no public deployment)
+        uses: actions/upload-artifact@v4
+        with:
+          name: romania-skill-bundles
+          path: build/skill-bundles/*.zip
+          retention-days: 14

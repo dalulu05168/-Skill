@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "policy": "entrypoints_not_live_feed_guarantees",
   "sources": [
     {
@@ -181,6 +181,39 @@
       "priority": "official",
       "real_time_claim_permitted": false,
       "access_status": "entrypoint_only_not_fetched_or_feed_verified"
+    },
+    {
+      "id": "BVB_NEWS_RSS",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://www.bvb.ro/Rss/StiriBVB.ashx",
+      "covers": [
+        "market_news",
+        "event_intake"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ],
+      "access_status": "candidate_endpoint_runtime_not_tested"
+    },
+    {
+      "id": "BVB_FINANCIAL_RSS",
+      "publisher": "Bursa de Valori Bucuresti",
+      "uri": "https://www.bvb.ro/Rss2/LastFinancialData.ashx?lang=ro",
+      "covers": [
+        "issuer_notices",
+        "financial_disclosures",
+        "event_intake"
+      ],
+      "priority": "official",
+      "real_time_claim_permitted": false,
+      "allowed_hosts": [
+        "www.bvb.ro",
+        "bvb.ro"
+      ],
+      "access_status": "candidate_endpoint_runtime_not_tested"
     }
   ]
 }

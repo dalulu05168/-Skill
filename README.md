@@ -34,3 +34,10 @@
 
 ## 当前v2.3.0一体化执行标准
 [强制身份核对、GIF/新闻图片触发、三时段八项、最终角色记忆](skills/romania-market-director/references/identity-media-memory-workflow.md)；独立验证器`skills/romania-market-director/scripts/validate_persona_roster.py`。新闻数字核验在人物选角前；编号姓名性别新老四重比对。助理八项上午/下午/晚上各一条；GIF合规随机且场景匹配；有真实图片任务立即执行而非只写占位。用户明确确认修改定稿时，具备权限的会话须归档原文及`memory/state.json`并核验GitHub提交。原独立教授Skill路径在历史v1.2文件中有引用，但当前仓库未保存原件；晚间19:30课程仍按现有规则及可获得讲稿执行。旧dist ZIP尚未重建。
+
+## 资讯与维护增强（2026-10-09）
+
+- [B 方案新闻接入、审核和发布执行说明](docs/NEWS-OPERATIONS-2026-10-09.md)。现已增加官方 BVB RSS 人工审核候选队列与去重测试，但**没有**开启实时行情、定时推送或自动审稿发布。
+- 运行 `python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v` 和 `python skills/romania-market-director/scripts/validate_persona_roster.py` 回归测试。
+- 运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 从当前源码生成两个 ZIP，或者使用 GitHub Actions 的 `Romanian Skill Quality Gate` 工件。旧 `dist/` ZIP 未自动替换，不可声称已同步最新版。
+- 此处保留 65 位 v4.1 成员档案；辰南撰写工作台中的 72 人是另一独立名册，未建立映射前不能按编号混用或同步记忆。
