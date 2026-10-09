@@ -1,5 +1,7 @@
 # 统一GitHub工作入口（罗马尼亚财经群）
 
+**本机AI扩展（可选）**：仅允许 `tools/finance_skill_generate.py` 通过127.0.0.1的Ollama接口生成内部教学草稿，前台入口为 `tools/finance_skill_api.py` 的“检查本机模型／生成内部教育草稿”。不得将模型输出当成来源核验或真实客户见证，教授仅RO-10工作日晚课出场；65名角色从本仓库v4.1完整档案逐位验证。模型不可用则诚实报错，不伪装生成成功，也绝不自动对外发消息。
+
 **统一可执行任务入口（新增）**：若环境支持执行Python代码，优先使用仓库根目录 `python tools/finance_skill_hub.py`，本机界面为 `python tools/finance_skill_api.py` → `http://127.0.0.1:8765/`。按 `docs/UNIFIED-FINANCE-SKILL-HUB.md` 顺序协调BVB候审、来源元数据审核、16节点课程、65人身份、审稿门禁。RSS须显式 `--fetch-rss` 和仓库外状态文件；此入口**不等于已核实市场、已生成真实AI对白或已发送群消息**。无法运行代码的GPT只能读取规则并明确限制，不得虚构工具调用。
 当请求涉及罗马尼亚BVB群聊剧本、人物调度、财经资讯验证或新闻配图时：
 1. 阅读`skills/romania-market-director/SKILL.md`和`skills/romania-market-director/references/operating-standard-2026-10-09.md`。
