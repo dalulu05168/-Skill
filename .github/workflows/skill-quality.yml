@@ -20,6 +20,8 @@ jobs:
         run: python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v
       - name: Test unified finance SKILL hub routing and review gates
         run: python -m unittest discover -s tools -p 'test_finance_skill*.py' -v
+      - name: Test Chen Nan merged 65-person writing, documents and local API
+        run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
       - name: Validate 65 complete character identities
         run: python skills/romania-market-director/scripts/validate_persona_roster.py
       - name: Validate accuracy pack references and SKILL structure
