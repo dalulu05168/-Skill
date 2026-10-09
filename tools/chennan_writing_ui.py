@@ -57,7 +57,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 <section class="card"><h2>02 · 生成 → 检查 → 确认采用</h2>
 <p class="muted">将左侧提示词复制到现有 ChatGPT，取得 JSON 回复后粘贴在下方。只有你点击“确认正式采用”，才进入长期会话记录。</p>
 <label for="prompt">完整提示词（包含人物全档案与历史）</label><textarea id="prompt" readonly placeholder="先选择人物并生成提示词"></textarea>
-<div class="row"><button class="alt" id="copy">复制提示词</button></div>
+<div class="row"><button class="alt" id="copy">复制提示词</button><a class="btnlink" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">打开 ChatGPT · 选择我的GPT ↗</a></div>
 <label for="response">AI 返回的 JSON 草稿（messages 数组）</label><textarea id="response" placeholder='{"messages":[{"character_id":"01","name":"Andrei Popescu","gender":"男","role":"新男","text":"..."}]}'></textarea>
 <div class="row"><button id="check" class="alt">检查角色与格式</button><button id="adopt">确认正式采用并保存</button></div>
 <div class="status" id="review-status">草稿尚未检查。</div><pre id="review-output">校验结果会在这里显示，保存后可在“正式会话与记忆”查看。</pre>

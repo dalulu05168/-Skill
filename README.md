@@ -14,6 +14,12 @@
 
 统一入口：[导演SKILL.md](skills/romania-market-director/SKILL.md)。完整版本和模块位置只看[bundle-manifest.json](bundle-manifest.json)，模块编号不是功能数量。
 
+## 首选：使用已有 ChatGPT，不用安装本地模型
+
+**你的 GPT 可以直接承担多人教育稿的内容生成。** 在电脑双击 `START-FINANCE-SKILL.cmd`，选择“交易中心”，勾选人物 → 输入助理或教授已核实的内容 → 生成完整提示词 → 复制到已有的ChatGPT／自定义GPT → 将其JSON回复粘回交易中心校验 → 人工确认后归档。人物档案来自**本仓库65人v4.1**，不导入外部72人项目；使用这个方式**无需Ollama，也无需另买API额度**。
+
+这属于**人工在ChatGPT中交互**，不是本地网页自动调用你的ChatGPT订阅模型，亦不保证任何特定自定义GPT拥有GitHub访问权限。需要完全无人值守的站外调用，应另行评估是否支持“使用ChatGPT登录”的正式授权集成或独立API方案，不能伪造登录令牌绕过限制。详细步骤见[使用我的ChatGPT操作说明](docs/CHATGPT-FIRST-WORKFLOW.md)。
+
 ## 统一财经 SKILL 工作台（新增）
 
 **不再需要每天下载ZIP**：在已取得的仓库源码目录内，Windows可双击 `START-FINANCE-SKILL.cmd` 启动本地浏览器工作台；其他系统执行 `python tools/finance_skill_api.py --open-browser`。入口自动路由 BVB 新闻候审、行情数据结构检查、16节点课程、65人身份与最终人工审稿门禁，完整能力与限制见 [统一工作台说明](docs/UNIFIED-FINANCE-SKILL-HUB.md)。这只是本机运行，不表示网址已部署或真实AI模型已生成台词。
