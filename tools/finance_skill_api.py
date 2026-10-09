@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""Loopback-only dashboard/API for the unified review hub (not public deployment)."""
+"""Local-first dashboard/API with opt-in password-protected hosted mode."""
 import argparse
+import base64
+import binascii
+import hmac
 import json
+import os
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -139,7 +143,9 @@ document.querySelector('#generate').onclick=async()=>{
 </script></body></html>'''
 
 
-def make_handler(data_dir):
+def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_password=None):
+    if public_mode and (not auth_username or not auth_password):
+        raise ValueError("Hosted mode requires an access username and password")
     state_path = data_dir / "bvb-news-review-state.json"
     report_path = data_dir / "latest-internal-review.json"
     writing_path = data_dir / "chennan-writing-65.json"
@@ -147,16 +153,40 @@ def make_handler(data_dir):
     model_lock = Lock()  # Avoid concurrent requests consuming local-model memory.
 
     class Handler(BaseHTTPRequestHandler):
+        def _authorized(self):
+            raw = self.headers.get("Authorization", "")
+            if not raw.startswith("Basic "):
+                return False
+            try:
+                decoded = base64.b64decode(raw[6:], validate=True).decode("utf-8")
+            except (ValueError, UnicodeDecodeError, binascii.Error):
+                return False
+            username, sep, password = decoded.partition(":")
+            return bool(sep) and hmac.compare_digest(username, auth_username) and hmac.compare_digest(password, auth_password)
+
+        def _challenge(self):
+            self.send_response(401)
+            self.send_header("WWW-Authenticate", 'Basic realm="Private Finance Workspace", charset="UTF-8"')
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
         def respond(self, code, payload):
             body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
             self.send_response(code)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Referrer-Policy", "no-referrer")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
 
         def do_GET(self):
+            if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
+                self._challenge()
+                return
             if urlsplit(self.path).path == "/":
                 body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
                 self.send_response(200)
@@ -223,11 +253,14 @@ def make_handler(data_dir):
             elif self.path == "/api/model/status":
                 self.respond(200, model_status())
             elif self.path == "/healthz":
-                self.respond(200, {"status": "ok", "mode": "loopback_internal_review_only"})
+                self.respond(200, {"status": "ok", "mode": "password_protected_hosted_review" if public_mode else "loopback_internal_review_only"})
             else:
                 self.respond(404, {"error": "Not found"})
 
         def do_POST(self):
+            if public_mode and not self._authorized():
+                self._challenge()
+                return
             if self.path not in ("/api/prepare", "/api/generate",
                                  "/api/trading/prompt", "/api/trading/validate",
                                  "/api/trading/adopt", "/api/trading/docs",
@@ -237,12 +270,14 @@ def make_handler(data_dir):
                 return
             origin = self.headers.get("Origin")
             host = self.headers.get("Host", "")
-            if not (host.startswith("127.0.0.1:") or host.startswith("localhost:")):
+            if not public_mode and not (host.startswith("127.0.0.1:") or host.startswith("localhost:")):
                 self.respond(403, {"error": "Only loopback host is allowed"})
                 return
             if origin:
                 parsed = urlparse(origin)
-                if parsed.scheme != "http" or parsed.netloc != host or parsed.hostname not in ("127.0.0.1", "localhost"):
+                scheme = "https" if public_mode else "http"
+                if (parsed.scheme != scheme or parsed.netloc != host or
+                        (not public_mode and parsed.hostname not in ("127.0.0.1", "localhost"))):
                     self.respond(403, {"error": "Cross-origin request rejected"})
                     return
             length = self.headers.get("Content-Length", "")
@@ -311,18 +346,26 @@ def make_handler(data_dir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8765")))
     parser.add_argument("--open-browser", action="store_true")
-    parser.add_argument("--data-dir", default=str(Path.home() / ".romania-finance-skill-hub"))
+    parser.add_argument("--data-dir", default=os.environ.get(
+        "FINANCE_DATA_DIR", str(Path.home() / ".romania-finance-skill-hub")))
     args = parser.parse_args()
+    public_mode = args.host not in ("127.0.0.1", "localhost", "::1")
+    username = os.environ.get("FINANCE_ACCESS_USER", "admin") if public_mode else None
+    password = os.environ.get("FINANCE_ACCESS_PASSWORD") if public_mode else None
+    if public_mode and (not password or len(password) < 16):
+        parser.error("Public binding requires FINANCE_ACCESS_PASSWORD of at least 16 characters")
     folder = Path(args.data_dir).expanduser().resolve()
     folder.mkdir(parents=True, exist_ok=True)
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(folder))
+    server = ThreadingHTTPServer((args.host, args.port), make_handler(
+        folder, public_mode=public_mode, auth_username=username, auth_password=password))
     url = f"http://127.0.0.1:{args.port}/"
-    print(f"Finance SKILL dashboard: {url}")
+    print(f"Finance SKILL dashboard listening on {args.host}:{args.port} ({'hosted/authenticated' if public_mode else 'loopback'})")
     if args.open_browser:
         webbrowser.open(url)
-    print(f"Local-only review data: {folder}")
+    print(f"Review data directory: {folder}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
