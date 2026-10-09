@@ -1,43 +1,30 @@
-# 罗马尼亚财经资讯与课程编剧
+# 罗马尼亚财经导演资料包
 
-Skill入口：[SKILL.md](skills/romania-market-director/SKILL.md)。完整人物档案：[characters/profiles/](skills/romania-market-director/characters/profiles/)。
+统一入口：[导演SKILL.md](skills/romania-market-director/SKILL.md)。完整版本和模块位置只看[bundle-manifest.json](bundle-manifest.json)，模块编号不是功能数量。
 
-市场规则：罗马尼亚股市及影响其波动的消息优先，其次美股与其他国家；整理指标数值、来源、时间与影响逻辑，不处理买卖指令。剧本为明确标注的虚构教学演绎。
+## 当前内容
 
-## 更换GPT后如何使用
+- 导演流程：2.1.1；上午50条、下午45条，助理完整主题长话，成员自然短句互动，不固定轮流发言。
+- 人物资料：65人v4.1，逐人语言、表情与媒体权限；不把中文示例当罗语成稿。
+- 资讯审核：V2.1，原始证据、口径、时间、比较基准和计算检查；结构通过不认证行情真实。
+- 八项内容完整保留，前期优先签到及每日优质股研究信息/股票走势，自然穿插，不全部每天出现。
+- 助理/教授观点结合当天已核验的大盘与资讯。理念课每周二/四，教授正文13–15段默认14段；技术课由用户提供。
+- 原始聊天、表情明细、课程与记忆保留，草稿不自动成为已采用历史。
 
-支持GitHub访问或连接器的GPT：打开本仓库，读取Skill入口与人物索引，选角后读取对应完整JSON档案。不能访问仓库的GPT：下载 `dist/romania-market-director-skill.zip` 并上传。GPT不能解压时，在本地解压，上传SKILL.md、references文件和人物索引，再按选角补充完整人物档案。
+## 下载与更换GPT
 
-可复制的启动语：
+推荐完整包：[romania-finance-bundle.zip](dist/romania-finance-bundle.zip)，包含导演资料与独立资讯审核模块，目录与仓库一致。较小的[导演单模块包](dist/romania-market-director-skill.zip)仅包含导演目录，不含资讯代码。两个包均由当前文件重建，不能将二者范围混为一谈。
 
-> 请读取本资料包的SKILL.md和characters/index.md，按罗马尼亚优先的规则工作。根据本场主题选角，再读取入选者的完整档案。编排明确标注为虚构的剧本；新闻和指标需要核验，缺数据不编造，不处理买卖指令。本场需求是：……
+支持文件解压和读取的GPT：上传完整包并说明“先读README.md和bundle-manifest.json，再读导演SKILL.md，按当天需求读取资讯、完整人物、素材与记忆”。不支持解压的平台需先本地解压，分批上传规则与所需资料。运行Python审核代码需要代码工具，知识文件上传本身不会执行代码。
 
-## 课程与能力
+有GitHub访问能力的GPT可读取本仓库，Codex项目级资讯Skill在`.agents/skills/romania-stock-intelligence/`。仓库链接、云盘或其他窗口不会自动同步到所有GPT，不能假定已连接。
 
-理念课程按Europe/Bucharest当地每周二、周四备课，首次授课日期尚未设定。每周一、三、五可准备有证据的个股研究，不提供买卖指令。技术课程由用户准备。
+## 媒体现状
 
-Skill本身不自动运行、不自动群发、不永久保存对话。实时检索取决于GPT工具与网络权限。新GPT实际端到端生成尚未测试，不能保证所有平台自动加载本仓库。
+原有5个GIF及MP4已本地保存。新v4.1的12个GIF与8个PNG目前只有索引及[云盘链接](https://drive.google.com/drive/folders/1VmWPcnbmLc5UNomI-S3QPBRPa93TtxTs)，不包含在下载包中。角色许可优先，新旧素材ID不得互换，未读取/未发送的素材不声称已使用。
 
-[上午离线试稿](skills/romania-market-director/examples/上午离线试稿.md)仅使用明确标注的假设数值，用于检查人设和结构，不是今日行情。
+## 能力与边界
 
+所有多角色对白均为明确标注的虚构教学演绎，不冒充真实投资者或客户见证，不处理买卖指令。Skill不能自动取得实时行情、安装连接器、读取其他GPT推送、创建任务或向WhatsApp发送消息。
 
-## Romania Stock Intelligence — Codex 金融分析技能
-
-已加入 Codex 可自动发现的项目级 Skill：[.agents/skills/romania-stock-intelligence/SKILL.md](.agents/skills/romania-stock-intelligence/SKILL.md)。与原有 [罗马尼亚财经资讯与课程编剧](skills/romania-market-director/SKILL.md) 并列、相互独立。
-
-使用：在 Codex 打开本仓库，重新开启会话，输入 `$romania-stock-intelligence` 加上任务；或者参考 [Codex 安装说明](.agents/skills/romania-stock-intelligence/CODEX-README.md) 安装到用户级 `~/.agents/skills`，以供其他仓库调用。Skill 本身不会生成实时行情或创建自动任务。
-
-
-## 金融情报引擎 V2.1（Codex）
-
-[SKILL.md](.agents/skills/romania-stock-intelligence/SKILL.md) 已升级至 V2.1，保留既有 `romania-market-director` 人设与课程。新增 [V2-README.md](.agents/skills/romania-stock-intelligence/V2-README.md) 与 `scripts/rsi_v2.py`，实现本地数据核验、BET成分贡献估算、事件雷达、SQLite 历史记录、证据驱动教授课程。Python 3.11+ 标准库即可执行；通过 `python -m unittest discover -s tests -v` 验收。合成测试样例非真实行情，实时市场数据、定时推送与自动群发不在本次部署范围。
-
-## 当前导演流程：2.0.0
-
-上午建立背景与理解，下午根据新证据推进；现行流程只读取 [daytime-rhythm.md](skills/romania-market-director/references/daytime-rhythm.md)，对话节奏读取 [director-workflow.md](skills/romania-market-director/references/director-workflow.md)。旧示例与草稿不作为当前格式规范。保留上午50条、下午45条，不能拆句凑数。
-
-## 65人角色库 v4.1（2026-10-09）
-
-`skills/romania-market-director/characters/profiles/` 中65份JSON已升级为逐人审校的 v4.1，含短句、问候、Emoji、GIF/PNG许可、沉默及个人语言优先级。读取规则：[persona-media-v4.1.md](skills/romania-market-director/references/persona-media-v4.1.md)；审校报告：[characters/v4.1/](skills/romania-market-director/characters/v4.1/)。
-
-**媒体存放说明**：本仓库已保存65份角色JSON、审核与媒体索引；12个GIF和8个PNG的原始二进制当前位于[Google云盘v4.1目录](https://drive.google.com/drive/folders/1VmWPcnbmLc5UNomI-S3QPBRPa93TtxTs)，尚未作为二进制写入本GitHub仓库。`dist/romania-market-director-skill.zip` 尚未由此提交重新构建，请优先读取仓库中的实时文件，不要把历史ZIP当作v4.1。
+资讯代码验证：在`.agents/skills/romania-stock-intelligence/`运行`python -m unittest discover -s tests -v`。合成测试数据不能作为实际行情。新GPT端到端生成能力未由打包检查证明。

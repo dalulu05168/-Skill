@@ -1,0 +1,32 @@
+{
+  "name": "罗马尼亚财经导演资料包",
+  "bundle_version": "2.1.1",
+  "entry": "skills/romania-market-director/SKILL.md",
+  "modules": {
+    "director": {
+      "version": "2.1.1",
+      "path": "skills/romania-market-director/"
+    },
+    "personas": {
+      "version": "4.1",
+      "count": 65,
+      "path": "skills/romania-market-director/characters/profiles/"
+    },
+    "intelligence": {
+      "version": "2.1",
+      "path": ".agents/skills/romania-stock-intelligence/"
+    }
+  },
+  "workflow": "资讯原始证据核验 → 当天主线 → 早午编排 → 人物权限与素材 → 分段审稿 → 采用后记忆",
+  "community_topics_retained": 8,
+  "media": {
+    "legacy_local_gif": 5,
+    "v4_1_gif_index_only": 12,
+    "v4_1_png_index_only": 8
+  },
+  "limitations": [
+    "资料包不自动安装运行时、实时行情或定时任务",
+    "v4.1新媒体原件尚未从云盘导入",
+    "跨GPT文件与代码能力由目标平台决定"
+  ]
+}
