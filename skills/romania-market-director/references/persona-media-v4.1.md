@@ -13,3 +13,7 @@
 
 ## 中文导演版补充
 当用户明确指定中文时，先按本人原始语言DNA和性格转为自然不同的**中文审阅稿**，不能以“罗语默认”压过用户指令。署名必须用原档案`source_profile.学员资历`标新男/新女/老男/老女，不按序号推断。国际新闻配图见[news-visual-standard.md](news-visual-standard.md)。
+
+## 强制身份四重校验与GIF匹配（v2.3.0）
+挑选角色之前**必须读取角色完整JSON**及`characters/index.json`同编号项，核`character_id`=文件名前缀=index.id、`identity_extension.姓名`=index.name、`source_profile.性别`=index.sex，及`source_profile.学员资历`在老男/老女/新男/新女中且末字与性别一致；不通过不得出场。生成时写“编号｜姓名｜标签”，不得从年龄/编号推断。已知回归陷阱：07是Ioana Petrescu/女/新女，11是Florin Dobre/男/新男。若可运行Python，先执行`scripts/validate_persona_roster.py`。
+在**允许GIF**的角色里，依据当前语义和人物性格/频率、媒体策略与真实可用素材进行变换/随机选择，不预先分配固定张数；禁用GIF者可以用其许可表情/文字，候选GIF不可忽略版权或缺文件问题。GIF编号旧/新隔离，图像出场后进入正式采用记忆便于避免重复。详见`references/identity-media-memory-workflow.md`。

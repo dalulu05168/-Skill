@@ -4,22 +4,24 @@ description: 罗马尼亚优先的准确财经资讯、灵活早午节奏、完�
 ---
 
 # 罗马尼亚财经导演资料包
-> **2026-10-09 用户新执行规则（v2.2.1）**：优先[统一标准](references/operating-standard-2026-10-09.md)；原16节点发布与备料**均提前30分钟**，默认中文；**工作日上午40–45条、下午约40条、晚上约45条，总量弹性分配、特殊情况可调整，废止旧50/45配额**；用户资讯先独立验数，新闻必须分析影响范围与传导机制，国际新闻配16:9图片。
+> **2026-10-09 用户新执行规则（v2.3.0）**：优先[统一标准](references/operating-standard-2026-10-09.md)；原16节点发布与备料**均提前30分钟**，默认中文；**工作日上午40–45条、下午约40条、晚上约45条，总量弹性分配、特殊情况可调整，废止旧50/45配额**；用户资讯先独立验数，新闻必须分析影响范围与传导机制，国际新闻配16:9图片。
 
 
 ## 职责与规则入口
 先定当天讲什么，再选新闻、核验指标、编排上午下午、安排人物与素材，最后自然穿插相关服务。罗马尼亚及影响其股市的消息优先，其次美股与全球背景。此Skill负责BVB盘前准备、短线交易研究和行情资讯解读、虚构教学剧本与晚间理念课程；可分析具体的短线观察条件和策略风险，不自动生成用户未指定的真实买卖票、不声称执行下单，也不承诺收益。
+
+**强制先执行[身份校验—GIF—配图—记忆工作流](references/identity-media-memory-workflow.md)，必须先核行情与新闻，再校验人物身份并安排出场；未核验成功不能输出发布级剧本。**
 
 本文件规定职责；**每个阶段必须一一对应16节点正式课程表，不得混栏**；白天流程只以[daytime-rhythm.md](references/daytime-rhythm.md)为准，人物与消息节奏以[director-workflow.md](references/director-workflow.md)为准。领域资料不能另设与这两份文件冲突的配额或流程。旧示例、草稿、原始聊天仅供参考，不作为当前规则。
 
 ## 工作顺序
 1. 读取[云端资料规则](references/cloud-library.md)、library/index.json及memory/state.json；选当日资讯，已采用历史与草稿分开。
 2. 按[市场准确性规则](references/market-priorities.md)核对原始证据、指标身份、数值、单位、时间、基准、延迟。使用[资讯审核接入](references/intelligence-integration.md)；格式审核不等于事实真实，缺项不补猜。
-3. 确定当天主线、要发布的新闻及深入解释的重点，按[白天流程](references/daytime-rhythm.md)推进；不预设每幕消息数量或固定分钟排班。
-4. 按[导演工作流程](references/director-workflow.md)安排完整助理发言，读取characters/index.md及入选人物完整characters/profiles/档案（65人均已更新v4.1）；遵守[65人v4.1语言、短句与媒体规则](references/persona-media-v4.1.md)，不固定人数、不逐人问答。
-5. 读取references/emoji-reference.txt、library/gif/catalog.json、[v4.1媒体规则](references/persona-media-v4.1.md)和各自完整人物档案，按本人GIF/PNG许可安排媒体；素材未实际下载或上传时不得声称已发送，不为了数量滥用。
-6. 按[八项内容](references/community-content.md)自然穿插，前期优先签到与群组优势（每日优质股研究信息及股票走势）；周二/周四理念课程读取[课程计划](references/course-plan.md)，**教授仅在晚间导师课程正式出场，盘前、盘中、下午资讯由助理主持**；教授正文13–15段默认14段。技术课程仅使用用户提供的讲稿。
-7. 执行[融合质量流程](references/quality-pipeline.md)的证据台账、分段编辑、媒体权限与回归审阅；检查[助理表达](references/assistant-analysis.md)、[导演边界](references/director-rules.md)、消息计数与前后时间，再交付对白稿及独立制作说明。按[记忆规则](references/memory-rules.md)提供可追溯拟增记录，草稿不写已采用历史。
+3. 在新闻、行情、指标全部核实及隔离冲突后，才确定当天主线与短线重点；按[白天流程](references/daytime-rhythm.md)对应栏目推进，三时段总量目标弹性分配。
+4. **硬性四重核对**入选者编号、姓名、性别、老/新男/女分类，逐人读取`characters/index.json`与完整`characters/profiles/`档案，身份冲突立即阻止该人物出场；之后再按[导演流程](references/director-workflow.md)调度出场与短句，遵守[65人v4.1媒体权限](references/persona-media-v4.1.md)，不固定人数、不逐人问答。
+5. **GIF/表情根据上下文语义随机/轮换触发**，须先过滤角色媒体许可、实际素材存在/权利、近期记忆和场景匹配；读取`references/emoji-reference.txt`、`library/gif/catalog.json`、[v4.1媒体规则](references/persona-media-v4.1.md)。遇`【发布：…配图】`等图片标记立即查证事实并调用实际可用图片工具，区分真实分时走势图与罗语新闻海报；不能用占位代替成品。
+6. [八项内容](references/community-content.md)由助理在**工作日上午、下午、晚上各自然穿插一条**，内容结合当前主题并避免重复或虚构宣传；周二/周四理念课仍参考[教授课程](references/course-plan.md)，**教授仅19:30晚课出场**，技术课程优先沿用已取得的旧教授技术课Skill/原稿，由教授主讲并安排少数适配成员，不机械逐段插话。
+7. 执行[质量审核](references/quality-pipeline.md)中的新闻核实、人物身份一致、GIF权限、新闻图片是否真的生成、八项各时段一次、教授场次、消息数量及前后衔接检查；交付剧本与独立说明。**用户后续明确交来修改定稿**时，以定稿原文生成[动态角色记忆](references/memory-rules.md)，写回可用GitHub仓库并验证提交；必要时按权限另存云端。草稿不能记为已采用。
 
 ## 确定保留的要求
 - **最新三段群消息数量标准：工作日上午40–45条、下午约40条、晚上约45条，分别计入该时段所有栏目总和；特殊行情可浮动。** 旧上午50条/下午45条规定废止；每个子栏目根据已核资料和内容价值分配发言，优先删重复、不重要信息，不为数量凑数，具体计数以统一执行标准为准。
