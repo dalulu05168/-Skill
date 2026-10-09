@@ -1,4 +1,6 @@
 # 统一GitHub工作入口（罗马尼亚财经群）
+
+**统一可执行任务入口（新增）**：若环境支持执行Python代码，优先使用仓库根目录 `python tools/finance_skill_hub.py`，本机界面为 `python tools/finance_skill_api.py` → `http://127.0.0.1:8765/`。按 `docs/UNIFIED-FINANCE-SKILL-HUB.md` 顺序协调BVB候审、来源元数据审核、16节点课程、65人身份、审稿门禁。RSS须显式 `--fetch-rss` 和仓库外状态文件；此入口**不等于已核实市场、已生成真实AI对白或已发送群消息**。无法运行代码的GPT只能读取规则并明确限制，不得虚构工具调用。
 当请求涉及罗马尼亚BVB群聊剧本、人物调度、财经资讯验证或新闻配图时：
 1. 阅读`skills/romania-market-director/SKILL.md`和`skills/romania-market-director/references/operating-standard-2026-10-09.md`。
 2. 新闻使用`.agents/skills/romania-stock-intelligence/SKILL.md`核验，选择65人中的角色需读取本人完整`characters/profiles/`档案。行业/市场影响范围必须分析，新闻输入不等于已核验。
