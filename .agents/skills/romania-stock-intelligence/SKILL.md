@@ -13,7 +13,7 @@ description: >-
 > **2026-10-09统一时段覆盖说明**：该资讯核验引擎供导演Skill调用时，统一按`skills/romania-market-director/references/operating-standard-2026-10-09.md`最新16节点执行（原发布、备料均提前30分钟），新闻须核实用户数据并分析影响范围；旧08/13/18默认只是历史独立简报流程，不得覆盖新版群聊节奏。
 
 ## Mission and triggers
-When asked about Romanian equities, BVB, BET, European/U.S. financial-market implications for Romania, Romanian financial news and culture, market briefings, or Professor explanations, apply this workflow. Output normally in **Chinese**, with locally natural **Romanian** snippets where requested. Prioritize accurate evidence, useful comparisons, source integrity, and risk-aware teaching, not trading signals.
+When asked about Romanian equities, BVB, BET, **short-term setups, preopen watchlists, opening auction observations**, European/U.S. financial-market implications for Romania, Romanian financial news and culture, market briefings, or Professor explanations, apply this workflow. Output normally in **Chinese**, with locally natural **Romanian** snippets where requested. Prioritize accurate evidence, useful comparisons, source integrity, and risk-aware **short-term/preopen trading research when used by the director Skill**; do not invent actual orders, holdings, executions, or profits.
 
 Read only the references relevant to the task:
 - `references/sources.md`: verified official entrypoints, limitations, refresh hierarchy.
@@ -88,3 +88,8 @@ Before quantitative or event work, **read `V2-README.md`**. The five functions a
 Read `V2.1-README.md` before running audit or BET attribution. Empty observations fail. BET qualification requires matching documented previous-session close, return baseline, and current-session roster evidence; metadata never proves publisher contents. For dialogue/course production, pass evidence to the repository director Skill at `skills/romania-market-director/`; use its message counts and fictional-character rules.
 
 用户固定要求：指标数值必须准确。执行 references/verification.md 的原文核对与精度规则；本地 audit 通过不等于数字真实。
+
+## Director collaboration update · 2026-10-09
+- Each group stage maps exactly to its approved Europe/Bucharest 16-slot course/operations table (original preparation and publication both 30 minutes earlier). Do not reuse outdated 08/13/18 group timing or restart the group between stages.
+- Core research emphasizes short-term trading, pre-open watchlists, opening auction and conditional intraday risk evaluation. Do not editorialize that all short-term trading is unsuitable; distinguish market research from unprovided real trade tickets and executions.
+- Chinese dialogue output: timestamps only in stage headers, never prefix speakers; Professor speaks in the scheduled 19:30 evening lesson only; members may occasionally disagree or agree naturally, without mandatory contrarian turns.
