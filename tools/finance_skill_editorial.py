@@ -45,12 +45,13 @@ def audit_editorial(packet, messages):
         if not isinstance(mid, str) or not mid.strip() or mid in seen:
             issues.append(f"message {i}: unique message_id required")
         member = msg.get("character_id") is not None
+        text = msg.get("text") if isinstance(msg.get("text"), str) else ""
         if member and (msg.get("simulation_only") is not True or
-                       "虚构教学模拟" not in msg.get("text", "")):
+                       "虚构教学模拟" not in text):
             issues.append(f"message {i}: standalone simulation label required")
         if member and msg.get("experience_kind") not in ("none", "hypothetical"):
             issues.append(f"message {i}: fictional member cannot claim real experience")
-        if msg.get("experience_kind") == "hypothetical" and "假设" not in msg.get("text", ""):
+        if msg.get("experience_kind") == "hypothetical" and "假设" not in text:
             issues.append(f"message {i}: hypothetical example label required")
         if msg.get("intent") in ("question", "answer") and msg.get("reply_to") not in seen:
             issues.append(f"message {i}: reply_to must reference an earlier message")
