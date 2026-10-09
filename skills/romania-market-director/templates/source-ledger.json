@@ -1,0 +1,28 @@
+{
+  "report_id": null,
+  "previous_report_id": null,
+  "previous_sample_time": null,
+  "items": [
+    {
+      "id": null,
+      "topic": null,
+      "original_url": null,
+      "resolved_url": null,
+      "publisher": null,
+      "opened_title": null,
+      "publication_date": null,
+      "observation_time": null,
+      "timezone": null,
+      "instrument_or_event": null,
+      "value": null,
+      "unit": null,
+      "baseline": null,
+      "delay_status": "unknown",
+      "evidence_excerpt": null,
+      "verification_status": "unverified",
+      "publishable": false,
+      "used_in_messages": [],
+      "limitations": []
+    }
+  ]
+}

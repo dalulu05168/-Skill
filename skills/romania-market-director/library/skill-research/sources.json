@@ -1,0 +1,72 @@
+{
+  "researched_at_utc": "2026-10-09T00:40:48.294815+00:00",
+  "requested_source": "GitHub (user clarified g)",
+  "method": "Read repository HTML and pinned raw SKILL.md via normal HTTPS proxy",
+  "limitations": [
+    "GitHub API and skills.sh requests denied by proxy; no comprehensive site-wide ranking",
+    "Repository stars show popularity, not verified reviews of an individual Skill",
+    "No external script executed; original sample financial numbers not reused",
+    "DOCX skill not adopted; task does not require document generation and licensing is restrictive"
+  ],
+  "repositories": [
+    {
+      "repository": "anthropics/skills",
+      "url": "https://github.com/anthropics/skills",
+      "stars_from_github_page": 179995,
+      "commit": "683bc88e56f3e09ba94f7055977f3d3aa499f202",
+      "evidence_type": "GitHub repository page returned in this run",
+      "not_a_skill_rating": true
+    },
+    {
+      "repository": "openai/skills",
+      "url": "https://github.com/openai/skills",
+      "stars_from_github_page": 27948,
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "evidence_type": "GitHub repository page returned in this run",
+      "not_a_skill_rating": true
+    },
+    {
+      "repository": "ComposioHQ/awesome-claude-skills",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "stars_from_github_page": 76709,
+      "commit": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "evidence_type": "GitHub repository page returned in this run",
+      "not_a_skill_rating": true
+    }
+  ],
+  "selected_skills": [
+    {
+      "id": "research-writer",
+      "repository": "ComposioHQ/awesome-claude-skills",
+      "commit": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills/blob/be2a406907dbc61b73e6827ded415c96139d13a2/content-research-writer/SKILL.md",
+      "raw_url": "https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/be2a406907dbc61b73e6827ded415c96139d13a2/content-research-writer/SKILL.md",
+      "sha256": "27eb5c1a0a88a9c1c64f6fcd9c28782e6a6e70d5da43233c4e99ade946f74825",
+      "bytes_read": 14244,
+      "integration": "Independent local adaptation of general methods; not wholesale skill installation",
+      "role": "事实台账、先提纲后写作、保留语气、逐段证据与衔接审稿"
+    },
+    {
+      "id": "skill-maintenance",
+      "repository": "anthropics/skills",
+      "commit": "683bc88e56f3e09ba94f7055977f3d3aa499f202",
+      "url": "https://github.com/anthropics/skills/blob/683bc88e56f3e09ba94f7055977f3d3aa499f202/skills/skill-creator/SKILL.md",
+      "raw_url": "https://raw.githubusercontent.com/anthropics/skills/683bc88e56f3e09ba94f7055977f3d3aa499f202/skills/skill-creator/SKILL.md",
+      "sha256": "dcd4803e61e913e6fc27294184cd3a71f09f5e924ff20c8a9a20173e7b3c2bcf",
+      "bytes_read": 33168,
+      "integration": "Independent local adaptation of general methods; not wholesale skill installation",
+      "role": "单一规则源、按需读取、用实际案例发现冲突后修订"
+    },
+    {
+      "id": "media-check",
+      "repository": "ComposioHQ/awesome-claude-skills",
+      "commit": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills/blob/be2a406907dbc61b73e6827ded415c96139d13a2/slack-gif-creator/SKILL.md",
+      "raw_url": "https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/be2a406907dbc61b73e6827ded415c96139d13a2/slack-gif-creator/SKILL.md",
+      "sha256": "e5ce81d3dc40e7780b0fa2a0a36b5ada888beb3931d2badd2909b57c50002aed",
+      "bytes_read": 17142,
+      "integration": "Independent local adaptation of general methods; not wholesale skill installation",
+      "role": "检查素材文件、尺寸、帧数、时长、文件大小、循环与播放效果"
+    }
+  ]
+}

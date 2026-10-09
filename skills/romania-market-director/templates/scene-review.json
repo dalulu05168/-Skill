@@ -1,0 +1,20 @@
+{
+  "scene_id": null,
+  "stage": "draft",
+  "factual_review": {
+    "source_reads": [],
+    "missing_evidence": [],
+    "baseline_conflicts": []
+  },
+  "editorial_review": {
+    "assistant_complete_themes": null,
+    "member_motives_checked": null,
+    "no_fixed_alternation": null,
+    "no_repetitive_service_blocks": null,
+    "human_reading_result": "not_reviewed"
+  },
+  "media_review": [],
+  "message_count": null,
+  "adopted": false,
+  "publication_ready": false
+}

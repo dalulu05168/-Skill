@@ -71,6 +71,11 @@
       "type": "用户规划素材",
       "status": "原件保留；按用户后续确认的精简方向重写，不逐条执行原始时间/人数/买卖环节",
       "sha256": "5a50c1604c33955c3f703a1a1b515413c2e4ca70c55f2d4e7785146520d6e108"
+    },
+    {
+      "path": "library/skill-research/sources.json",
+      "type": "公开GitHubSkill研究来源",
+      "status": "3份固定提交Skill已读取；星标非评价；方法独立适配"
     }
   ],
   "reusable_resources": {
@@ -81,7 +86,9 @@
     "ideology_courses": "references/course-plan.md",
     "memory": "memory/state.json",
     "gif_catalog": "library/gif/catalog.json",
-    "gif_assets": "library/gif/assets/"
+    "gif_assets": "library/gif/assets/",
+    "quality_pipeline": "references/quality-pipeline.md",
+    "skill_research": "library/skill-research/sources.json"
   },
   "missing_inputs": [
     "当日推送的可访问原始新闻链接及指标证据",
@@ -105,7 +112,7 @@
     }
   ],
   "current_rules": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "entry": "SKILL.md",
     "daytime": "references/daytime-rhythm.md",
     "dialogue": "references/director-workflow.md"

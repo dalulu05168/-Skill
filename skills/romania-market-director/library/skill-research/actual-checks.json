@@ -1,0 +1,98 @@
+{
+  "personas_parsed": 65,
+  "gif_disabled_character_ids": [
+    "01",
+    "02",
+    "07",
+    "11",
+    "12",
+    "13",
+    "39",
+    "41",
+    "45",
+    "52",
+    "54",
+    "59",
+    "62",
+    "64"
+  ],
+  "local_gif_checks": [
+    {
+      "id": "G001",
+      "path": "library/gif/assets/01_dorel_las_fierbinti.gif",
+      "exists": true,
+      "decoded_all_frames": true,
+      "frames": 50,
+      "size": [
+        360,
+        203
+      ],
+      "duration_ms": 5000,
+      "loop": 0,
+      "bytes": 1969683,
+      "platform_playback_tested": false
+    },
+    {
+      "id": "G002",
+      "path": "library/gif/assets/02_market_rollercoaster.gif",
+      "exists": true,
+      "decoded_all_frames": true,
+      "frames": 30,
+      "size": [
+        200,
+        200
+      ],
+      "duration_ms": 1200,
+      "loop": 0,
+      "bytes": 90393,
+      "platform_playback_tested": false
+    },
+    {
+      "id": "G003",
+      "path": "library/gif/assets/03_patiently_waiting.gif",
+      "exists": true,
+      "decoded_all_frames": true,
+      "frames": 15,
+      "size": [
+        220,
+        220
+      ],
+      "duration_ms": 1700,
+      "loop": 0,
+      "bytes": 147032,
+      "platform_playback_tested": false
+    },
+    {
+      "id": "G004",
+      "path": "library/gif/assets/04_rising_chart_reaction.gif",
+      "exists": true,
+      "decoded_all_frames": true,
+      "frames": 88,
+      "size": [
+        220,
+        122
+      ],
+      "duration_ms": 8800,
+      "loop": 0,
+      "bytes": 733197,
+      "platform_playback_tested": false
+    },
+    {
+      "id": "G005",
+      "path": "library/gif/assets/05_congratulations.gif",
+      "exists": true,
+      "decoded_all_frames": true,
+      "frames": 14,
+      "size": [
+        220,
+        220
+      ],
+      "duration_ms": 1400,
+      "loop": 0,
+      "bytes": 348187,
+      "platform_playback_tested": false
+    }
+  ],
+  "v4_1_media_binary_imported": false,
+  "model_generation_ab_test_executed": false
+}
