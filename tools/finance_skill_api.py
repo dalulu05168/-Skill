@@ -2,6 +2,7 @@
 """Loopback-only dashboard/API for the unified review hub (not public deployment)."""
 import argparse
 import json
+import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Lock
@@ -141,12 +142,16 @@ def make_handler(data_dir):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--open-browser", action="store_true")
     parser.add_argument("--data-dir", default=str(Path.home() / ".romania-finance-skill-hub"))
     args = parser.parse_args()
     folder = Path(args.data_dir).expanduser().resolve()
     folder.mkdir(parents=True, exist_ok=True)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(folder))
-    print(f"Finance SKILL dashboard: http://127.0.0.1:{args.port}/")
+    url = f"http://127.0.0.1:{args.port}/"
+    print(f"Finance SKILL dashboard: {url}")
+    if args.open_browser:
+        webbrowser.open(url)
     print(f"Local-only review data: {folder}")
     try:
         server.serve_forever()
