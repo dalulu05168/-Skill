@@ -1,0 +1,42 @@
+name: Romania real free local-model 3-round rehearsal
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/romania-multiagent-rehearsal/scripts/real_free_model_3rounds.py'
+      - '.agents/skills/romania-multiagent-rehearsal/tests/test_real_free_model.py'
+      - '.github/workflows/romania-real-free-rehearsal.yml'
+  workflow_dispatch:
+jobs:
+  genuine-local-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate non-LLM full persona source and memory behavior
+        run: python -m unittest discover -s .agents/skills/romania-multiagent-rehearsal/tests -p 'test_real_free_model.py' -v
+      - name: Install local Ollama inference engine
+        run: |
+          curl -fsSL https://ollama.com/install.sh -o /tmp/ollama-install.sh
+          sh /tmp/ollama-install.sh
+      - name: Start inference and download small open-source multilingual model
+        run: |
+          (ollama serve > /tmp/ollama-server.log 2>&1 &)
+          sleep 8
+          ollama pull qwen2.5:1.5b
+      - name: Generate 3 real rounds, 5 recurring fictional characters
+        timeout-minutes: 22
+        run: |
+          python .agents/skills/romania-multiagent-rehearsal/scripts/real_free_model_3rounds.py --model qwen2.5:1.5b --output /tmp/rehearsal-3rounds.json
+      - name: Publish *review-only* evidence as workflow artifact, never as WhatsApp posts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: romania-fictional-three-round-evidence
+          path: /tmp/rehearsal-3rounds.json
+          if-no-files-found: warn
+          retention-days: 7
