@@ -6,7 +6,7 @@
 
 需要 Python 3.11+、本仓库源码。**只需第一次取得仓库，后续在浏览器使用工作台，不需要每天下载SKILL压缩包。**
 
-在仓库根目录执行：
+Windows可以在仓库目录直接双击 `START-FINANCE-SKILL.cmd`；该脚本使用已有的Python启动本地服务，成功绑定后自动打开浏览器。没有Python时会提示安装，不会偷偷下载软件。\n\n在仓库根目录执行：在仓库根目录执行：
 
 ```bash
 python tools/finance_skill_api.py
