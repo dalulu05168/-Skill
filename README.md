@@ -13,7 +13,7 @@
 
 ## 下载与更换GPT
 
-推荐完整包：[romania-finance-bundle.zip](dist/romania-finance-bundle.zip)，包含导演资料与独立资讯审核模块，目录与仓库一致。较小的[导演单模块包](dist/romania-market-director-skill.zip)仅包含导演目录，不含资讯代码。两个包均由当前文件重建，不能将二者范围混为一谈。
+推荐完整包：[romania-finance-bundle.zip](dist/romania-finance-bundle.zip)，包含导演资料与独立资讯审核模块，目录与仓库一致。较小的[导演单模块包](dist/romania-market-director-skill.zip)仅包含导演目录，不含资讯代码。**注意：仓库源码已更新至2.2.0，但dist中的两个ZIP尚未重新打包，现为旧版本；跨GPT导入前须重新构建。** 两个包的内容范围仍不同。
 
 支持文件解压和读取的GPT：上传完整包并说明“先读README.md和bundle-manifest.json，再读导演SKILL.md，按当天需求读取资讯、完整人物、素材与记忆”。不支持解压的平台需先本地解压，分批上传规则与所需资料。运行Python审核代码需要代码工具，知识文件上传本身不会执行代码。
 
