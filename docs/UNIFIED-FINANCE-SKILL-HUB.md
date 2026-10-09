@@ -4,9 +4,9 @@
 
 ## 快速启动（本地，Windows/Mac/Linux）
 
-需要 Python 3.11+、本仓库源码。**只需第一次取得仓库，后续在浏览器使用工作台，不需要每天下载SKILL压缩包。**
+需要 Python 3.11+、本仓库源码。**部分Windows电脑还需要一次性安装IANA时区数据：`py -3 -m pip install tzdata`。** 启动脚本会检测并明确提示，不会自动下载安装或无声退出。**只需第一次取得仓库，后续在浏览器使用工作台，不需要每天下载SKILL压缩包。**
 
-Windows可以在仓库目录直接双击 `START-FINANCE-SKILL.cmd`；该脚本使用已有的Python启动本地服务，成功绑定后自动打开浏览器。没有Python时会提示安装，不会偷偷下载软件。\n\n在仓库根目录执行：在仓库根目录执行：
+Windows可以在仓库目录直接双击 `START-FINANCE-SKILL.cmd`；该脚本使用已有的Python启动本地服务，成功绑定后自动打开浏览器。没有Python或缺少罗马尼亚时区数据时，黑色命令窗口会保留错误提示，不会偷偷下载软件。\n\n在仓库根目录执行：在仓库根目录执行：
 
 ```bash
 python tools/finance_skill_api.py
