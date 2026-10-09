@@ -65,6 +65,42 @@ class TradingCenter65Tests(unittest.TestCase):
             writing.adopt({"messages": [self.member()], "confirmed": True},
                           prompt["draft_id"], new_state, self.profiles)
 
+    def test_member_peer_discussion_and_disclosure_gate(self):
+        state = writing.empty_state()
+        prompt, state = writing.make_prompt(
+            {**self.request(), "selected_ids": ["01", "02"]}, self.profiles, state)
+        self.assertTrue(any("不必围绕助理" in x for x in prompt["instructions"]))
+        draft = state["drafts"][prompt["draft_id"]]
+        p2 = self.profiles["02"]
+        peer = {"message_id": "m2", "character_id": "02",
+                "name": p2["identity_extension"]["姓名"],
+                "gender": p2["source_profile"]["性别"],
+                "role": p2["source_profile"]["学员资历"],
+                "reply_to": "m1", "text": "你提到的成交量，先看公告里有没有解释。"}
+        first = {**self.member(), "message_id": "m1", "text": "数据还没有核实，我想先看看原文。"}
+        checked = writing.validate_messages(
+            {"messages": [first, peer]}, draft, self.profiles, [])
+        self.assertTrue(checked["valid"], checked["errors"])
+        self.assertEqual(checked["dialogue_quality"]["metrics"]["independent_turns"], 1)
+        self.assertTrue(all(m["simulation_only"] for m in checked["messages"]))
+        self.assertTrue(all(m["text"].startswith("【虚构教学模拟】") for m in checked["messages"]))
+        reverse = writing.validate_messages({"messages": [peer, first]}, draft, self.profiles, [])
+        self.assertFalse(reverse["valid"])  # cannot reply to an unspoken future turn
+
+    def test_claimed_real_member_or_unlabeled_trade_rejected(self):
+        state = writing.empty_state()
+        prompt, state = writing.make_prompt(self.request(), self.profiles, state)
+        draft = state["drafts"][prompt["draft_id"]]
+        fake = writing.validate_messages(
+            {"messages": [{**self.member(), "simulation_only": False}]}, draft, self.profiles, [])
+        self.assertFalse(fake["valid"])
+        trade = writing.validate_messages(
+            {"messages": [{**self.member(), "text": "我今天买入了这只股。"}]}, draft, self.profiles, [])
+        self.assertFalse(trade["valid"])
+        hypothetical = writing.validate_messages(
+            {"messages": [{**self.member(), "text": "【假设】我今天买入了，止损应该怎么定？"}]}, draft, self.profiles, [])
+        self.assertTrue(hypothetical["valid"], hypothetical["errors"])
+
     def test_cross_project_72_member_or_identity_mismatch_is_rejected(self):
         state = writing.empty_state()
         with self.assertRaises(ValueError):

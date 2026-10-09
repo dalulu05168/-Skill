@@ -32,3 +32,7 @@
 
 ## 2026-10-09 旧教授技能分类的正式衔接
 按历史`Romania_Finance_Director_SKILL_v1.2.md`的教授技能引用，**周一、周三、周五技术课**对应`skills/technical-course/SKILL.md`，**周二、周四理念课**对应`skills/investment-philosophy/SKILL.md`，均由`skills/professor-core/SKILL.md`统筹；周末无默认课程。此处保留目录级入口，不表示文件已在当前仓库找到；库内缺外部技术讲稿时不要说已经按独立技能完成。以**19:30当前晚课节点**执行，旧20:20历史时间废止。技术课只配少量经过身份校验、与讲授内容匹配的成员自然提问。旧理念课13–15段默认为理念课结构，不强行套到未来独立技术课原稿。
+
+## 2026-10-10 七项反馈增量规则
+必须读取 skills/romania-market-director/references/teaching-editorial-standard.md（仓库根目录相对路径）。该规则落实透明模拟、禁止吹捧接龙、周一三五课程链、延迟提问与助理答疑、热点证据、真实资质、每日执行单和单条单重点；保留16节点与65人身份，冲突的旧长话/课程说明以本次规则为准。结构检查不等于事实核验或发布批准。
+
