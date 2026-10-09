@@ -13,6 +13,7 @@ from threading import Lock
 from urllib.parse import urlparse, urlsplit, parse_qs
 
 from finance_skill_hub import run_pipeline, rss_intake
+from content_routing import routing_snapshot
 from finance_skill_generate import generate_draft, model_status
 from chennan_writing import (load_profiles, summaries, empty_state, read_state,
                              write_state, make_prompt, validate_messages, adopt, save_doc)
@@ -217,6 +218,11 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path == "/api/content/categories":
+                try:
+                    self.respond(200, routing_snapshot())
+                except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
             elif self.path == "/api/dashboard/summary":
                 try:
                     with run_lock:
