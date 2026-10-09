@@ -20,6 +20,8 @@ jobs:
         run: python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v
       - name: Test unified finance SKILL hub routing and review gates
         run: python -m unittest discover -s tools -p 'test_finance_skill*.py' -v
+      - name: Verify four content categories and 35/35/30 guidance without shifting 16 nodes
+        run: python -m unittest discover -s tools -p 'test_content_routing.py' -v
       - name: Test Trading Center 65-person writing and local API
         run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
       - name: Test member-to-member dialogue quality and hard red lines
