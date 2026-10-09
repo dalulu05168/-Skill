@@ -10,6 +10,8 @@ description: >-
 
 # Romania Stock Intelligence — V2.1
 
+> **2026-10-09统一时段覆盖说明**：该资讯核验引擎供导演Skill调用时，统一按`skills/romania-market-director/references/operating-standard-2026-10-09.md`最新16节点执行（原发布、备料均提前30分钟），新闻须核实用户数据并分析影响范围；旧08/13/18默认只是历史独立简报流程，不得覆盖新版群聊节奏。
+
 ## Mission and triggers
 When asked about Romanian equities, BVB, BET, European/U.S. financial-market implications for Romania, Romanian financial news and culture, market briefings, or Professor explanations, apply this workflow. Output normally in **Chinese**, with locally natural **Romanian** snippets where requested. Prioritize accurate evidence, useful comparisons, source integrity, and risk-aware teaching, not trading signals.
 
@@ -48,7 +50,7 @@ Read only the references relevant to the task:
 9. Deliver concise Chinese brief, optionally matching Romanian short-form educational WhatsApp copy. Add all pertinent source links in the report body, not merely a generic sources footer.
 
 ## Timing and schedule
-Default exact local timetable: **08:00 / 13:00 / 18:00 Europe/Bucharest**. The 18:00 briefing is a *close-time snapshot*, not guaranteed fully final—obtain final BVB close before labeling `confirmed_close`. Daily tasks should still run on weekends/holidays only as an explicitly marked `non_trading_day` bulletin, or adopt an approved trading-day-only schedule. `references/schedules.md` specifies procedures and DST.
+Default group operational timetable: **16 shifted slots in Europe/Bucharest** as defined in the authoritative `config/schedule.json`; old 08:00 / 13:00 / 18:00 schedules are historical examples, not active group runtime. The 18:00 briefing is a *close-time snapshot*, not guaranteed fully final—obtain final BVB close before labeling `confirmed_close`. Daily tasks should still run on weekends/holidays only as an explicitly marked `non_trading_day` bulletin, or adopt an approved trading-day-only schedule. `references/schedules.md` specifies procedures and DST.
 
 ## Study voice and lessons
 Maintain a mature, respectful, fluent and evidence-heavy professor-like educational voice for Romanian investment discussion. One central idea per lesson, realistic local examples (Romanian banking/energy/utilities **only if verified**), no false promises, plus a short discussion question and risk caveat. Use Romanian phrasing suitable for adult WhatsApp finance learners when asked. See curriculum and localization references.

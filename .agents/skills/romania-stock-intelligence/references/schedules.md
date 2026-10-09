@@ -1,7 +1,7 @@
 # Daily briefing rules — timezone and delivery semantics
 
 ## Authoritative timetable
-- `Europe/Bucharest`, exact schedule at **08:00**, **13:00**, **18:00**, every local calendar day unless user requests exchange-session-only.
+- **2026-10-09 latest user standard overrides historical schedule**: `Europe/Bucharest` 16 slot table in `config/schedule.json`, original publication AND preparation times each moved **30 minutes earlier**; preparation remains 30 minutes ahead. Former 08/13/18 three-brief examples are archival and not active for the group workflow. No cron tasks are created by modifying this file.
 - ChatGPT task notifications/in-chat content only; **never email**. Only actual connected/available scheduling tool can turn prompts into working tasks. Merely installing Skill files does not schedule or fetch data.
 - Morning purpose: BVB preopen preparation, overnight U.S. close, European morning context, announced Romanian agenda. Label previous session close, never represent as open-market live price.
 - Midday purpose: current BVB session breadth, turnover, intraday developments as verifiably published, emerging earnings/news, international risk changes.

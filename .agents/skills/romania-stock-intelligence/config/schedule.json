@@ -1,27 +1,139 @@
 {
   "skill": "romania-stock-intelligence",
-  "version": "1.0.0",
+  "config_version": "2.2.0",
   "timezone": "Europe/Bucharest",
-  "secondary_display_timezone": "Asia/Kuala_Lumpur",
-  "notification_channel": "chatgpt_only",
-  "email_enabled": false,
-  "schedule_policy": "daily_with_nontrading_day_annotation",
-  "require_check_existing_tasks_before_activation": true,
+  "status": "specification_only_not_scheduled",
+  "policy": "original 16 publication and preparation times both moved 30 minutes earlier on 2026-10-09",
+  "no_real_trades": "unless separately authorized; never fabricate",
+  "reference": "skills/romania-market-director/references/operating-standard-2026-10-09.md",
   "runs": [
-    {"id": "morning_0800", "time_local": "08:00", "label": "罗马尼亚早间金融简报", "template": "templates/brief-0800.md", "purpose": "preopen_global_and_bvb_context"},
-    {"id": "midday_1300", "time_local": "13:00", "label": "罗马尼亚盘中金融简报", "template": "templates/brief-1300.md", "purpose": "verified_intraday_market_structure"},
-    {"id": "close_1800", "time_local": "18:00", "label": "罗马尼亚盘后时点金融简报", "template": "templates/brief-1800.md", "purpose": "close_time_snapshot_until_official_confirmation"}
-  ],
-  "delivery_requirements": {
-    "source_link_required_per_value": true,
-    "timestamp_timezone_required_per_value": true,
-    "baseline_required_per_value": true,
-    "previous_report_comparison_required": true,
-    "delay_status_required": true,
-    "facts_inference_scenarios_separated": true,
-    "missing_information_policy": "report_unavailable_never_invent",
-    "report_frequency_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    "outside_market_days": "non_trading_day_context_only",
-    "at_close": "mark_provisional_until_official_final_quote"
-  }
+    {
+      "id": "RO-01",
+      "days": "工作日",
+      "original_publication": "07:50",
+      "publication": "07:20",
+      "preparation": "06:50",
+      "topic": "总备料"
+    },
+    {
+      "id": "RO-02",
+      "days": "工作日",
+      "original_publication": "08:00",
+      "publication": "07:30",
+      "preparation": "07:00",
+      "topic": "开群签到资料"
+    },
+    {
+      "id": "RO-03",
+      "days": "工作日",
+      "original_publication": "09:15",
+      "publication": "08:45",
+      "preparation": "08:15",
+      "topic": "BVB盘前Watchlist"
+    },
+    {
+      "id": "RO-04",
+      "days": "工作日",
+      "original_publication": "09:45",
+      "publication": "09:15",
+      "preparation": "08:45",
+      "topic": "集合竞价与挂单厚度"
+    },
+    {
+      "id": "RO-05",
+      "days": "工作日",
+      "original_publication": "10:00",
+      "publication": "09:30",
+      "preparation": "09:00",
+      "topic": "BVB开盘观察准备"
+    },
+    {
+      "id": "RO-06",
+      "days": "工作日",
+      "original_publication": "11:30",
+      "publication": "11:00",
+      "preparation": "10:30",
+      "topic": "午间研报资料"
+    },
+    {
+      "id": "RO-07",
+      "days": "工作日",
+      "original_publication": "14:00",
+      "publication": "13:30",
+      "preparation": "13:00",
+      "topic": "突发资讯扫描"
+    },
+    {
+      "id": "RO-08",
+      "days": "工作日",
+      "original_publication": "16:00",
+      "publication": "15:30",
+      "preparation": "15:00",
+      "topic": "美国市场与大宗商品"
+    },
+    {
+      "id": "RO-09",
+      "days": "工作日",
+      "original_publication": "17:45",
+      "publication": "17:15",
+      "preparation": "16:45",
+      "topic": "BVB收盘前观察与晚课预告"
+    },
+    {
+      "id": "RO-10",
+      "days": "工作日",
+      "original_publication": "20:00",
+      "publication": "19:30",
+      "preparation": "19:00",
+      "topic": "导师晚课资料"
+    },
+    {
+      "id": "RO-11",
+      "days": "工作日",
+      "original_publication": "21:00",
+      "publication": "20:30",
+      "preparation": "20:00",
+      "topic": "课后复习与问答资料"
+    },
+    {
+      "id": "RO-12",
+      "days": "工作日",
+      "original_publication": "22:00",
+      "publication": "21:30",
+      "preparation": "21:00",
+      "topic": "群聊收尾资料"
+    },
+    {
+      "id": "RO-13",
+      "days": "周六",
+      "original_publication": "10:00",
+      "publication": "09:30",
+      "preparation": "09:00",
+      "topic": "周末宏观周报"
+    },
+    {
+      "id": "RO-14",
+      "days": "周六",
+      "original_publication": "18:00",
+      "publication": "17:30",
+      "preparation": "17:00",
+      "topic": "答题、积分规则与下周预热"
+    },
+    {
+      "id": "RO-15",
+      "days": "周日",
+      "original_publication": "10:00",
+      "publication": "09:30",
+      "preparation": "09:00",
+      "topic": "周末复盘与课程预热"
+    },
+    {
+      "id": "RO-16",
+      "days": "周日",
+      "original_publication": "18:00",
+      "publication": "17:30",
+      "preparation": "17:00",
+      "topic": "下周课程海报与资料清单"
+    }
+  ]
 }
