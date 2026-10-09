@@ -26,6 +26,8 @@ class APIHarnessTests(unittest.TestCase):
                     with urlopen(base + "/") as r:
                         html = r.read().decode("utf-8")
                         self.assertIn("统一 SKILL 工作台", html)
+                        self.assertIn("使用你现有的 ChatGPT", html)
+                        self.assertIn("进入交易中心 · 使用我的GPT", html)
                         self.assertIn("fetchApi", html)
                     with urlopen(base + "/healthz") as r:
                         self.assertEqual(json.load(r)["mode"], "loopback_internal_review_only")
