@@ -1,0 +1,25 @@
+# Deployment blueprint for the existing Python finance hub.
+# This is a password-protected INTERNAL editorial workspace, not a public market site.
+services:
+  - type: web
+    name: romania-finance-invest
+    runtime: python
+    region: singapore
+    plan: starter
+    buildCommand: python -m compileall -q tools
+    startCommand: python tools/finance_skill_api.py --host 0.0.0.0 --port $PORT --data-dir /var/data
+    healthCheckPath: /healthz
+    autoDeployTrigger: checksPass
+    domains:
+      - invest.sasakic.cc
+    disk:
+      name: finance-review-state
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: FINANCE_ACCESS_USER
+        value: admin
+      - key: FINANCE_ACCESS_PASSWORD
+        sync: false
