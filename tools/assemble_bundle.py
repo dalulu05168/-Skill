@@ -63,6 +63,7 @@ def main():
         "tools/test_accuracy_pack.py",
         "tools/finance_skill_hub.py",
         "tools/finance_skill_api.py",
+        "tools/finance_skill_generate.py",
         "docs/UNIFIED-FINANCE-SKILL-HUB.md",
     ]))
     with ZipFile(large) as z:
