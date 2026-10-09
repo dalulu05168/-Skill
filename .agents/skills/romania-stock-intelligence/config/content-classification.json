@@ -1,0 +1,235 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Backend content classification contract for existing BVB dashboard; does not change its UI, schedule or historic data",
+  "timezone": "Europe/Bucharest",
+  "source_schedule": ".agents/skills/romania-stock-intelligence/config/schedule.json",
+  "categories": [
+    {
+      "id": "news",
+      "label": "新闻资讯",
+      "review_focus": "新闻挑选: 可信原文, 新闻时效, 来源主体, 事件重要性, 罗马尼亚/BVB关联, 抵消因素"
+    },
+    {
+      "id": "market",
+      "label": "市场行情",
+      "review_focus": "行情时点和交易日, 指数/个股/成交量口径, 真实数据出处, 短线验证条件"
+    },
+    {
+      "id": "course",
+      "label": "课程资料",
+      "review_focus": "教授授课目标与知识结构, 论据可核实, 案例与边界, 前后课程衔接及错误修正"
+    },
+    {
+      "id": "interaction",
+      "label": "成员互动",
+      "review_focus": "65名虚构人物身份披露, 简短自然有信息量, 独立观点与成员互答, 不凑数"
+    }
+  ],
+  "daily_targets": {
+    "weekday_morning": {
+      "label": "上午",
+      "target": 35,
+      "guidance_range": [
+        32,
+        38
+      ],
+      "counted_nodes": [
+        "RO-02",
+        "RO-03",
+        "RO-04",
+        "RO-05",
+        "RO-06"
+      ]
+    },
+    "weekday_afternoon": {
+      "label": "下午",
+      "target": 35,
+      "guidance_range": [
+        32,
+        38
+      ],
+      "counted_nodes": [
+        "RO-07",
+        "RO-08",
+        "RO-09"
+      ]
+    },
+    "weekday_evening": {
+      "label": "晚上",
+      "target": 30,
+      "guidance_range": [
+        27,
+        33
+      ],
+      "counted_nodes": [
+        "RO-10",
+        "RO-11",
+        "RO-12"
+      ]
+    }
+  },
+  "counting_rules": {
+    "guidance_not_quota": true,
+    "quality_over_count": true,
+    "count": "Only an independently sent/published character message counts as one; drafts, metadata, heading, evidence tables, and internal prep do not count. Images count only when separately sent.",
+    "not_counted": [
+      "RO-01"
+    ],
+    "weekends": "No fixed weekday quotas; choose according to actual verified content.",
+    "no_fake_messages": "Never invent reports, member attendance, market data or trades to reach targets."
+  },
+  "nodes": [
+    {
+      "id": "RO-01",
+      "category": "news",
+      "secondary": [
+        "market"
+      ],
+      "internal_only": true,
+      "purpose": "内部总备料：前收、国际信息、经济日历、证据台账"
+    },
+    {
+      "id": "RO-02",
+      "category": "news",
+      "secondary": [
+        "interaction"
+      ],
+      "purpose": "开群与早间新闻梳理"
+    },
+    {
+      "id": "RO-03",
+      "category": "market",
+      "secondary": [
+        "news"
+      ],
+      "purpose": "盘前Watchlist与短线催化"
+    },
+    {
+      "id": "RO-04",
+      "category": "market",
+      "secondary": [],
+      "purpose": "集合竞价与真实可取得的盘口"
+    },
+    {
+      "id": "RO-05",
+      "category": "market",
+      "secondary": [],
+      "purpose": "开盘前条件预案、失效信号"
+    },
+    {
+      "id": "RO-06",
+      "category": "market",
+      "secondary": [
+        "news"
+      ],
+      "purpose": "午间研报及市场证据"
+    },
+    {
+      "id": "RO-07",
+      "category": "news",
+      "secondary": [
+        "market"
+      ],
+      "purpose": "突发资讯与BVB相关性"
+    },
+    {
+      "id": "RO-08",
+      "category": "news",
+      "secondary": [
+        "market"
+      ],
+      "purpose": "美国市场与大宗商品事件"
+    },
+    {
+      "id": "RO-09",
+      "category": "market",
+      "secondary": [
+        "course"
+      ],
+      "purpose": "收盘前观察、晚课预告"
+    },
+    {
+      "id": "RO-10",
+      "category": "course",
+      "secondary": [
+        "interaction"
+      ],
+      "purpose": "教授19:30正式课程"
+    },
+    {
+      "id": "RO-11",
+      "category": "interaction",
+      "secondary": [
+        "course"
+      ],
+      "purpose": "课后问答、助理解释、成员互相讨论"
+    },
+    {
+      "id": "RO-12",
+      "category": "interaction",
+      "secondary": [
+        "news"
+      ],
+      "purpose": "当日收尾与待核事项"
+    },
+    {
+      "id": "RO-13",
+      "category": "news",
+      "secondary": [
+        "market"
+      ],
+      "purpose": "周六宏观周报"
+    },
+    {
+      "id": "RO-14",
+      "category": "interaction",
+      "secondary": [
+        "course"
+      ],
+      "purpose": "周六答题、积分规则、下周预热"
+    },
+    {
+      "id": "RO-15",
+      "category": "course",
+      "secondary": [
+        "market"
+      ],
+      "purpose": "周日复盘与课程预热"
+    },
+    {
+      "id": "RO-16",
+      "category": "course",
+      "secondary": [
+        "news"
+      ],
+      "purpose": "下周课程计划、公告日历与备料"
+    }
+  ],
+  "review_gates": {
+    "news": [
+      "必须追踪可打开的原始出处及发布时间",
+      "优先重大且与罗马尼亚市场有实质联系的2-4条（不机械凑新闻）",
+      "消息事实、市场推断、风险和反向条件分开",
+      "重复转载不应被当成多个独立重大事件"
+    ],
+    "assistant": [
+      "先说明客观事件与观察时点",
+      "解释对罗马尼亚的影响链而非无根据涨跌结论",
+      "解释哪些因素可能抵消推断",
+      "给出接下来应观察的条件，简明不复读"
+    ],
+    "professor": [
+      "19:30正式开课；周一三五技术课，周二四理念课",
+      "按目标-证据-原理-案例-错误示例-练习-下次衔接组织",
+      "不得编造专业资质、历史授课或真实交易结果",
+      "原技术课原稿缺失时显式报告而非自行假称调用"
+    ],
+    "members": [
+      "每个角色与65人档案及记忆一致",
+      "虚构教学身份必须明确披露，假设盈亏必须标注",
+      "成员可自由发起话题、互相回复、保留分歧或沉默",
+      "简短白话且有观察、问题、依据或可执行的核查点；禁止附和接龙"
+    ]
+  },
+  "publication_boundary": "Metadata/API provides editorial candidate structure only. Publishing remains blocked without source verification and human editorial approval."
+}
