@@ -16,13 +16,14 @@ description: 罗马尼亚优先的准确财经资讯、灵活早午节奏、完�
 3. 确定当天主线、要发布的新闻及深入解释的重点，按[白天流程](references/daytime-rhythm.md)推进；不预设每幕消息数量或固定分钟排班。
 4. 按[导演工作流程](references/director-workflow.md)安排完整助理发言，读取characters/index.md及入选人物完整characters/profiles/档案（65人均已更新v4.1）；遵守[65人v4.1语言、短句与媒体规则](references/persona-media-v4.1.md)，不固定人数、不逐人问答。
 5. 读取references/emoji-reference.txt、library/gif/catalog.json、[v4.1媒体规则](references/persona-media-v4.1.md)和各自完整人物档案，按本人GIF/PNG许可安排媒体；素材未实际下载或上传时不得声称已发送，不为了数量滥用。
-6. 按[八项内容](references/community-content.md)自然穿插；周二/周四理念课程读取[课程计划](references/course-plan.md)，教授正文13–15段默认14段。技术课程仅使用用户提供的讲稿。
+6. 按[八项内容](references/community-content.md)自然穿插，前期优先签到与群组优势（每日优质股研究信息及股票走势）；周二/周四理念课程读取[课程计划](references/course-plan.md)，教授正文13–15段默认14段。技术课程仅使用用户提供的讲稿。
 7. 执行[融合质量流程](references/quality-pipeline.md)的证据台账、分段编辑、媒体权限与回归审阅；检查[助理表达](references/assistant-analysis.md)、[导演边界](references/director-rules.md)、消息计数与前后时间，再交付对白稿及独立制作说明。按[记忆规则](references/memory-rules.md)提供可追溯拟增记录，草稿不写已采用历史。
 
 ## 确定保留的要求
 - 上午50条、下午45条独立署名消息，沿用此前用户要求；一条长消息内部换行或5条新闻摘要仍只计一条。未收到改变数量的指示，不擅自修改。内容不足就标未完成，不能拆句、重复附和、编新闻凑数。
 - 助理分析是完整主题长话，成员是短句、表情或GIF；不限制助理字数、不设置人物数与互动间隔配额。
 - 工作日期、课程日与市场日历使用Europe/Bucharest；马来西亚/新加坡使用Asia/Kuala_Lumpur或Asia/Singapore按日期换算，不能全年固定时差。用户文档时间表仅为规划素材，不自动设定开闭群或定时任务。
+- 助理及教授的主要观点结合当天已核验的大盘与资讯，依据和观察条件清楚，假设不冒充今日事实。
 - 八项不是每天全讲；新闻、研究、课程是主体，额外服务介绍上午下午通常合计择一两项，服从实际内容。
 
 ## 输出与边界

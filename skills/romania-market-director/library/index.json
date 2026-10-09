@@ -112,7 +112,7 @@
     }
   ],
   "current_rules": {
-    "version": "2.1.0",
+    "version": "2.1.1",
     "entry": "SKILL.md",
     "daytime": "references/daytime-rhythm.md",
     "dialogue": "references/director-workflow.md"
