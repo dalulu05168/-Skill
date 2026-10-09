@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 
 FEEDS = {
@@ -42,7 +42,17 @@ def _utc(value):
 
 def _official(url):
     p = urlsplit(url)
-    return p.scheme == "https" and p.hostname in HOSTS and not p.username and not p.password
+    try:
+        return (p.scheme == "https" and p.hostname in HOSTS
+                and p.port in (None, 443) and not p.username and not p.password)
+    except ValueError:
+        return False
+
+
+def _canonical_article_url(url):
+    """Ignore fragment/case of URL host, retain article-defining path and query."""
+    p = urlsplit(url)
+    return urlunsplit((p.scheme.lower(), p.netloc.lower(), p.path or "/", p.query, ""))
 
 
 def parse_feed(payload, source_id):
@@ -84,7 +94,8 @@ def parse_feed(payload, source_id):
         if not title or not _official(url):
             continue
         key = hashlib.sha256((source_id + "\n" + identifier).encode()).hexdigest()
-        digest = hashlib.sha256(("\n".join([title, description, published])).encode()).hexdigest()
+        digest = hashlib.sha256(("\n".join([title, description, published,
+                                             _canonical_article_url(url)])).encode()).hexdigest()
         summary = re.sub(r"\s+", " ", title + " " + description).casefold()
         result.append({
             "item_id": key, "source_id": source_id, "url": url, "guid": identifier,
@@ -106,11 +117,20 @@ def parse_feed(payload, source_id):
     return result
 
 
-def triage(items, history=None):
-    """Single-feed digest deduplication; no cross-publisher semantic dedup."""
-    previous = dict((history or {}).get("entries", {}))
+def triage(items, history=None, acknowledgments=None):
+    """Keep every unreviewed article version until explicitly acknowledged.
+
+    v1 only tracked seen digests; an unchanged v1 article is requeued once
+    on migration because seeing a story never proved that it was reviewed.
+    Acknowledging an item records review workflow completion, NOT verification
+    of the article or permission to publish it.
+    """
+    history = history or {}
+    previous = dict(history.get("entries", {}))
     updated = dict(previous)
-    output, seen = [], set()
+    pending = dict(history.get("pending", {}))
+    legacy = history.get("version", 1) < 2
+    seen = set()
     for article in items:
         k = article["item_id"]
         if k in seen:
@@ -119,10 +139,21 @@ def triage(items, history=None):
         old = previous.get(k)
         status = "new" if old is None else ("unchanged" if old == article["digest"] else "revised")
         updated[k] = article["digest"]
-        output.append({**article, "change_state": status,
-                       "review_required": status != "unchanged"})
-    return {"version": 1, "entries": updated}, output
-
+        token = k + ":" + article["digest"]
+        if status != "unchanged" or (legacy and old is not None):
+            pending.setdefault(token, {
+                **article,
+                "change_state": "legacy_unreviewed" if status == "unchanged" else status,
+                "review_required": True,
+            })
+    for ack in acknowledgments or []:
+        if not isinstance(ack, dict) or not isinstance(ack.get("item_id"), str) or not isinstance(ack.get("digest"), str):
+            raise ValueError("Acknowledgment must include item_id and digest strings")
+        token = ack["item_id"] + ":" + ack["digest"]
+        if token not in pending:
+            raise ValueError("Acknowledgment does not match a pending article version")
+        del pending[token]
+    return {"version": 2, "entries": updated, "pending": pending}, list(pending.values())
 
 class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
@@ -154,13 +185,22 @@ def main(argv=None):
     mode = p.add_mutually_exclusive_group(required=True)
     mode.add_argument("--input", help="Offline snapshot (source identity not attested)")
     mode.add_argument("--fetch", action="store_true", help="Explicitly fetch BVB official feed")
-    p.add_argument("--state", help="Durable dedup state outside published repository")
-    p.add_argument("--out", help="Review queue JSON path; otherwise stdout")
+    p.add_argument("--state", help="Durable dedup state and pending queue outside repository")
+    p.add_argument("--ack-file", help="Explicit human-reviewed article versions JSON (does not verify facts)")
+    p.add_argument("--out", help="All still-pending review items JSON path; otherwise stdout")
     args = p.parse_args(argv)
+    if args.ack_file and not args.state:
+        p.error("--ack-file requires --state so review decisions persist")
     try:
         payload = Path(args.input).read_bytes() if args.input else official_fetch(args.source_id)
         prior = json.loads(Path(args.state).read_text(encoding="utf-8")) if args.state and Path(args.state).exists() else {}
-        state, rows = triage(parse_feed(payload, args.source_id), prior)
+        acknowledgments = []
+        if args.ack_file:
+            decision = json.loads(Path(args.ack_file).read_text(encoding="utf-8"))
+            if not isinstance(decision, dict) or not isinstance(decision.get("acknowledged"), list):
+                raise ValueError("Acknowledgments must be a JSON object with acknowledged list")
+            acknowledgments = decision["acknowledged"]
+        state, rows = triage(parse_feed(payload, args.source_id), prior, acknowledgments)
         report = {
             "feed_url": FEEDS[args.source_id], "source_id": args.source_id,
             "acquired_at": datetime.now(timezone.utc).isoformat(),
@@ -169,12 +209,14 @@ def main(argv=None):
             "publish_status": "blocked_pending_manual_evidence_review",
             "items": rows,
         }
+        # Persist pending items before replacing the output file, so an output
+        # error cannot silently mark unseen items as handled.
+        if args.state:
+            write_json(args.state, state)
         if args.out:
             write_json(args.out, report)
         else:
             print(json.dumps(report, ensure_ascii=False, indent=2))
-        if args.state:
-            write_json(args.state, state)
         return 0
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print("RSS FAIL:", error, file=sys.stderr)
