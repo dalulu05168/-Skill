@@ -1,0 +1,20 @@
+name: Romania multi-agent offline tests
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/romania-multiagent-rehearsal/**'
+      - 'skills/romania-market-director/characters/profiles/**'
+      - '.github/workflows/romania-multiagent-rehearsal.yml'
+  workflow_dispatch:
+jobs:
+  safety-and-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline tests (no model keys required)
+        run: python -m unittest discover -s .agents/skills/romania-multiagent-rehearsal/tests -v
+      - name: Preflight
+        run: python .agents/skills/romania-multiagent-rehearsal/scripts/engine.py preflight
