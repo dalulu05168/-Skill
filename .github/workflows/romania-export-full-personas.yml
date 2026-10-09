@@ -1,0 +1,27 @@
+name: Romania export original 65 full persona details
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/romania-multiagent-rehearsal/scripts/export_full_persona_bank.py'
+      - '.github/workflows/romania-export-full-personas.yml'
+  workflow_dispatch:
+jobs:
+  export-exact-source:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit and export all 65 latest original profiles
+        run: |
+          python .agents/skills/romania-multiagent-rehearsal/scripts/export_full_persona_bank.py --output /tmp/romania-persona-full
+      - name: Downloadable 65-persona Chinese roster and full JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-65-persona-details-chinese-and-json
+          path: /tmp/romania-persona-full/
+          retention-days: 14
+          if-no-files-found: error
