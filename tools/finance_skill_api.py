@@ -6,10 +6,14 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Lock
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit, parse_qs
 
 from finance_skill_hub import run_pipeline, rss_intake
 from finance_skill_generate import generate_draft, model_status
+from chennan_writing import (load_profiles, summaries, empty_state, read_state,
+                             write_state, make_prompt, validate_messages, adopt, save_doc)
+from chennan_writing_ui import PAGE as WRITING_PAGE
+from workspace_theme import apply_visual_system
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -34,6 +38,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 </style></head><body><main class="app">
 <div class="top"><div><div class="logo">NUVEXA <span style="color:#aa832d">FINANCE</span></div>
 <div class="tag">罗马尼亚财经 · 统一 SKILL 工作台</div></div><div class="pill">本地审核模式 · 不对外发布</div></div>
+<nav class="row" aria-label="工作台模块"><a class="btn" style="text-decoration:none" href="/">📰 新闻推送与审核</a><a class="btn alt" style="text-decoration:none;border:1px solid #b99a62" href="/trading">✍️ 交易中心 · 65人人物工作台 →</a></nav>
 <h1>一次运行，联动五项审核能力。</h1><p>新闻候审、来源核验要求、16节点课程、65人身份约束与最终质量门禁由同一流程协调。只展示真实执行结果，不编造行情或 AI 生成内容。</p>
 <div class="grid">
 <section class="panel"><h2>统一任务入口</h2><p style="font-size:13px">可直接检查规则和下一栏目，也可联网读取BVB新闻候审。大盘数字、台词草稿必须由可核实来源提供。</p>
@@ -129,6 +134,7 @@ document.querySelector('#generate').onclick=async()=>{
 def make_handler(data_dir):
     state_path = data_dir / "bvb-news-review-state.json"
     report_path = data_dir / "latest-internal-review.json"
+    writing_path = data_dir / "chennan-writing-65.json"
     run_lock = Lock()  # Avoid concurrent RSS/state writes from separate browser tabs.
     model_lock = Lock()  # Avoid concurrent requests consuming local-model memory.
 
@@ -144,7 +150,7 @@ def make_handler(data_dir):
 
         def do_GET(self):
             if self.path == "/":
-                body = PAGE.encode("utf-8")
+                body = apply_visual_system(PAGE).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -152,6 +158,41 @@ def make_handler(data_dir):
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path in ("/trading", "/writing"):
+                body = apply_visual_system(WRITING_PAGE).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            elif self.path in ("/api/trading/people", "/api/writing/people"):
+                try:
+                    p = load_profiles()
+                    self.respond(200, {"roster_source": "finance-director-65-v4.1",
+                                       "count": len(p), "people": summaries(p)})
+                except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
+            elif (self.path.startswith("/api/trading/profile?") or self.path.startswith("/api/writing/profile?")):
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    requested = query.get("character_id", [""])[0]
+                    p = load_profiles()
+                    if requested not in p:
+                        raise ValueError("Unknown person ID")
+                    self.respond(200, {"character_id": requested, "profile": p[requested]})
+                except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(400, {"error": str(exc)})
+            elif self.path in ("/api/trading/state", "/api/writing/state"):
+                try:
+                    with run_lock:
+                        state = read_state(writing_path)
+                    self.respond(200, {"roster_source": state["roster_source"],
+                                       "revision": state["revision"], "docs": state["docs"],
+                                       "sessions": state["sessions"]})
+                except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(409, {"error": str(exc)})
             elif self.path == "/api/model/status":
                 self.respond(200, model_status())
             elif self.path == "/healthz":
@@ -160,7 +201,11 @@ def make_handler(data_dir):
                 self.respond(404, {"error": "Not found"})
 
         def do_POST(self):
-            if self.path not in ("/api/prepare", "/api/generate"):
+            if self.path not in ("/api/prepare", "/api/generate",
+                                 "/api/trading/prompt", "/api/trading/validate",
+                                 "/api/trading/adopt", "/api/trading/docs",
+                                 "/api/writing/prompt", "/api/writing/validate",
+                                 "/api/writing/adopt", "/api/writing/docs"):
                 self.respond(404, {"error": "Not found"})
                 return
             origin = self.headers.get("Origin")
@@ -194,6 +239,33 @@ def make_handler(data_dir):
                         )
                         rss_intake.write_json(data_dir / "latest-ai-draft-internal.json", draft)
                     self.respond(200, draft)
+                    return
+                if (self.path.startswith("/api/trading/") or self.path.startswith("/api/writing/")):
+                    with run_lock:
+                        state = read_state(writing_path)
+                        profiles = load_profiles()
+                        if self.path in ("/api/trading/prompt", "/api/writing/prompt"):
+                            prompt, changed = make_prompt(request, profiles, state)
+                            write_state(writing_path, changed)
+                            output = {"prompt": prompt, "revision": changed["revision"]}
+                        elif self.path in ("/api/trading/validate", "/api/writing/validate"):
+                            draft = state["drafts"].get(request.get("draft_id"))
+                            if not draft:
+                                raise ValueError("Draft missing; generate a new writing prompt")
+                            output = validate_messages(request.get("response"), draft, profiles, state["sessions"])
+                        elif self.path in ("/api/trading/adopt", "/api/writing/adopt"):
+                            if request.get("confirmed") is not True:
+                                raise ValueError("Explicit confirmation required")
+                            accepted = dict(request.get("response") or {})
+                            accepted["confirmed"] = True
+                            session, changed = adopt(accepted, request.get("draft_id"), state, profiles)
+                            write_state(writing_path, changed)
+                            output = {"session": session, "revision": changed["revision"]}
+                        elif self.path in ("/api/trading/docs", "/api/writing/docs"):
+                            doc, changed = save_doc(request, state)
+                            write_state(writing_path, changed)
+                            output = {"doc": doc, "revision": changed["revision"]}
+                    self.respond(200, output)
                     return
                 spec = request.get("spec", {})
                 fetch = request.get("fetch_rss", False)
