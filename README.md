@@ -40,7 +40,7 @@
 - [B 方案新闻接入、审核和发布执行说明](docs/NEWS-OPERATIONS-2026-10-09.md)。现已增加官方 BVB RSS 人工审核候选队列与去重测试，但**没有**开启实时行情、定时推送或自动审稿发布。
 - 运行 `python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v` 和 `python skills/romania-market-director/scripts/validate_persona_roster.py` 回归测试。
 - 运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 从当前源码生成两个 ZIP，或者使用 GitHub Actions 的 `Romanian Skill Quality Gate` 工件。旧 `dist/` ZIP 未自动替换，不可声称已同步最新版。
-- 此处保留 65 位 v4.1 成员档案；辰南撰写工作台中的 72 人是另一独立名册，未建立映射前不能按编号混用或同步记忆。
+- 此处只保留本仓库 65 位 v4.1 成员档案与导演规则；不读取、写入、覆盖或同步任何其他项目的人物、课程、记忆及交易信息。人物编号只在本仓库内有效。
 
 ## BVB准确性增强技能 v1.0
 
