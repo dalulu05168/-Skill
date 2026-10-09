@@ -100,3 +100,25 @@ python skills/romania-market-director/scripts/validate_persona_roster.py
 ```
 
 合并代码之前 GitHub Actions 必须全部成功；绿色代表测试通过，不代表新闻真实性或真实模型可用。
+
+
+## 交易中心并入同一工作台（65人人物，独立模块）
+
+首页导航增加「✍️ 交易中心」，本机路径为 `http://127.0.0.1:8765/trading`。两模块共享一个本地服务，写作和新闻各走自己的API/业务流程；**不是用旧独立72人网站的iframe冒充合并**。
+
+- **统一人物来源：**每次写作任务都通过 `validate_persona_roster.validate()` 校验65份全量人物档案和索引，并直接读取每个人的姓名、性别、新老标签、职业、语言DNA、表情与媒体规则；额外的70/72号角色被拒绝；相同编号的其他项目历史禁止导入。
+- **保留原话：**提供助理或教授原文、话题、日期、课程节点和人物选择。教授只有在 RO-10 节点允许选择。网页输出包含完整人设的结构化提示词；**不声称由本机自动生成台词**。
+- **草稿门禁：**AI输出由用户手动粘贴JSON。先核查人物ID/姓名/性别/新老、是否来自本轮名单、禁用表达、回复引用，再由用户确认正式采用。结构通过不意味着自然语言正确或事实经过核实。未确认的草稿不会进入正式历史。
+- **文档与历史：**可以新建/修改文档，查看正式采用会话，最近5场已采用会话随下一份提示词提供给AI作连续性参考。写作不更改新闻RSS候审队列；新闻仍需人工事实核验和发布审批。
+- **存储：**本机 `~/.romania-finance-skill-hub/chennan-writing-65.json` 原子写入；原新闻文件 `bvb-news-review-state.json` 和 `latest-internal-review.json` 不迁移、不覆盖。清除本机写作目录可能丢失未备份资料，请自行备份；不提供云端同步、用户登录或跨电脑同步。
+- **原项目状态：**原72人独立网站及 Supabase 72人历史保留原样；本次合并不提供自动72→65人映射、不继承交易模拟、人物资产、旧账号或在线数据库，避免错误混同。
+
+运行验证：
+
+```bash
+python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
+python -m unittest discover -s tools -p 'test_finance_skill*.py' -v
+python skills/romania-market-director/scripts/validate_persona_roster.py
+```
+
+API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`GET /api/trading/state`、`POST /api/trading/prompt`、`POST /api/trading/validate`、`POST /api/trading/adopt`、`POST /api/trading/docs`；本地监听仍限定 `127.0.0.1`，不公开公网部署。
