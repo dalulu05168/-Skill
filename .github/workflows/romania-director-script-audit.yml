@@ -1,0 +1,28 @@
+name: Romania director 50-45 script evidence audit
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/romania-multiagent-rehearsal/scripts/audit_director_drafts.py'
+      - '.github/workflows/romania-director-script-audit.yml'
+      - 'skills/romania-market-director/references/course-plan.md'
+  workflow_dispatch:
+jobs:
+  audit-without-fake-market-numbers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit original drafts and missing official sources
+        run: |
+          python .agents/skills/romania-multiagent-rehearsal/scripts/audit_director_drafts.py --date 2026-10-09 --output /tmp/romania-director-qa
+      - name: Download honest director schedule and script audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-director-morning50-afternoon45-evidence-audit
+          path: /tmp/romania-director-qa/
+          retention-days: 14
+          if-no-files-found: error
