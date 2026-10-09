@@ -12,6 +12,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from finance_skill_hub import DIRECTOR, personas, slot_for
+from dialogue_quality import DISCLOSURE, audit_dialogue
 
 ROSTER_SOURCE = "finance-director-65-v4.1"
 MAX_SOURCE_CHARS = 20000
@@ -163,6 +164,9 @@ def make_prompt(payload, profiles, state):
             "保留助理/教授给定原话；只写成员的模拟群聊反应，不改写主持人原话。",
             "姓名、性别、新老、当地语言、语气、句长、表情、媒体许可均按人物自己的档案执行。",
             "角色可沉默、短句、质疑、追问、互相回复；不要固定顺序或凑人数。",
+            "成员不必围绕助理/教授发言：允许提出独立话题、回应其他成员、追问前文、表达具体分歧，也允许不接话。",
+            "成员优先说简短有信息量的白话文，每条只讲一个意思；禁止空洞附和、教授吹捧接龙和重复套话。",
+            "所有模拟个人买卖、持仓及盈亏情节必须标【假设】；任何单独流转的成员文本必须带【虚构教学模拟】。",
             "所有人物和对白均为虚构教学演练，不能冒充真实投资者或真实客户见证。",
             "不得编造行情、收益、交易记录、账户数据、新闻来源或已经发送的媒体。",
             "只返回 JSON：messages 数组；每条含 character_id、name、gender、role、text；可选 message_id、reply_to。",
@@ -172,7 +176,7 @@ def make_prompt(payload, profiles, state):
             {"character_id": ids[0], "name": profiles[ids[0]]["identity_extension"]["姓名"],
              "gender": profiles[ids[0]]["source_profile"]["性别"],
              "role": profiles[ids[0]]["source_profile"]["学员资历"],
-             "text": "只用于说明JSON字段格式；不是真实生成的消息"}
+             "text": "【虚构教学模拟】只用于说明JSON字段格式；不是真实生成的消息"}
         ]},
     }
     new_state = dict(state)
@@ -222,20 +226,27 @@ def validate_messages(raw, draft, profiles, sessions):
             errors.append(f"Message {i}: duplicate/invalid message_id")
             continue
         used.add(mid)
+        if m.get("simulation_only") is False:
+            errors.append(f"Message {i}: simulation_only=false is forbidden")
         allowed = profile.get("language_dna", {}).get("禁用表达", [])
         if any(isinstance(x, str) and x and x in message for x in allowed):
             errors.append(f"Message {i}: expression forbidden by persona profile")
         cleaned.append({"message_id": mid, "character_id": cid, "name": expected[0],
                         "gender": expected[1], "role": expected[2],
-                        "text": message.strip(), "reply_to": m.get("reply_to") or None})
+                        "text": message.strip() if DISCLOSURE in message else DISCLOSURE + message.strip(),
+                        "simulation_only": True, "experience_kind": m.get("experience_kind", "none"),
+                        "reply_to": m.get("reply_to") or None})
     for m in cleaned:
         if m["reply_to"] and m["reply_to"] != "source" and m["reply_to"] not in used:
             errors.append("Unknown reply reference: " + str(m["reply_to"]))
+    dialogue = audit_dialogue(cleaned)
+    errors.extend(dialogue["issues"])
     if any(s.get("draft_id") == draft["id"] for s in sessions):
         errors.append("This draft was already formally adopted")
     return {"valid": not errors, "errors": errors,
             "message_count": len(cleaned), "messages": cleaned,
-            "warning": "Only structural/identity checks passed. Natural language, market facts, and media require human review."}
+            "dialogue_quality": dialogue,
+            "warning": "Checks and red-line heuristics are not factual verification. Dialogue naturalness, market facts, and media still need human review."}
 
 
 def adopt(raw, draft_id, state, profiles):
