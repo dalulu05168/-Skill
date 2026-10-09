@@ -1,5 +1,13 @@
 # 罗马尼亚财经导演资料包
 
+## 📰 新闻推送 · 常用入口
+
+> **✍️ [辰南撰写｜打开独立人物与创作工作台](https://growth-story-workspace.vercel.app/)**  
+> [辰南撰写源代码与修复进度](https://github.com/dalulu05168/growth-story-workspace) · [新闻资讯审核与推送规则](docs/NEWS-OPERATIONS-2026-10-09.md)
+>
+> 这里只添加醒目入口，不搬迁源代码、不合并数据库、不自动同步两套人物/记忆/课程。新闻推送继续使用本仓库65人资料；辰南撰写继续使用其独立的72人物档案。网页是否可正常登录以各站点实测为准。
+
+
 统一入口：[导演SKILL.md](skills/romania-market-director/SKILL.md)。完整版本和模块位置只看[bundle-manifest.json](bundle-manifest.json)，模块编号不是功能数量。
 
 ## 统一财经 SKILL 工作台（新增）
