@@ -1,7 +1,7 @@
 """Responsive, standalone writing module UI in the same localhost finance workspace."""
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>辰南撰写 · 65人创作工作台</title><style>
+<title>交易中心 · 65人统一交易与人物工作台</title><style>
 :root{font:14px/1.6 Inter,"Microsoft YaHei",system-ui,sans-serif;color:#252629;background:#f4f4f5}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#fafafa,#f2f3f5 62%,#f7f1e5);min-height:100vh}
 a{color:#826022;text-decoration:none}.app{max-width:1440px;margin:auto;padding:25px clamp(16px,2.5vw,40px) 55px}
@@ -34,12 +34,12 @@ pre{white-space:pre-wrap;word-wrap:break-word;background:#f7f7f8;padding:14px;bo
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #b08a42}
 @media(max-width:800px){.layout{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.people{grid-template-columns:1fr}.card{padding:17px}}
 </style></head><body><div class="app">
-<div class="top"><div><div class="brand">NUVEXA <span>· 辰南撰写</span></div><div class="sub">统一 65 人人物档案 · 独立写作模块</div></div>
-<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/writing" aria-current="page">✍️ 辰南撰写</a></nav></div>
-<h1>辰南撰写 · 创作工作台</h1>
+<div class="top"><div><div class="brand">NUVEXA <span>· 交易中心</span></div><div class="sub">统一 65 人人物档案 · 独立交易中心模块</div></div>
+<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/trading" aria-current="page">✍️ 交易中心</a></nav></div>
+<h1>交易中心 · 统一交易与人物工作台</h1>
 <p>与新闻审核共享同一套65人人物资料，写作草稿、文档和已确认会话单独保存；不导入旧72人历史。</p>
 <div class="note">人物皆为虚构教育演绎。只生成可复制给现有AI的提示词；AI不会在此网页自动运行。检查合格不代表新闻已核实、内容已发送或真实成交。</div>
-<div class="tabs" role="tablist" aria-label="辰南工作区">
+<div class="tabs" role="tablist" aria-label="交易中心工作区">
 <button class="active" data-tab="script">脚本撰写</button><button data-tab="people">65人人物库</button><button data-tab="docs">写作文档</button><button data-tab="history">正式会话与记忆</button></div>
 <div class="section active" id="tab-script"><div class="layout">
 <section class="card"><h2>01 · 配置模拟场次</h2>
@@ -101,12 +101,12 @@ function paintRoster(){
   const box=$('#roster');box.replaceChildren();
   for(const p of people.filter(p=>matches(p,$('#people-search').value.trim()))){
     const b=el('button',p.character_id+' · '+p.name+' / '+p.gender+' / '+p.role+' / '+(p.city||''),'alt');
-    b.addEventListener('click',async()=>{try{const j=await api('/api/writing/profile?character_id='+encodeURIComponent(p.character_id));$('#profile-view').textContent=JSON.stringify(j.profile,null,2);}catch(e){$('#profile-view').textContent=e.message}});
+    b.addEventListener('click',async()=>{try{const j=await api('/api/trading/profile?character_id='+encodeURIComponent(p.character_id));$('#profile-view').textContent=JSON.stringify(j.profile,null,2);}catch(e){$('#profile-view').textContent=e.message}});
     box.append(b);
   }
 }
 async function refreshDocs(){
-  const j=await api('/api/writing/state');docs=j.docs;
+  const j=await api('/api/trading/state');docs=j.docs;
   const box=$('#docs-list');box.replaceChildren();
   if(!docs.length)box.append(el('p','尚无文档'));
   for(const d of docs){
@@ -115,7 +115,7 @@ async function refreshDocs(){
   }
 }
 async function refreshHistory(){
-  const j=await api('/api/writing/state'),box=$('#history-list');box.replaceChildren();
+  const j=await api('/api/trading/state'),box=$('#history-list');box.replaceChildren();
   const ss=[...j.sessions].reverse();
   if(!ss.length)box.append(el('p','尚无已采用会话'));
   for(const s of ss){
@@ -125,7 +125,7 @@ async function refreshHistory(){
 }
 async function launch(){
   try{
-    const j=await api('/api/writing/people');
+    const j=await api('/api/trading/people');
     people=j.people;if(people.length!==65)throw Error('65人正式档案未完整加载');
     paintSelector();paintRoster();
   }catch(e){status('#make-status','读取人物资料失败：'+e.message);status('#peoplelist','无法加载65人正式资料，请检查仓库文件。');}
@@ -143,7 +143,7 @@ $('#clear').onclick=()=>{selected.clear();paintSelector()};
 $('#make').onclick=async()=>{
   verified=false;draftId=null;$('#make').disabled=true;status('#make-status','正在核对65人资料与场次…');
   try{
-    const p=await api('/api/writing/prompt',{date:$('#date').value,node:$('#node').value,topic:$('#topic').value,
+    const p=await api('/api/trading/prompt',{date:$('#date').value,node:$('#node').value,topic:$('#topic').value,
       source_kind:$('#source_kind').value,source_text:$('#source_text').value,selected_ids:[...selected]});
     draftId=p.prompt.draft_id;$('#prompt').value=JSON.stringify(p.prompt,null,2);
     status('#make-status','提示词已生成，人物：'+p.prompt.selected_characters.length+'，草稿ID：'+draftId.slice(0,8));
@@ -155,7 +155,7 @@ $('#response').oninput=()=>{verified=false;status('#review-status','内容已修
 $('#check').onclick=async()=>{
   try{
     if(!draftId)throw Error('先生成提示词');
-    const raw=JSON.parse($('#response').value),r=await api('/api/writing/validate',{draft_id:draftId,response:raw});
+    const raw=JSON.parse($('#response').value),r=await api('/api/trading/validate',{draft_id:draftId,response:raw});
     verified=r.valid;$('#review-output').textContent=JSON.stringify(r,null,2);
     status('#review-status',r.valid?'结构与65人身份校验通过；仍需人工核对自然语言与事实。':'检查未通过：'+r.errors.join('；'));
   }catch(e){verified=false;status('#review-status','检查失败：'+e.message)}
@@ -165,14 +165,14 @@ $('#adopt').onclick=async()=>{
   if(!confirm('确认将这个虚构演练草稿正式采用并写入本地历史？'))return;
   try{
     const data=JSON.parse($('#response').value);
-    const r=await api('/api/writing/adopt',{draft_id:draftId,response:data,confirmed:true});
+    const r=await api('/api/trading/adopt',{draft_id:draftId,response:data,confirmed:true});
     status('#review-status','已正式保存：'+r.session.id+'，共'+r.session.messages.length+'条。');
     verified=false;draftId=null;
   }catch(e){verified=false;status('#review-status','保存失败：'+e.message)}
 };
 $('#new-doc').onclick=()=>{docId=null;$('#doc-title').value='';$('#doc-body').value='';status('#doc-status','已新建空白编辑区；尚未保存。')};
 $('#save-doc').onclick=async()=>{
-  try{const r=await api('/api/writing/docs',{id:docId,title:$('#doc-title').value,content:$('#doc-body').value});
+  try{const r=await api('/api/trading/docs',{id:docId,title:$('#doc-title').value,content:$('#doc-body').value});
     docId=r.doc.id;status('#doc-status','文档已保存到本机写作目录：'+r.doc.updated_at);await refreshDocs();
   }catch(e){status('#doc-status','保存失败：'+e.message)}
 };
