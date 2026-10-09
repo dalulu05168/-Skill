@@ -1,11 +1,15 @@
 # 罗马尼亚财经导演资料包
 
-## 📰 新闻推送 · 常用入口
+## 📰 新闻推送 × ✍️ 辰南撰写（65人统一版）
 
-> **✍️ [辰南撰写｜打开独立人物与创作工作台](https://growth-story-workspace.vercel.app/)**  
-> [辰南撰写源代码与修复进度](https://github.com/dalulu05168/growth-story-workspace) · [新闻资讯审核与推送规则](docs/NEWS-OPERATIONS-2026-10-09.md)
->
-> 这里只添加醒目入口，不搬迁源代码、不合并数据库、不自动同步两套人物/记忆/课程。新闻推送继续使用本仓库65人资料；辰南撰写继续使用其独立的72人物档案。网页是否可正常登录以各站点实测为准。
+**同一工作台、两个独立模块：**双击 `START-FINANCE-SKILL.cmd` 后在浏览器打开 `http://127.0.0.1:8765/`。首页突出显示“辰南撰写 · 65人人物工作台”，点击进入 `/writing`；“新闻推送”与“辰南撰写”可互相切换。
+
+- **新闻推送：**沿用RSS候审、核验、16节点、65人身份约束与发布闸门。
+- **辰南撰写：**直接读取本仓库65份正式v4.1人物AI档案，提供人物检索/查看、选择角色、主持人原话写作提示词、粘贴AI草稿、65人身份校验、人工确认采用、正式会话历史、独立文档保存。
+- **数据隔离：**人物身份仅以 `skills/romania-market-director/characters/profiles/` 为准，不跨库引入或按编号误认72人角色；写作状态单独保存在本机 `~/.romania-finance-skill-hub/chennan-writing-65.json`，不会覆盖新闻候审状态，也不自动导入旧项目已有历史。
+- **能力边界：**当前为**本地整合版**，仍需复制提示词到现有ChatGPT生成，再粘贴JSON校验；没有自动AI、自动群发、实盘交易或云端同步。原独立72人工作台未被删除，原历史没有转换。
+
+完整说明：[统一财经SKILL工作台](docs/UNIFIED-FINANCE-SKILL-HUB.md) · [新闻资讯审核规则](docs/NEWS-OPERATIONS-2026-10-09.md) · [旧独立72人站点（保留，不混用）](https://growth-story-workspace.vercel.app/)
 
 
 统一入口：[导演SKILL.md](skills/romania-market-director/SKILL.md)。完整版本和模块位置只看[bundle-manifest.json](bundle-manifest.json)，模块编号不是功能数量。
