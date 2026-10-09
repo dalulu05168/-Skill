@@ -35,7 +35,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:800px){.layout{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.people{grid-template-columns:1fr}.card{padding:17px}}
 </style></head><body><div class="app">
 <div class="top"><div><div class="brand">NUVEXA <span>· 交易中心</span></div><div class="sub">统一 65 人人物档案 · 独立交易中心模块</div></div>
-<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/trading" aria-current="page">✍️ 交易中心</a></nav></div>
+<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/trading" aria-current="page">💹 交易中心</a><a href="/trade-platform">↗ 外部交易平台</a></nav></div>
 <h1>交易中心 · 统一交易与人物工作台</h1>
 <p>与新闻审核共享同一套65人人物资料，写作草稿、文档和已确认会话单独保存；不导入旧72人历史。</p>
 <div class="note">人物皆为虚构教育演绎。只生成可复制给现有AI的提示词；AI不会在此网页自动运行。检查合格不代表新闻已核实、内容已发送或真实成交。</div>
