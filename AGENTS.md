@@ -9,3 +9,5 @@
 6. **当前消息节拍 v2.2.1**：工作日上午40–45条、下午约40条、晚上约45条，每一大时段所有课表栏目累计；特殊行情/课程灵活调整。先删除不重要消息和重复段落，不能为凑数添加虚构行情、客户见证、无意义附和或强制反驳；仅生成单一栏目不得按完整时段凑40条。详见统一标准。
 
 7. **导演v2.3.0硬顺序**：核查用户新闻指标原始来源和时间→确认16节点课程→从角色完整JSON及索引比对编号姓名性别新老类别（07 Ioana Petrescu新女；11 Florin Dobre新男，任何冲突不得出场）→挑选人物写稿→GIF根据本人许可、真正可用素材与语义随机/轮换→新闻视觉有明确配图指令则实际调用可用工具（真实分时曲线不得编）→上午、下午、晚上助理各一次八项内容→用户明确采纳最终稿后生成角色动态记忆并在有权限时写仓库或授权云盘。教授仅19:30出场，周一/三/五技术课、周二/四理念课，少数角色自然互动。旧独立教授Skill原件尚未保存到本仓库，不能谎称已使用。入口`skills/romania-market-director/references/identity-media-memory-workflow.md`。
+
+8. **新增准确性增强技能（增量、不得覆盖上方最高标准）**：事实核验`skills/bvb-fact-check/SKILL.md`→新闻候审分级`skills/news-priority/SKILL.md`→模拟角色四重核验`skills/character-consistency/SKILL.md`→最终质量门禁`skills/script-qa/SKILL.md`。详见`skills/accuracy-enhancement/README.md`。第三方技术文件只读参考，不视为本系统已部署服务或运行权限。

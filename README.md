@@ -41,3 +41,9 @@
 - 运行 `python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v` 和 `python skills/romania-market-director/scripts/validate_persona_roster.py` 回归测试。
 - 运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 从当前源码生成两个 ZIP，或者使用 GitHub Actions 的 `Romanian Skill Quality Gate` 工件。旧 `dist/` ZIP 未自动替换，不可声称已同步最新版。
 - 此处保留 65 位 v4.1 成员档案；辰南撰写工作台中的 72 人是另一独立名册，未建立映射前不能按编号混用或同步记忆。
+
+## BVB准确性增强技能 v1.0
+
+新增[准确性增强包](skills/accuracy-enhancement/README.md)：4项专属SKILL、6份MIT开源技术参考，全部纳入完整版可重建ZIP和CI检查。保留原导演/新闻核验技能及65名v4.1人物文件、现行16节点与审批约束。
+
+此项仅集成文档及质量门禁指南；未安装Python第三方依赖、未实现跨来源语义引擎、未恢复500行情接口、未自动群发。使用`python tools/test_accuracy_pack.py`做静态检查。
