@@ -18,6 +18,8 @@ jobs:
           python-version: '3.11'
       - name: Validate Romania stock-intelligence tests and RSS
         run: python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v
+      - name: Test unified finance SKILL hub routing and review gates
+        run: python -m unittest discover -s tools -p 'test_finance_skill_hub.py' -v
       - name: Validate 65 complete character identities
         run: python skills/romania-market-director/scripts/validate_persona_roster.py
       - name: Validate accuracy pack references and SKILL structure
