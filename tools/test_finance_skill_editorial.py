@@ -53,6 +53,20 @@ class EditorialTests(unittest.TestCase):
                   "single_focus": True, "intent": "answer", "reply_to": "m1"}
         self.assertEqual(audit_editorial(packet(), [member, answer])["status"], "needs_human_review")
 
+    def test_member_may_initiate_and_answer_another_member_without_assistant(self):
+        a = {"message_id": "m1", "character_id": "01", "single_focus": True,
+             "simulation_only": True, "text": "【虚构教学模拟】这个成交量怎么看？",
+             "experience_kind": "none", "intent": "question"}
+        b = {**a, "message_id": "m2", "character_id": "02",
+             "text": "【虚构教学模拟】先确认它是不是来自几个权重股。",
+             "reply_to": "m1", "intent": "answer"}
+        c = {**a, "message_id": "m3", "character_id": "03",
+             "text": "【虚构教学模拟】另外我想看看公告里的风险提示。",
+             "intent": "discussion"}
+        result = audit_editorial(packet(), [a, b, c])
+        self.assertEqual(result["status"], "needs_human_review", result["issues"])
+        self.assertEqual(result["dialogue_quality"]["metrics"]["independent_turns"], 2)
+
     def test_hub_blocks_wrong_date_and_retains_internal_status(self):
         at = datetime(2026, 10, 9, 12, tzinfo=timezone.utc)
         out = run_pipeline({"editorial_packet": packet()}, at=at, node_id="RO-10")
