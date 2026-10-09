@@ -13,6 +13,8 @@ import os
 import re
 from pathlib import Path
 from urllib.request import Request, urlopen
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from engine import registry
 from ollama_free_rehearsal import query_model, safety_flags
