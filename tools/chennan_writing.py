@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Chen Nan writing module backed ONLY by the Finance Director 65-person roster.
+"""Trading Center character-writing service backed ONLY by the Finance Director 65-person roster.
 
 Standalone local writing state lives outside the repository; no Supabase/72-person import,
 LLM generation, market publication, or trading mutations are performed here.
@@ -145,7 +145,7 @@ def make_prompt(payload, profiles, state):
         for s in state["sessions"][-5:]
     ]
     prompt = {
-        "engine": "辰南撰写 · 65人统一人物版",
+        "engine": "交易中心 · 65人统一人物版",
         "mode": "explicitly_disclosed_fictional_educational_simulation",
         "draft_id": draft_id,
         "date": day,
