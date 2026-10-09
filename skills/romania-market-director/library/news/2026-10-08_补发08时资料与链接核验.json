@@ -1,0 +1,80 @@
+{
+  "scene_id": "REPLAY-20261008-AM-DRAFT-01",
+  "status": "unverified_editorial_replay",
+  "observation_cutoff": "2026-10-08T08:00:00+03:00",
+  "original_report_id": null,
+  "input": "User supplied retrospective 08:00 briefing in this conversation",
+  "access_results": [
+    {
+      "url": "https://apnews.com/article/00ad8ec13f0265ac3c41a0d9d7fdb265",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.reuters.com/business/wall-st-futures-slip-yields-oil-rebound-fed-minutes-focus-2026-10-07/",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://apnews.com/article/44b75c188756038371cf3112ede9cee8",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.wsj.com/finance/commodities-futures/oil-rises-amid-ongoing-mideast-tensions-2c446a1e",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.cursvalutar.ro/arhiva-curs-bnr/07-10-2026/",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.bnr.ro/25726-2026-08-10-hotarari-ale-ca-al-bnr-pe-probleme-de-politica-monetara",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "user_supplied_unverified_metrics": {
+    "DJIA": {
+      "value": 51179.87,
+      "change": "approximately -0.7%",
+      "source": "AP",
+      "date": "2026-10-07"
+    },
+    "SP500": {
+      "value": 7801.77,
+      "change": "approximately -0.2%",
+      "source": "AP",
+      "date": "2026-10-07"
+    },
+    "NASDAQ_COMPOSITE": {
+      "value": 27538.69,
+      "change": "approximately -0.2%",
+      "source": "AP",
+      "date": "2026-10-07"
+    },
+    "Brent": {
+      "value": 100.2,
+      "unit": "USD/bbl",
+      "date": "2026-10-07",
+      "contract": "not specified"
+    },
+    "WTI": {
+      "value": 88.28,
+      "unit": "USD/bbl",
+      "date": "2026-10-07",
+      "contract": "not specified"
+    },
+    "BNR_EUR_RON": {
+      "value": 5.3501,
+      "change": -0.0026,
+      "date": "2026-10-07"
+    },
+    "BNR_USD_RON": {
+      "value": 4.7801,
+      "change": 0.0185,
+      "date": "2026-10-07"
+    }
+  },
+  "publication_ready": false
+}

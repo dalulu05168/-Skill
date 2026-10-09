@@ -76,6 +76,16 @@
       "path": "library/skill-research/sources.json",
       "type": "公开GitHubSkill研究来源",
       "status": "3份固定提交Skill已读取；星标非评价；方法独立适配"
+    },
+    {
+      "path": "library/drafts/2026-10-08_上午回放50条_罗语中文审阅_待核验.md",
+      "type": "昨日回放试稿",
+      "status": "50条双语审阅，关键事实编辑位待核验；未采用"
+    },
+    {
+      "path": "library/news/2026-10-08_补发08时资料与链接核验.json",
+      "type": "用户补发资料提取与实际访问记录",
+      "status": "7个链接访问失败，不能标全部已核验"
     }
   ],
   "reusable_resources": {
