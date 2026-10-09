@@ -1,0 +1,53 @@
+name: Romania FREE local model rehearsal
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/romania-multiagent-rehearsal/scripts/ollama_free_rehearsal.py'
+      - '.agents/skills/romania-multiagent-rehearsal/tests/test_ollama_free.py'
+      - '.github/workflows/romania-free-ollama-rehearsal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  small-open-model-rehearsal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      OLLAMA_HOST: 127.0.0.1:11434
+      OLLAMA_NUM_PARALLEL: '1'
+      OLLAMA_MAX_LOADED_MODELS: '1'
+      OLLAMA_KEEP_ALIVE: 1m
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Keyless static and schema tests
+        run: python -m unittest discover -s .agents/skills/romania-multiagent-rehearsal/tests -v
+      - name: Install local Ollama CPU runner (no paid model API)
+        run: |
+          curl -fsSL https://ollama.com/install.sh -o /tmp/ollama-install.sh
+          bash /tmp/ollama-install.sh
+          nohup ollama serve > /tmp/romania-ollama.log 2>&1 &
+          for n in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          echo "Ollama did not start"
+          exit 1
+      - name: Download small open weights to temporary runner only
+        run: ollama pull qwen2.5:1.5b
+      - name: Three rounds of five distinct FICTIONAL Romanian personas
+        run: |
+          python .agents/skills/romania-multiagent-rehearsal/scripts/ollama_free_rehearsal.py \
+            --model qwen2.5:1.5b \
+            --topic 'Gestionarea riscului şi diversificarea pentru educaţie financiară' \
+            --output /tmp/ro-finance-simulation/three_rounds.json
+      - name: Archive private fiction simulation for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: romania-free-local-model-three-rounds
+          path: /tmp/ro-finance-simulation/three_rounds.json
+          if-no-files-found: ignore
+          retention-days: 3
