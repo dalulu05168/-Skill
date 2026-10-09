@@ -1,10 +1,10 @@
 {
   "name": "罗马尼亚财经导演资料包",
-  "bundle_version": "2.2.0",
+  "bundle_version": "2.2.1",
   "entry": "skills/romania-market-director/SKILL.md",
   "modules": {
     "director": {
-      "version": "2.2.0",
+      "version": "2.2.1",
       "path": "skills/romania-market-director/"
     },
     "personas": {
@@ -33,5 +33,20 @@
     "timezone": "Europe/Bucharest",
     "path": "skills/romania-market-director/references/operating-standard-2026-10-09.md",
     "all_original_times_shift_minutes": -30
+  },
+  "message_targets": {
+    "scope": "weekday three phases including all stages within each phase, not per individual slot",
+    "morning": {
+      "min": 40,
+      "max": 45
+    },
+    "afternoon": {
+      "approx": 40
+    },
+    "evening": {
+      "approx": 45
+    },
+    "exception_policy": "Flex on material events; prioritize quality, cut low-value repeats, no padding",
+    "weekend": "flex based on event and verified content"
   }
 }

@@ -17,9 +17,9 @@
 
 ## 正式版本与成员记忆
 
-版本2.2.0。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
+版本2.2.1。仓库skills/romania-market-director/为唯一正式来源；dist ZIP从此目录生成。导演工作流程、13–15段课程、WhatsApp素材约束与发言记忆已加入。memory/state.json当前为空，未把示例与草稿迁移成正式历史。
 
-旧50/45条硬指标已废止；优先阅读references/operating-standard-2026-10-09.md中的16节点提前30分钟及中文剧本规则。
+旧50/45条硬指标已废止；最新弹性目标为**工作日上午40–45条、下午约40条、晚上约45条（各时段多栏目累计）**，特殊行情灵活调整、删重复不凑数；优先阅读references/operating-standard-2026-10-09.md中的16节点提前30分钟及中文剧本规则。
 
 1.3.0加入助理专业资讯影响分析、签到私下联系助理本人及每日研究/市场主线介绍。
 
