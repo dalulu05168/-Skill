@@ -178,4 +178,8 @@ $('#save-doc').onclick=async()=>{
 };
 $('#refresh-history').onclick=()=>refreshHistory().catch(e=>status('#history-view',e.message));
 launch();
+if(location.hash==="#tab-people"){
+  const peopleTab=document.querySelector('[data-tab="people"]');
+  if(peopleTab)peopleTab.click();
+}
 </script></body></html>'''
