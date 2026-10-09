@@ -89,5 +89,26 @@
       "library/index.json"
     ],
     "cloud": "only connected and authorized with verified upload"
+  },
+  "accuracy_enhancement": {
+    "version": "1.0",
+    "status": "reference_and_workflow_only",
+    "skills": [
+      "skills/bvb-fact-check/SKILL.md",
+      "skills/news-priority/SKILL.md",
+      "skills/character-consistency/SKILL.md",
+      "skills/script-qa/SKILL.md"
+    ],
+    "upstream_references": [
+      "third_party/orchestra-research/AI-Research-SKILLs/16-prompt-engineering/instructor/SKILL.md",
+      "third_party/orchestra-research/AI-Research-SKILLs/16-prompt-engineering/instructor/references/validation.md",
+      "third_party/orchestra-research/AI-Research-SKILLs/20-ml-paper-writing/ml-paper-writing/references/citation-workflow.md",
+      "third_party/orchestra-research/AI-Research-SKILLs/15-rag/sentence-transformers/SKILL.md",
+      "third_party/orchestra-research/AI-Research-SKILLs/15-rag/sentence-transformers/references/models.md",
+      "third_party/orchestra-research/AI-Research-SKILLs/17-observability/phoenix/SKILL.md"
+    ],
+    "upstream_license": "third_party/orchestra-research/AI-Research-SKILLs/LICENSE",
+    "static_test": "tools/test_accuracy_pack.py",
+    "auto_deployed": false
   }
 }

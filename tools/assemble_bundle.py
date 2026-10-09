@@ -54,9 +54,19 @@ def main():
     small_count = create(small, collect(shared))
     large_count = create(large, collect(shared + [
         ".agents/skills/romania-stock-intelligence",
+        "skills/accuracy-enhancement",
+        "skills/bvb-fact-check",
+        "skills/news-priority",
+        "skills/character-consistency",
+        "skills/script-qa",
+        "third_party/orchestra-research",
+        "tools/test_accuracy_pack.py",
     ]))
     with ZipFile(large) as z:
         assert ".agents/skills/romania-stock-intelligence/scripts/rss_intake.py" in z.namelist()
+        assert "skills/bvb-fact-check/SKILL.md" in z.namelist()
+        assert "skills/script-qa/SKILL.md" in z.namelist()
+        assert "third_party/orchestra-research/AI-Research-SKILLs/LICENSE" in z.namelist()
     print("SUCCESS: verified director", small_count, "and full", large_count, "files.")
 
 
