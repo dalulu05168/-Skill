@@ -167,9 +167,13 @@ def dashboard_summary(data_dir):
     return result
 
 def add_overview(page):
-    anchor="<h1>一次运行，联动五项审核能力。</h1>"
-    if anchor not in page:
-        raise ValueError("Unified finance news header not found")
-    page=page.replace(anchor,OVERVIEW+"\\n"+anchor,1)
+    anchor='<nav class="row" aria-label="工作台模块">'
+    pos=page.find(anchor)
+    if pos<0:
+        raise ValueError("Unified finance navigation not found")
+    closing=page.find("</nav>",pos)
+    if closing<0:
+        raise ValueError("Finance navigation is malformed")
+    page=page[:closing+6]+"\n"+OVERVIEW+page[closing+6:]
     # root page retains the same news controls, now below the overview card/table.
     return page.replace("</body>",SCRIPT+"</body>",1)
