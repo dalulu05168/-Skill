@@ -15,6 +15,8 @@ from chennan_writing import (load_profiles, summaries, empty_state, read_state,
 from chennan_writing_ui import PAGE as WRITING_PAGE
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
+from workspace_layout import wrap_page
+from workspace_overview import dashboard_summary, add_overview
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -156,16 +158,16 @@ def make_handler(data_dir):
 
         def do_GET(self):
             if self.path == "/":
-                body = apply_visual_system(PAGE).encode("utf-8")
+                body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
-                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'")
+                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path in ("/trading", "/writing"):
-                body = apply_visual_system(WRITING_PAGE).encode("utf-8")
+                body = wrap_page(apply_visual_system(WRITING_PAGE), "trading").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -174,17 +176,24 @@ def make_handler(data_dir):
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path == "/trade-platform":
-                body = apply_visual_system(EXTERNAL_TRADE_PAGE).encode("utf-8")
+                body = wrap_page(apply_visual_system(EXTERNAL_TRADE_PAGE), "external").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy",
                                  "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; "
-                                 "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'")
+                                 "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Cache-Control", "no-store")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path == "/api/dashboard/summary":
+                try:
+                    with run_lock:
+                        summary = dashboard_summary(data_dir)
+                    self.respond(200, summary)
+                except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
             elif self.path in ("/api/trading/people", "/api/writing/people"):
                 try:
                     p = load_profiles()
