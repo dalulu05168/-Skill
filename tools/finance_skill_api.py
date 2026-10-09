@@ -9,6 +9,7 @@ from threading import Lock
 from urllib.parse import urlparse
 
 from finance_skill_hub import run_pipeline, rss_intake
+from finance_skill_generate import generate_draft, model_status
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -28,7 +29,7 @@ select,textarea{width:100%;border:1px solid #dcdde0;border-radius:11px;backgroun
 textarea{resize:vertical;min-height:105px;font-size:12px;margin-top:13px;line-height:1.65}
 small{color:#77797d}.status{margin-top:23px;border-left:3px solid #b38940;padding:4px 12px;font-size:13px;color:#44464a}
 pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px solid #ededf0;padding:16px;border-radius:12px;max-height:310px;overflow:auto;font-size:12px}
-.warn{font-size:12px;color:#896323;background:#fbf8ef;border-radius:12px;padding:13px 16px;margin-top:26px}
+.field{margin-top:14px}.smallinput{margin-top:9px} .warn{font-size:12px;color:#896323;background:#fbf8ef;border-radius:12px;padding:13px 16px;margin-top:26px}
 @media(max-width:730px){.grid{grid-template-columns:1fr}.app{padding:20px 17px 50px}.top{flex-wrap:wrap}.panel{padding:20px}}
 </style></head><body><main class="app">
 <div class="top"><div><div class="logo">NUVEXA <span style="color:#aa832d">FINANCE</span></div>
@@ -48,10 +49,33 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 <div class="step"><span>03 · 16节点助理／教授路由</span><b>规则联动</b></div>
 <div class="step"><span>04 · 65人角色身份检查</span><b>实际读取</b></div>
 <div class="step"><span>05 · 最终审稿及发布闸门</span><b>禁止自动群发</b></div>
-<p style="font-size:12px">尚未连接真实生成模型、授权行情接口和对外发布服务，因此不会虚构已经生成的教授或成员发言。</p>
+<p style="font-size:12px">可选连接本地Ollama真实生成教育草稿；无模型时仅完成规则审核。仍无授权行情接口及对外自动发布服务。</p>
 <h2>本次任务结果</h2><pre id="result">运行后显示真实状态、新闻候选数和应人工核实的步骤。</pre>
 <button id="copy" class="btn alt">复制审核JSON</button></section>
-</div><div class="warn">数据真实性规则：RSS抓取成功不等于核实正文；人物仅用于标注的虚构教学演绎；运行任务与已发布内容严格区分。</div></main>
+</div>
+<section class="panel" style="margin-top:18px"><h2>本地 AI 教育草稿 · 可选功能</h2>
+<p style="font-size:13px">只有本机 Ollama 和模型实际安装后才可生成。助理、教授和65名虚构成员分别调用原有规则，始终留在内部审核状态。</p>
+<div class="grid" style="margin-top:10px">
+<div>
+<label for="airole"><small>生成角色</small></label>
+<select id="airole"><option value="assistant">助理 · 教育分析草稿</option><option value="professor">教授 · 19:30晚课讲稿片段</option><option value="member">65人虚构成员 · 单人短句</option></select>
+<label for="person"><small>成员编号（仅虚构成员需要，01–65）</small></label>
+<input id="person" class="smallinput" inputmode="numeric" placeholder="例如 07" maxlength="2" style="width:100%;border:1px solid #dcdde0;border-radius:11px;padding:12px">
+</div>
+<div>
+<label for="aimodel"><small>本地模型（必须预先下载到电脑）</small></label>
+<select id="aimodel"><option value="qwen2.5:1.5b">Qwen 2.5 1.5B</option><option value="qwen2.5:0.5b">Qwen 2.5 0.5B</option></select>
+<label for="ailang"><small>稿件语言</small></label>
+<select id="ailang"><option value="zh">中文审阅稿</option><option value="ro">罗马尼亚语模拟稿</option></select>
+</div>
+</div>
+<label for="aitopic"><small>教育主题（仅作为写作题目，不当作市场事实）</small></label>
+<textarea id="aitopic" placeholder="例如：为什么短线交易需要先确认成交量、风险边界与失效条件？" style="min-height:75px"></textarea>
+<div class="row"><button id="modelcheck" class="btn alt">检查本机模型</button><button id="generate" class="btn">生成内部教育草稿</button></div>
+<div class="status" id="aistatus">当前尚未检测本机模型。</div>
+<pre id="airesult">未生成任何内容。联网市场事实、行情和自动群发均不由此模型完成。</pre>
+</section>
+<div class="warn">数据真实性规则：RSS抓取成功不等于核实正文；人物仅用于标注的虚构教学演绎；运行任务与已发布内容严格区分。</div></main>
 <script>
 const node=document.querySelector('#node'),status=document.querySelector('#status'),result=document.querySelector('#result');
 let last=null;
@@ -71,6 +95,34 @@ async function run(fetch){
 async function fetchApi(path,payload){let r=await window.fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let j=await r.json();if(!r.ok)throw Error(j.error||'HTTP '+r.status);return j}
 document.querySelector('#local').onclick=()=>run(false);document.querySelector('#fetch').onclick=()=>run(true);
 document.querySelector('#copy').onclick=()=>{if(last&&navigator.clipboard)navigator.clipboard.writeText(JSON.stringify(last,null,2));};
+const aistatus=document.querySelector('#aistatus'), airesult=document.querySelector('#airesult');
+document.querySelector('#modelcheck').onclick=async()=>{
+ aistatus.textContent='正在检查电脑本机 Ollama…';
+ try{const r=await window.fetch('/api/model/status');const data=await r.json();
+ aistatus.textContent=data.can_generate?'可用：'+data.supported_installed.join(', '):
+ '未就绪：'+data.remedy;
+ }catch(e){aistatus.textContent='本地模型检查失败：'+e.message}
+};
+document.querySelector('#generate').onclick=async()=>{
+ const btn=document.querySelector('#generate');btn.disabled=true;
+ aistatus.textContent='正在调用本地模型生成（仅内部草稿，不会发送）…';
+ airesult.textContent='模型正在计算，页面可继续查看其他内容。';
+ try{
+  const payload={role:document.querySelector('#airole').value,
+   person_id:document.querySelector('#person').value.trim()||null,
+   topic:document.querySelector('#aitopic').value.trim(),
+   model:document.querySelector('#aimodel').value,
+   language:document.querySelector('#ailang').value,
+   node:node.value||null};
+  if(payload.role!=='member')payload.person_id=null;
+  const data=await fetchApi('/api/generate',payload);
+  aistatus.textContent=data.status==='HOLD_FOR_HUMAN_REVIEW'?
+    '本地模型已真实返回草稿；必须人工审核，不可自动发布':
+    '草稿未通过基础安全检查，已拦截';
+  airesult.textContent=JSON.stringify(data,null,2);
+ }catch(e){aistatus.textContent='未生成草稿：'+e.message;airesult.textContent='没有成功生成的AI稿件。'}
+ finally{btn.disabled=false}
+};
 </script></body></html>'''
 
 
@@ -78,6 +130,7 @@ def make_handler(data_dir):
     state_path = data_dir / "bvb-news-review-state.json"
     report_path = data_dir / "latest-internal-review.json"
     run_lock = Lock()  # Avoid concurrent RSS/state writes from separate browser tabs.
+    model_lock = Lock()  # Avoid concurrent requests consuming local-model memory.
 
     class Handler(BaseHTTPRequestHandler):
         def respond(self, code, payload):
@@ -99,17 +152,22 @@ def make_handler(data_dir):
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path == "/api/model/status":
+                self.respond(200, model_status())
             elif self.path == "/healthz":
                 self.respond(200, {"status": "ok", "mode": "loopback_internal_review_only"})
             else:
                 self.respond(404, {"error": "Not found"})
 
         def do_POST(self):
-            if self.path != "/api/prepare":
+            if self.path not in ("/api/prepare", "/api/generate"):
                 self.respond(404, {"error": "Not found"})
                 return
             origin = self.headers.get("Origin")
             host = self.headers.get("Host", "")
+            if not (host.startswith("127.0.0.1:") or host.startswith("localhost:")):
+                self.respond(403, {"error": "Only loopback host is allowed"})
+                return
             if origin:
                 parsed = urlparse(origin)
                 if parsed.scheme != "http" or parsed.netloc != host or parsed.hostname not in ("127.0.0.1", "localhost"):
@@ -124,6 +182,19 @@ def make_handler(data_dir):
                 request = json.loads(self.rfile.read(int(length)))
                 if not isinstance(request, dict):
                     raise ValueError("Request must be an object")
+                if self.path == "/api/generate":
+                    with model_lock:
+                        draft = generate_draft(
+                            topic=request.get("topic"),
+                            role=request.get("role", "assistant"),
+                            model=request.get("model", "qwen2.5:1.5b"),
+                            node=request.get("node"),
+                            language=request.get("language", "zh"),
+                            person_id=request.get("person_id"),
+                        )
+                        rss_intake.write_json(data_dir / "latest-ai-draft-internal.json", draft)
+                    self.respond(200, draft)
+                    return
                 spec = request.get("spec", {})
                 fetch = request.get("fetch_rss", False)
                 if not isinstance(fetch, bool):
@@ -133,7 +204,7 @@ def make_handler(data_dir):
                                           state_file=state_path if fetch else None)
                     rss_intake.write_json(report_path, result)
                 self.respond(200, result)
-            except (ValueError, TypeError, KeyError, OSError, json.JSONDecodeError) as exc:
+            except (ValueError, TypeError, KeyError, OSError, RuntimeError, json.JSONDecodeError) as exc:
                 self.respond(400, {"error": str(exc)})
 
     return Handler
