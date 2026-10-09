@@ -1,0 +1,5 @@
+# Optional AI model runtime (NOT installed on the Render free bootstrap server).
+# Keep this separate from its standard-library health-check service.
+git+https://github.com/microsoft/TinyTroupe.git@a6244b358a1fe1c71bf751f7ba0f8dfa368ec5a4
+mem0ai
+crewai
