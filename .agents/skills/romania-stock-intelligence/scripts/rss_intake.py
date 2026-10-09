@@ -94,7 +94,15 @@ def parse_feed(payload, source_id):
             "evidence_status": "unverified_requires_original_article_review",
         })
     if not result:
-        raise ValueError("No valid BVB article links")
+        # Never silently call an unparsable live feed "no news". Report only link
+        # origins/short paths, not untrusted body text, for source-format diagnosis.
+        samples = []
+        for entry in entries[:4]:
+            raw = (_text(entry, "link") if not atom else
+                   next((tag.get("href", "") for tag in entry.findall(ATOM + "link")), ""))
+            link = urlsplit(raw)
+            samples.append(f"{link.scheme or 'relative'}://{link.hostname or '-'}{link.path[:72]}")
+        raise ValueError(f"No valid BVB article links among {len(entries)} feed entries; origins={samples}")
     return result
 
 

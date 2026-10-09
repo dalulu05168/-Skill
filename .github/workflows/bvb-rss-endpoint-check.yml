@@ -1,0 +1,73 @@
+name: BVB RSS endpoint review smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/bvb-rss-endpoint-check.yml'
+      - '.agents/skills/romania-stock-intelligence/scripts/rss_intake.py'
+      - '.agents/skills/romania-stock-intelligence/tests/**'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bvb-rss-endpoint-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-official-feeds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify parser fixtures before network requests
+        run: python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v
+      - name: Fetch official BVB news RSS as unverified review candidates
+        id: news
+        continue-on-error: true
+        run: |
+          mkdir -p build/rss-endpoint-check
+          python .agents/skills/romania-stock-intelligence/scripts/rss_intake.py \
+            --source-id BVB_NEWS_RSS --fetch \
+            --out build/rss-endpoint-check/bvb-news-candidates.json
+      - name: Fetch official BVB financial RSS as unverified review candidates
+        id: financial
+        continue-on-error: true
+        run: |
+          mkdir -p build/rss-endpoint-check
+          python .agents/skills/romania-stock-intelligence/scripts/rss_intake.py \
+            --source-id BVB_FINANCIAL_RSS --fetch \
+            --out build/rss-endpoint-check/bvb-financial-candidates.json
+      - name: Upload review evidence, never broadcast or auto-publish
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bvb-rss-review-smoke
+          path: build/rss-endpoint-check/*.json
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Gate the verified news source; report financial feed separately
+        env:
+          NEWS_RESULT: ${{ steps.news.outcome }}
+          FINANCIAL_RESULT: ${{ steps.financial.outcome }}
+        run: |
+          echo "BVB news RSS: $NEWS_RESULT"
+          echo "BVB financial RSS: $FINANCIAL_RESULT"
+          {
+            echo "## Official BVB RSS connectivity (not article verification)"
+            echo "- News RSS: **$NEWS_RESULT**"
+            echo "- Financial RSS: **$FINANCIAL_RESULT**"
+            echo "- All candidate articles remain **unverified** pending original-source review."
+            echo "- Financial items may never be published while the feed is unparseable."
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$FINANCIAL_RESULT" != success ]; then
+            echo "::warning::BVB financial RSS returned entries without valid article links. This feed remains disabled for production reviews."
+          fi
+          # Fail if the verified news source regresses. Financial feed is reported
+          # as a separate degraded capability and is NOT silently accepted.
+          test "$NEWS_RESULT" = success
