@@ -21,6 +21,7 @@ sys.path.insert(0, str(DIRECTOR / "scripts"))
 
 import rss_intake  # noqa: E402
 import validate_persona_roster as personas  # noqa: E402
+from finance_skill_editorial import audit_editorial  # noqa: E402
 from rsi_core.quality import audit_observations  # noqa: E402
 
 BUCHAREST = ZoneInfo("Europe/Bucharest")
@@ -111,6 +112,12 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
     roster = personas.validate()  # loads all 65 complete profiles and cross-checks identity
     messages = spec.get("messages", [])
     issues = validate_messages(messages, roster, selected)
+    editorial = audit_editorial(spec.get("editorial_packet"), messages)
+    issues.extend(editorial["issues"])
+    if isinstance(spec.get("editorial_packet"), dict):
+        packet = spec["editorial_packet"]
+        if packet.get("date") != selected["date"] or packet.get("node_id") != selected["id"]:
+            issues.append("editorial_packet date/node does not match selected slot")
     queue = spec.get("news_queue")
     if queue is not None and (not isinstance(queue, dict) or not isinstance(queue.get("items"), list)):
         raise ValueError("news_queue must be an RSS review report with items array")
@@ -181,6 +188,7 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         "news": {"feed": SOURCE_ID if fetch_rss else None, "acquisition": source,
                  "pending_count": len(news), "items": news},
         "market_metadata_audit": audit or {"gate": "not_run", "reason": "No observations supplied"},
+        "editorial_audit": editorial,
         "characters": {"roster_count": len(roster), "draft_message_count": len(messages),
                        "identity_gate": "fail" if issues else "pass_for_checked_fields"},
         "review": {

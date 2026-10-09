@@ -18,3 +18,7 @@ description: 对财经资料包和模拟群聊的事实、节奏、角色、媒�
 ## 验证能力边界
 可参考`../../third_party/orchestra-research/AI-Research-SKILLs/16-prompt-engineering/instructor/SKILL.md`的结构化输出和`../../third_party/orchestra-research/AI-Research-SKILLs/17-observability/phoenix/SKILL.md`的追踪方式；未安装服务或依赖就不能称已执行自动评测。
 运行原回归：`python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v`及`python skills/romania-market-director/scripts/validate_persona_roster.py`。
+
+## 2026-10-10 七项反馈增量规则
+必须读取 skills/romania-market-director/references/teaching-editorial-standard.md（仓库根目录相对路径）。该规则落实透明模拟、禁止吹捧接龙、周一三五课程链、延迟提问与助理答疑、热点证据、真实资质、每日执行单和单条单重点；保留16节点与65人身份，冲突的旧长话/课程说明以本次规则为准。结构检查不等于事实核验或发布批准。
+

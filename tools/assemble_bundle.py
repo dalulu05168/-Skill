@@ -62,6 +62,7 @@ def main():
         "third_party/orchestra-research",
         "tools/test_accuracy_pack.py",
         "tools/finance_skill_hub.py",
+        "tools/finance_skill_editorial.py",
         "tools/finance_skill_api.py",
         "tools/finance_skill_generate.py",
         "docs/UNIFIED-FINANCE-SKILL-HUB.md",

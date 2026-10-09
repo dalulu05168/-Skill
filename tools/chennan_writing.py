@@ -157,6 +157,8 @@ def make_prompt(payload, profiles, state):
         "selected_characters": [profiles[cid] for cid in ids],
         "recent_adopted_sessions": recent,
         "instructions": [
+            "先读 skills/romania-market-director/references/teaching-editorial-standard.md：不集中吹捧教授；每条一个重点，问题可延迟引用前文，由助理答疑。",
+            "每条模拟消息显著标注【虚构教学模拟】；案例标【假设】，禁止把虚构盈亏、持仓和机构背书当真人社会证明促销。真实经验只用已授权可核证信息。",
             "仅使用随附65份正式虚构人物档案，不得引用旧72人辰南人物或按相同编号映射。",
             "保留助理/教授给定原话；只写成员的模拟群聊反应，不改写主持人原话。",
             "姓名、性别、新老、当地语言、语气、句长、表情、媒体许可均按人物自己的档案执行。",
