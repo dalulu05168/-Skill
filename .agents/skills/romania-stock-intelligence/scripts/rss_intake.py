@@ -3,8 +3,10 @@
 import argparse
 import hashlib
 import json
+import os
 import re
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -143,7 +145,9 @@ def triage(items, history=None, acknowledgments=None):
         if status != "unchanged" or (legacy and old is not None):
             pending.setdefault(token, {
                 **article,
-                "change_state": "legacy_unreviewed" if status == "unchanged" else status,
+                # v1 hashes did not include URLs, so do not falsely classify
+                # migration-only digest changes as material story revisions.
+                "change_state": "legacy_unreviewed" if (legacy and old is not None) else status,
                 "review_required": True,
             })
     for ack in acknowledgments or []:
@@ -174,9 +178,23 @@ def official_fetch(source_id):
 
 
 def write_json(path, data):
+    """Replace one JSON file atomically; never leave a truncated pending queue."""
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=target.parent,
+            prefix="." + target.name + ".", suffix=".tmp", delete=False,
+        ) as handle:
+            temp_path = Path(handle.name)
+            handle.write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_path, target)
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
 
 
 def main(argv=None):
