@@ -22,6 +22,7 @@ sys.path.insert(0, str(DIRECTOR / "scripts"))
 import rss_intake  # noqa: E402
 import validate_persona_roster as personas  # noqa: E402
 from finance_skill_editorial import audit_editorial  # noqa: E402
+from content_routing import routing_snapshot  # noqa: E402
 from rsi_core.quality import audit_observations  # noqa: E402
 
 BUCHAREST = ZoneInfo("Europe/Bucharest")
@@ -175,6 +176,11 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         "generated_at": now.isoformat(),
         "source_scope": "dalulu05168/-Skill only; no cross-project character or data import",
         "slot": selected,
+        "content_classification": {
+            "category": next(r["category"] for r in routing_snapshot()["nodes"] if r["id"] == selected["id"]),
+            "schedule_unchanged": True, "review_required": True,
+            "message_targets": routing_snapshot()["daily_targets"],
+        },
         "routing": {
             "skill_sequence": SKILL_ORDER,
             "news_fact_check": "manual_original_article_review_required",
