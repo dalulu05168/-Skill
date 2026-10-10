@@ -60,6 +60,24 @@ jobs:
         run: python skills/romania-market-director/scripts/validate_persona_roster.py
       - name: Validate accuracy pack references and SKILL structure
         run: python tools/test_accuracy_pack.py
+      - name: Verify 65-persona standalone and full-source archive integrity
+        run: python -m unittest discover -s tools -p 'test_export_p004_project.py' -v
+      - name: Export all P004 tracked source files with audit manifest
+        run: python tools/export_p004_project.py --output-dir build/project-export
+      - name: Upload P004 isolated source ZIP (no legacy or production data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: p004-65personas-standalone-source
+          path: |
+            build/project-export/P004-65personas-STANDALONE.zip
+            build/project-export/EXPORT-SUMMARY.json
+          retention-days: 14
+      - name: Upload separate complete repository source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: p004-65personas-full-repository-backup
+          path: build/project-export/P004-65personas-FULL-REPO-SNAPSHOT.zip
+          retention-days: 14
       - name: Build current SKILL ZIP bundles
         run: python tools/assemble_bundle.py --out-dir build/skill-bundles
       - name: Upload validated bundles (no public deployment)

@@ -35,7 +35,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:800px){.layout{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.people{grid-template-columns:1fr}.card{padding:17px}}
 </style></head><body><div class="app">
 <div class="top"><div><div class="brand">NUVEXA <span>· 财经 Skill</span></div><div class="sub">65位独立人物 · 新闻课程 · 群聊导演 · 连续记忆</div></div>
-<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/skill" aria-current="page">✍ 群聊编剧</a><a href="/trade-platform">↗ 外部交易平台</a></nav></div>
+<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/skill" aria-current="page">✍ 群聊编剧</a><a href="/trade-platform">↗ 图片编辑器</a></nav></div>
 <h1>财经 Skill · 65人群聊导演与长期记忆</h1>
 <p>选择有理由发言的人物；成员各有自己的生活、立场与分享边界。助理专业易懂，教授深入严谨。草稿经检查、人工确认才成为正式记忆，不导入其他人物库。</p>
 <div class="note">人物皆为虚构教育演绎。只生成可复制给现有AI的提示词；AI不会在此网页自动运行。检查合格不代表新闻已核实、内容已发送或真实成交。</div>
