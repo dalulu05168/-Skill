@@ -216,6 +216,36 @@ body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Mi
 .ws-frame .ws-rail-link:focus-visible,
 .ws-frame .ws-row-action:focus-visible,
 .ws-frame .ws-filter:focus-visible{outline:2px solid #687989;outline-offset:2px}
+/* Contrast and spacing audit: keep the white/gray design legible.
+   All values are presentation-only; never alter the underlying trading data. */
+.ws-frame .ws-pageheading p{color:#4f5a66}
+.ws-frame .ws-eyebrow,.ws-frame .ws-section-label{color:#2c625d}
+.ws-frame .ws-kpi-top small,.ws-frame .ws-kpi-note{color:#52606d}
+.ws-frame .ws-search-label,.ws-frame .ws-table-foot,.ws-frame .ws-clarification{color:#52606d}
+.ws-frame .ws-person-cell small,.ws-frame .ws-unknown{color:#52606d!important}
+.ws-frame .ws-tabs a:not(.active){color:#52606d}
+.ws-frame .ws-filter:not(.active){color:#52606d!important}
+.ws-frame .ws-top-search input::placeholder{color:#66737f;opacity:1}
+.ws-frame .ws-kpi-note{white-space:normal;text-overflow:clip;overflow-wrap:anywhere;min-height:36px}
+.ws-frame .ws-kpi-icon{border:1px solid #e3e8ee}
+.ws-frame .ws-kpi-icon.teal{background:linear-gradient(135deg,#eef8f6,#e4f3ef);color:#28665f}
+.ws-frame .ws-kpi-icon.blue{background:linear-gradient(135deg,#f1f6ff,#e5efff);color:#275d93}
+.ws-frame .ws-kpi-icon.purple{background:linear-gradient(135deg,#f5f1ff,#ebe7f9);color:#654f91}
+.ws-frame .ws-kpi-icon.orange{background:linear-gradient(135deg,#fff6e9,#faedd8);color:#855b21}
+.ws-frame .ws-readonly{background:#f4f6f8;color:#364757;border-color:#e3e8ed}
+.ws-frame .ws-table-foot{flex-wrap:wrap;line-height:1.65}
+.ws-frame .ws-table-scroll{overscroll-behavior-x:contain;scrollbar-gutter:stable}
+.ws-frame .ws-kpis .ws-kpi{min-width:0}
+.ws-frame .ws-top-search{border-color:#dfe4e9}
+.ws-frame .ws-section-label span{color:#52606d}
+.ws-frame>.app small{color:#52606d}
+.ws-frame>.app button:not(.ws-filter):not(.ws-row-action):not(.ws-secondary-button){font-size:13px;line-height:1.5;min-height:40px}
+.ws-frame>.app input:not([type="checkbox"]),.ws-frame>.app select,.ws-frame>.app textarea{font-size:13px;line-height:1.5}
+.ws-frame>.app a.btnlink{font-size:13px;line-height:1.5;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:760px){
+ .ws-frame .ws-kpi-note{min-height:0}
+ .ws-frame .ws-table-foot{align-items:flex-start}
+}
 @media(max-width:760px){
  .ws-frame .ws-rail-link{font-size:11px;min-height:62px}
  .ws-frame .ws-kpi-top small{font-size:12px}
