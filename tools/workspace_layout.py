@@ -226,7 +226,7 @@ body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Mi
 
 def wrap_page(page, active):
     """Embed old, functioning body unchanged inside a three-module visual frame."""
-    if active not in {"news","trading","external","skill"}:
+    if active not in {"news","trading","external","skill","image"}:
         raise ValueError("Unknown workspace module")
     if "<body>" not in page or "</body>" not in page or "</style>" not in page:
         raise ValueError("Unexpected standalone page format")
@@ -236,7 +236,7 @@ def wrap_page(page, active):
         ("trading", "/trading", "交易", active=="trading"),
         ("review", "/skill", "Skill", active=="skill"),
         ("people", "/trading#tc-profile", "65人", False),
-        ("external", "/trade-platform", "外站", active=="external"),
+        ("external", "/image-editor", "图片", active=="image"),
         ("review", "/#news-process", "审核", False),
     ]
     links="".join(
