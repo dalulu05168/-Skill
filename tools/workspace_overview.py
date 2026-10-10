@@ -26,7 +26,7 @@ OVERVIEW = r'''
     <a class="active" href="#ws-overview" aria-current="page">概览</a>
     <a href="#news-process">新闻推送</a>
     <a href="/trading">交易中心</a>
-    <a href="/trading#tab-people">65人人物档案</a>
+    <a href="/trading#tc-profile">65人人物档案</a>
     <a href="/trade-platform">外部交易平台</a>
   </nav>
   <div class="ws-controls">
