@@ -124,5 +124,19 @@
     "tests": "tools/test_storycraft_contract.py",
     "disclosure_boundary": "in-scene speech natural; page-level and standalone exported disclosure kept",
     "qa_scope": "deterministic hard checks and editor warnings; not verification of naturalness or facts"
+  },
+  "role_voice": {
+    "version": "1.0",
+    "profile_count": 65,
+    "source": "skills/romania-market-director/characters/profiles/",
+    "guide": "skills/romania-market-director/references/member-assistant-professor-voice.md",
+    "code": "tools/role_voice.py",
+    "test": "tools/test_role_voice.py",
+    "registers": {
+      "member": "colloquial_person_specific",
+      "assistant": "professional_accessible",
+      "professor": "expert_technical_and_theory"
+    },
+    "limits": "static heuristics; editorial human review for all naturalness and professionalism claims"
   }
 }
