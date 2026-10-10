@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from finance_skill_hub import DIRECTOR, personas, slot_for
 from dialogue_quality import DISCLOSURE, audit_dialogue
+from editorial_storyline import plan_disclosed_scene
 from skill_execution_contract import audit_member_voice, load_official_memory, lesson_for
 
 ROSTER_SOURCE = "finance-director-65-v4.1"
@@ -153,6 +154,8 @@ def make_prompt(payload, profiles, state):
         if any(m.get("character_id") in ids for m in s.get("messages", []))
     ][-12:]
     official_memory = load_official_memory(ids)
+    storyline_plan = plan_disclosed_scene(node["id"], topic, ids, state["sessions"],
+                                           unresolved_threads=state.get("unresolved_threads", []))
     prompt = {
         "engine": "交易中心 · 65人统一人物版",
         "mode": "explicitly_disclosed_fictional_educational_simulation",
@@ -166,6 +169,7 @@ def make_prompt(payload, profiles, state):
         "selected_characters": [profiles[cid] for cid in ids],
         "recent_adopted_sessions": recent,
         "official_memory": official_memory,
+        "storyline_plan": storyline_plan,
         "memory_policy": {
             "adopted_only": True,
             "do_not_invent_prior_conversations": True,
@@ -181,6 +185,10 @@ def make_prompt(payload, profiles, state):
             "保留助理/教授给定原话；只写成员的模拟群聊反应，不改写主持人原话。",
             "姓名、性别、新老、当地语言、语气、句长、表情、媒体许可均按人物自己的档案执行。",
             "角色可沉默、短句、质疑、追问、互相回复；不要固定顺序或凑人数。",
+            "演绎采用双线叙事：新新闻可以开始，同时只在已经真实采用的剧本历史里存在旧问题时穿插旧争论；禁止无记录就编造昨日争吵。",
+            "成员可以就上一条或上一时段的新闻与同伴发生有理据的激烈分歧；允许跨节点延续，但禁止辱骂、造谣或一致性操控。",
+            "助理必要时梳理各方证据、记录未解问题，允许暂时没有共识；无需每次发新闻都强行管理整场讨论。",
+            "教授用可核实资料或标注为【假设】的比方解释机制及反例，不以保证收益或隐瞒风险包装短周期观察。",
             "成员不必围绕助理/教授发言：允许提出独立话题、回应其他成员、追问前文、表达具体分歧，也允许不接话。",
             "成员优先说简短有信息量的白话文，每条只讲一个意思；禁止空洞附和、教授吹捧接龙和重复套话。",
             "所有模拟个人买卖、持仓及盈亏情节必须标【假设】；任何单独流转的成员文本必须带【虚构教学模拟】。",
