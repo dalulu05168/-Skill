@@ -21,6 +21,40 @@ SECTION = r'''
 .sim-alert{font-size:12px;color:#6a655b;background:#faf6ea;border:1px solid #eae3d4;padding:12px 14px;border-radius:12px}
 .sim-label{font-size:12px;color:#596068;margin:2px 0}
 #sim-message{min-height:20px}
+
+/* One-click recommendation: individual persona cards, never a flat anonymous row. */
+.sim-recommend-host{overflow:visible;max-height:none;border:0;background:transparent;border-radius:0}
+.sim-recommend-overview{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:14px 0}
+.sim-recommend-overview strong{font-size:14px;color:#26313e}
+.sim-recommend-overview small{color:#6a7582}
+.sim-candidate-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sim-candidate-card{border:1px solid #e1e6ec;background:#fff;padding:19px;border-radius:15px;
+ box-shadow:0 3px 12px #17233208;min-width:0;transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease}
+.sim-person-head{display:flex;align-items:center;gap:13px;min-width:0}
+.sim-person-avatar{width:48px;height:48px;display:grid;place-items:center;flex-shrink:0;
+ background:#f0f3f7;border:1px solid #e3e8f0;color:#344353;border-radius:14px;font-size:15px;font-weight:800}
+.sim-person-identity{min-width:0;flex:1}.sim-person-identity h3{font-size:15px;font-weight:800;line-height:1.45;
+ margin:0;color:#202c38;overflow-wrap:anywhere}.sim-person-identity small{display:block;font-size:11px;color:#747f8c}
+.sim-person-status{font-size:11px;color:#465363;background:#f3f5f8;border-radius:99px;padding:5px 9px;
+ border:1px solid #e5e9ef;white-space:nowrap}
+.sim-person-detail{margin:13px 0 8px;color:#596574;font-size:12px;line-height:1.65;
+ min-height:37px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sim-person-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 14px}
+.sim-person-tags span{background:#f5f7f9;color:#535f6b;border:1px solid #e9edf1;padding:4px 8px;
+ border-radius:7px;font-size:11px}
+.sim-person-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:13px;
+ border:1px solid #ecf0f3;background:#fbfcfd;border-radius:10px}
+.sim-person-facts small{display:block;font-size:11px;color:#798390}
+.sim-person-facts b{font-size:12px;color:#2a3440;font-weight:750;overflow-wrap:anywhere}
+.sim-person-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.sim-person-actions button{padding:9px 13px;font-size:12px}
+.sim-person-actions [data-qty]{width:96px;min-height:38px;max-width:100%;padding:7px 9px}
+.sim-recommend-empty{border:1px dashed #cdd4dd;background:#fff;border-radius:12px;padding:21px;color:#596573}
+@media(hover:hover) and (pointer:fine){.sim-candidate-card:hover{transform:translateY(-3px);
+ border-color:#bdc8d4;box-shadow:0 14px 28px #17233217}}
+@media(max-width:950px){.sim-candidate-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.sim-candidate-card{transition:none}
+ .sim-candidate-card:hover{transform:none}}
 @media(max-width:900px){.sim-grid{grid-template-columns:1fr}.sim-counters{grid-template-columns:repeat(2,1fr)}}
 </style>
 <div class="section" id="tab-sim">
@@ -46,8 +80,8 @@ SECTION = r'''
 </div>
 <section class="card" style="margin-top:16px"><h2>03 · 股票计划 / 推荐与邀请</h2>
 <div class="sim-inline"><div><label for="sim-offer">股票计划</label><select id="sim-offer"><option value="">尚无计划</option></select></div><div><label for="sim-day">罗马尼亚市场日期</label><input type="date" id="sim-day"></div></div>
-<div class="row"><button id="sim-recommend">按旧规则生成当日候选名单</button><button class="alt" id="sim-refresh">刷新交易账本</button><button class="alt" id="sim-snapshot">查看当前交易事实快照</button></div>
-<div id="sim-candidate-list" class="sim-tablewrap" style="margin-top:16px"></div>
+<div class="row"><button id="sim-recommend">一键推荐交易人员</button><button class="alt" id="sim-refresh">刷新交易账本</button><button class="alt" id="sim-snapshot">查看当前交易事实快照</button></div>
+<div id="sim-candidate-list" class="sim-recommend-host" aria-live="polite"></div>
 <pre id="sim-snapshot-out" hidden></pre>
 </section>
 <div class="sim-grid">
@@ -87,10 +121,40 @@ byid('sim-offer').value=tradeData.offers.some(o=>o.id===curOffer)?curOffer:(trad
 renderPeople();renderRecs();renderHoldings();renderTx();
 }
 function currentRec(){return tradeData?.recommendations.find(r=>r.offer_id===val('sim-offer')&&r.date===val('sim-day'))}
-function renderRecs(){const r=currentRec();if(!r){byid('sim-candidate-list').innerHTML=empty('选择计划并点击“生成当日候选名单”；若无开户资金资料，将不会虚构成员交易。');return;}
-const offer=tradeData.offers.find(o=>o.id===r.offer_id);
-const rows=r.candidates.map(c=>{const p=person(c.person_id);const status=c.status,display={pending:'待邀请',invited:'已邀请',rejected:'已拒绝',bought:'已买入'}[status]||status;return '<tr><td>'+escapeHtml(c.person_id+' · '+(p?.name||''))+'</td><td>'+escapeHtml(display)+'</td><td>'+escapeHtml(money(p?.funds?.[offer.currency],offer.currency))+'</td><td>'+((status==='pending'||status==='rejected')?'<button data-sim-action="invite" data-person="'+c.person_id+'">邀请</button> ':'')+((status==='pending'||status==='invited')?'<button class="alt" data-sim-action="reject" data-person="'+c.person_id+'">拒绝</button> ':'')+(status==='invited'?'<input data-qty="'+c.person_id+'" type="number" min="'+offer.min_shares+'" value="'+offer.min_shares+'" aria-label="买入股数"> <button data-sim-action="buy" data-person="'+c.person_id+'">确认模拟买入</button>':'')+'</td></tr>'});
-byid('sim-candidate-list').innerHTML=r.candidates.length?rowTable(['成员','当前状态','模拟资金上限','交易操作'],rows):empty('没有符合已开户、模拟资金及最低购买条件的成员。请先设置人物交易资格。');
+function renderRecs(){
+ const host=byid('sim-candidate-list'),r=currentRec();
+ if(!r){host.innerHTML='<div class="sim-recommend-empty">选择股票计划，点击“一键推荐交易人员”。系统只从65人正式档案中挑选已明确设置模拟开户且资金满足条件的成员。</div>';return;}
+ const offer=tradeData.offers.find(o=>o.id===r.offer_id);
+ if(!offer){host.textContent='当前股票计划不存在';return;}
+ const counts={pending:0,invited:0,rejected:0,bought:0};
+ (r.candidates||[]).forEach(c=>{if(c.status in counts)counts[c.status]++});
+ const note='<div class="sim-recommend-overview"><strong>推荐结果 · '+r.candidates.length+' / '+offer.participant_count+' 人</strong><small>待邀请 '+counts.pending+' · 已邀请 '+counts.invited+' · 已模拟买入 '+counts.bought+' · 已拒绝 '+counts.rejected+'</small></div>';
+ if(!r.candidates.length){host.innerHTML=note+'<div class="sim-recommend-empty">没有符合模拟开户、资金与最低股数条件的成员。请先配置交易资格，不自动生成虚构成交。</div>';return;}
+ const cards=r.candidates.map(c=>{
+   const p=person(c.person_id);if(!p)return '';
+   const status=c.status,display={pending:'待邀请',invited:'已邀请',rejected:'已拒绝',bought:'已模拟买入'}[status]||'待核实';
+   const safeId=escapeHtml(p.id),traits=[...(Array.isArray(p.traits)?p.traits:[]),...(Array.isArray(p.investment_focus)?p.investment_focus.slice(0,2):[])].slice(0,5);
+   const amount=p.funds?.[offer.currency],fundText=amount===undefined?'未配置':money(amount,offer.currency);
+   const source=p.persona_description||'暂无人物定位补充';
+   const action=(status==='pending'||status==='rejected'?'<button data-sim-action="invite" data-person="'+safeId+'">确认邀请</button> ':'')
+    +(status==='pending'||status==='invited'?'<button class="alt" data-sim-action="reject" data-person="'+safeId+'">拒绝</button> ':'')
+    +(status==='invited'?'<input data-qty="'+safeId+'" type="number" min="'+escapeHtml(offer.min_shares)+'" step="1" value="'+escapeHtml(offer.min_shares)+'" aria-label="'+safeId+'号模拟买入股数"><button data-sim-action="buy" data-person="'+safeId+'">确认模拟买入</button>':'')
+    +(status==='bought'?'<span class="sim-tag good">已形成模拟持仓，可在持仓列表追踪</span>':'');
+   return '<article class="sim-candidate-card" data-person-card="'+safeId+'">'
+    +'<div class="sim-person-head"><div class="sim-person-avatar" aria-hidden="true">'+safeId+'</div>'
+    +'<div class="sim-person-identity"><h3>'+safeId+' · '+escapeHtml(p.name)+'</h3><small>'+escapeHtml([p.gender,p.age?p.age+'岁':'年龄未录入',p.role].join(' · '))+'</small></div>'
+    +'<span class="sim-person-status">'+escapeHtml(display)+'</span></div>'
+    +'<div class="sim-person-detail">'+escapeHtml(source)+'</div>'
+    +'<div class="sim-person-tags">'+traits.map(t=>'<span>'+escapeHtml(t)+'</span>').join('')+'</div>'
+    +'<div class="sim-person-facts"><div><small>工作 / 城市</small><b>'+escapeHtml((p.occupation||'未知')+' · '+(p.city||'未知'))+'</b></div>'
+    +'<div><small>参与频率 / 持仓笔数</small><b>'+escapeHtml(({HIGH:'高',MEDIUM:'中',LOW:'低'}[p.frequency]||'未配置')+' / '+p.hold_count+'笔')+'</b></div>'
+    +'<div><small>模拟开户状态</small><b>'+(p.opened?'已模拟开户':'未配置')+'</b></div>'
+    +'<div><small>该币种模拟资金上限</small><b>'+escapeHtml(fundText)+'</b></div>'
+    +'<div><small>单票仓位偏好（人设）</small><b>'+escapeHtml(p.position_preference||'未注明')+'</b></div>'
+    +'<div><small>计划最低购买</small><b>'+escapeHtml(offer.min_shares)+' 股 · '+escapeHtml(money(offer.min_shares*offer.unit_price,offer.currency))+'</b></div></div>'
+    +'<div class="sim-person-actions">'+action+'</div></article>';
+ }).join('');
+ host.innerHTML=note+'<div class="sim-candidate-grid">'+cards+'</div>';
 }
 function renderHoldings(){const rows=[...tradeData.holdings].reverse().map(h=>{const p=person(h.person_id),end=new Date(h.planned_sell_at),ready=h.status==='holding'&&Date.now()>=end.getTime();return '<tr><td>'+escapeHtml((p?.name||h.person_id)+' · '+h.symbol)+'</td><td>'+escapeHtml(h.quantity+'股 · '+money(h.buy_price,h.currency))+'</td><td>'+escapeHtml(h.status==='sold'?'已模拟卖出':ready?'符合卖出条件':'持有中')+'</td><td>'+escapeHtml(end.toLocaleString('zh-CN'))+'</td><td>'+(ready?'<input data-sell-price="'+escapeHtml(h.id)+'" type="number" min="0.000001" step="any" placeholder="模拟卖价"> <button data-sim-action="sell" data-holding="'+escapeHtml(h.id)+'">确认卖出</button>':'—')+'</td></tr>'});byid('sim-holdings').innerHTML=rows.length?rowTable(['成员/股票','模拟买入','状态','最早卖出','操作'],rows):empty('暂无模拟持仓');}
 function renderTx(){const rows=[...tradeData.transactions].reverse().map(t=>'<tr><td>'+escapeHtml(t.type==='buy'?'买入':'卖出')+'</td><td>'+escapeHtml((person(t.person_id)?.name)||t.person_id)+'</td><td>'+escapeHtml(t.quantity)+'</td><td>'+escapeHtml(money(t.unit_price,t.currency))+'</td><td>'+escapeHtml(new Date(t.created_at).toLocaleString('zh-CN'))+'</td></tr>');byid('sim-transactions').innerHTML=rows.length?rowTable(['类型','人物','股数','模拟价','记录时间'],rows):empty('尚无人工确认的买卖记录');}
