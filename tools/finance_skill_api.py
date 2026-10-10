@@ -118,7 +118,7 @@ function paintNewsReview(packet){
   const news=packet.news||{},items=news.items||[],high=items.filter(x=>['P0','P1'].includes(x.materiality?.tier_candidate));
   const held=items.filter(x=>x.review_priority==='hold_metadata_review');
   const stat=document.createElement('strong');
-  stat.textContent='高影响候审 '+(news.high_impact_review_candidates||0)+' 条 · 元数据待补 '+held.length+' 条 · 普通 '+items.filter(x=>x.materiality?.tier_candidate==='P2').length+' 条';
+  stat.textContent='高影响候审 '+(news.high_impact_review_candidates||0)+' 条 · 元数据待补 '+held.length+' 条 · 普通 '+items.filter(x=>x.materiality?.tier_candidate==='P2').length+' 条 · 原始版本 '+(news.raw_pending_versions||0)+' 条';
   summary.append(stat);
   const badge=document.createElement('span');badge.className='news-review-tag';
   badge.textContent='全部未核实 · 发送 0 条';summary.append(badge);
@@ -129,7 +129,7 @@ function paintNewsReview(packet){
     const card=document.createElement('article');card.className='news-review-card';
     const tag=document.createElement('span');tag.className='news-review-tag';
     tag.textContent=item.review_priority==='hold_metadata_review'?'时间/资料待核查':item.materiality.tier_candidate+' 需人工核查';
-    const title=document.createElement('strong');title.textContent=item.title;
+    const title=document.createElement('strong');title.textContent=item.display_title||item.title;
     const meta=document.createElement('small');
     meta.textContent='发布时间：'+(item.published_at||'未获取')+' · '+item.materiality.event_category_candidate;
     const reason=document.createElement('small');reason.textContent='核验重点：'+item.materiality.significance_reason+'；罗马尼亚市场影响尚未确认。';
