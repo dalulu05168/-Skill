@@ -37,6 +37,8 @@ class RoleVoiceTests(unittest.TestCase):
         self.assertNotEqual(briefs[0]["occupation"], briefs[1]["occupation"])
         self.assertTrue(all(b["native_language"] for b in briefs))
         self.assertTrue(all(b["register"].startswith("自然") for b in briefs))
+        self.assertTrue(all("可有所保留" in b["sharing_boundary"] for b in briefs))
+        self.assertIn("sharing_policy", role_voice_contract()["member"])
         with self.assertRaises(ValueError):
             member_voice_briefs(self.profiles, ["70"])
 
