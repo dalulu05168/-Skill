@@ -177,11 +177,18 @@ def summary(state, profiles):
     for pid, p in sorted(profiles.items()):
         cfg = _member_eligibility(state, pid)
         detail = p["identity_extension"]
+        investment = p.get("investment_profile") or {}
+        group = p.get("relationship_to_group") or {}
+        identity = p.get("personality") or {}
         people.append({"id": pid, "name": detail["姓名"], "age": p["source_profile"].get("年龄"),
                        "gender": p["source_profile"].get("性别"),
                        "role": p["source_profile"].get("学员资历"),
                        "occupation": p["source_profile"].get("工作_职业"),
                        "city": detail.get("居住城市", ""),
+                       "investment_focus": list(investment.get("偏好行业") or [])[:4],
+                       "position_preference": str(investment.get("单票仓位偏好") or ""),
+                       "persona_description": str(group.get("角色定位") or ""),
+                       "traits": list(identity.get("核心标签") or [])[:3],
                        "opened": cfg.get("opened", False), "funds": cfg.get("funds", {}),
                        "frequency": cfg.get("frequency", "MEDIUM"),
                        "required_today": cfg.get("required_today", False),
