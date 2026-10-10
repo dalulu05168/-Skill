@@ -7,6 +7,7 @@ import hmac
 import json
 import os
 import webbrowser
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Lock
@@ -14,6 +15,8 @@ from urllib.parse import urlparse, urlsplit, parse_qs
 
 from finance_skill_hub import run_pipeline, rss_intake
 from content_routing import routing_snapshot
+from news_collection import slot_plan as news_slot_plan, collect as collect_news_slot, due_slots as news_due_slots
+from news_evidence_gate import review_handoff as review_news_handoff
 from finance_skill_generate import generate_draft, model_status
 from chennan_writing import (load_profiles, summaries, empty_state, read_state,
                              write_state, make_prompt, validate_messages, adopt, save_doc)
@@ -287,6 +290,22 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif urlsplit(self.path).path == "/api/news/collection-plan":
+                try:
+                    now = datetime.now(timezone.utc)
+                    query = parse_qs(urlsplit(self.path).query)
+                    node_id = query.get("node", [None])[0]
+                    if node_id:
+                        plans = [news_slot_plan(node_id, at=now)]
+                    else:
+                        plans = [news_slot_plan("RO-%02d" % number, at=now)
+                                 for number in range(1, 17)]
+                    self.respond(200, {"timezone": "Europe/Bucharest",
+                                       "news_images_enabled": False,
+                                       "due_now": news_due_slots(now),
+                                       "nodes": plans, "all_data_verified": False})
+                except (ValueError, OSError, KeyError) as exc:
+                    self.respond(400, {"error": str(exc)})
             elif self.path == "/api/content/categories":
                 try:
                     self.respond(200, routing_snapshot())
@@ -357,6 +376,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self._challenge()
                 return
             if self.path not in ("/api/prepare", "/api/generate",
+                                 "/api/news/collect", "/api/news/facts/check",
                                  "/api/trading/prompt", "/api/trading/validate",
                                  "/api/trading/adopt", "/api/trading/docs",
                                  "/api/trading/sim/action",
@@ -385,6 +405,19 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 request = json.loads(self.rfile.read(int(length)))
                 if not isinstance(request, dict):
                     raise ValueError("Request must be an object")
+                if self.path == "/api/news/collect":
+                    node_id = request.get("node")
+                    if not isinstance(node_id, str):
+                        raise ValueError("Select a valid RO-01 to RO-16 node")
+                    with run_lock:
+                        collection = collect_news_slot(node_id, data_dir)
+                    self.respond(200, collection)
+                    return
+                if self.path == "/api/news/facts/check":
+                    output = review_news_handoff(request.get("review_packet"),
+                                                 no_later_than=datetime.now(timezone.utc))
+                    self.respond(200 if output["status"] != "BLOCKED" else 422, output)
+                    return
                 if self.path == "/api/generate":
                     with model_lock:
                         draft = generate_draft(
