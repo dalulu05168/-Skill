@@ -44,6 +44,17 @@ select,textarea{width:100%;border:1px solid #dcdde0;border-radius:11px;backgroun
 textarea{resize:vertical;min-height:105px;font-size:12px;margin-top:13px;line-height:1.65}
 small{color:#77797d}.status{margin-top:23px;border-left:3px solid #b38940;padding:4px 12px;font-size:13px;color:#44464a}
 pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px solid #ededf0;padding:16px;border-radius:12px;max-height:310px;overflow:auto;font-size:12px}
+.news-review-head{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin:12px 0}
+.news-review-status{font-size:12px;color:#586472}
+.news-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:12px 0 18px}
+.news-review-card{background:#fff;border:1px solid #dfe5eb;border-radius:13px;padding:14px;min-width:0;box-shadow:0 3px 12px #1d293908}
+.news-review-card:hover{border-color:#bfcad5;transform:translateY(-2px);box-shadow:0 9px 20px #1d293911}
+.news-review-card strong{display:block;font-size:13px;color:#28333e;line-height:1.55;margin:7px 0}
+.news-review-card small{display:block;color:#687380;font-size:11px;line-height:1.6}
+.news-review-card a{display:inline-flex;margin-top:9px;color:#30485d;font-weight:700;font-size:12px;text-decoration:underline}
+.news-review-tag{display:inline-block;font-size:10px;border:1px solid #d8dfe7;border-radius:99px;background:#f5f7f9;color:#435363;padding:3px 9px;font-weight:800}
+@media(max-width:800px){.news-review-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.news-review-card:hover{transform:none}}
 .field{margin-top:14px}.smallinput{margin-top:9px} .warn{font-size:12px;color:#896323;background:#fbf8ef;border-radius:12px;padding:13px 16px;margin-top:26px}
 @media(max-width:730px){.grid{grid-template-columns:1fr}.app{padding:20px 17px 50px}.top{flex-wrap:wrap}.panel{padding:20px}}
 </style></head><body><main class="app">
@@ -71,7 +82,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 <div class="step"><span>04 · 65人角色身份检查</span><b>实际读取</b></div>
 <div class="step"><span>05 · 最终审稿及发布闸门</span><b>禁止自动群发</b></div>
 <p style="font-size:12px">可选连接本地Ollama真实生成教育草稿；无模型时仅完成规则审核。仍无授权行情接口及对外自动发布服务。</p>
-<h2>本次任务结果</h2><pre id="result">运行后显示真实状态、新闻候选数和应人工核实的步骤。</pre>
+<h2>新闻与指标 · 重要性候审</h2><p class="news-review-status">只筛选可能影响市场的事件。标题分级不等于真实新闻；必须核对原文、日期、数据及罗马尼亚传导影响。当前不自动群发。</p><div id="news-review-summary" class="news-review-head"></div><div id="news-review-grid" class="news-review-grid" aria-live="polite"></div><h2>本次任务完整审核包</h2><pre id="result">运行后显示原始候审、指标核验、缺失证据与发布闸门。</pre>
 <button id="copy" class="btn alt">复制审核JSON</button></section>
 </div>
 <section class="panel" style="margin-top:18px"><h2>本地 AI 教育草稿 · 可选功能</h2>
@@ -101,6 +112,32 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 const node=document.querySelector('#node'),status=document.querySelector('#status'),result=document.querySelector('#result');
 let last=null;
 for(let i=1;i<=16;i++){let opt=document.createElement('option');opt.value='RO-'+String(i).padStart(2,'0');opt.textContent=opt.value;node.append(opt)}
+function paintNewsReview(packet){
+  const holder=document.querySelector('#news-review-grid'),summary=document.querySelector('#news-review-summary');
+  holder.replaceChildren();summary.replaceChildren();
+  const news=packet.news||{},items=news.items||[],high=items.filter(x=>['P0','P1'].includes(x.materiality?.tier_candidate));
+  const held=items.filter(x=>x.review_priority==='hold_metadata_review');
+  const stat=document.createElement('strong');
+  stat.textContent='高影响候审 '+(news.high_impact_review_candidates||0)+' 条 · 元数据待补 '+held.length+' 条 · 普通 '+items.filter(x=>x.materiality?.tier_candidate==='P2').length+' 条';
+  summary.append(stat);
+  const badge=document.createElement('span');badge.className='news-review-tag';
+  badge.textContent='全部未核实 · 发送 0 条';summary.append(badge);
+  if(!items.length){const p=document.createElement('p');p.textContent='暂无可审阅项目。未执行抓取不代表市场没有新闻。';holder.append(p);return;}
+  const viewed=[...high,...held.filter(x=>!high.includes(x))].slice(0,12);
+  if(!viewed.length){const p=document.createElement('p');p.textContent='本批没有识别出重大/重要事件候选。普通资讯仍留在原始审核包，不能据此声称没有市场风险。';holder.append(p);return;}
+  for(const item of viewed){
+    const card=document.createElement('article');card.className='news-review-card';
+    const tag=document.createElement('span');tag.className='news-review-tag';
+    tag.textContent=item.review_priority==='hold_metadata_review'?'时间/资料待核查':item.materiality.tier_candidate+' 需人工核查';
+    const title=document.createElement('strong');title.textContent=item.title;
+    const meta=document.createElement('small');
+    meta.textContent='发布时间：'+(item.published_at||'未获取')+' · '+item.materiality.event_category_candidate;
+    const reason=document.createElement('small');reason.textContent='核验重点：'+item.materiality.significance_reason+'；罗马尼亚市场影响尚未确认。';
+    const link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';
+    link.textContent='打开原文核查 ↗';
+    card.append(tag,title,meta,reason,link);holder.append(card);
+  }
+}
 async function run(fetch){
   const buttons=[document.querySelector('#local'),document.querySelector('#fetch')];
   buttons.forEach(b=>b.disabled=true);status.textContent='正在执行本地工作流…';
@@ -108,9 +145,10 @@ async function run(fetch){
     const spec=document.querySelector('#payload').value.trim()?JSON.parse(document.querySelector('#payload').value):{};
     const response=await fetchApi('/api/prepare',{spec,node:node.value||null,fetch_rss:fetch});
     last=response;const r=response.review;
+    paintNewsReview(response);
     status.textContent='执行完成：'+r.status+'；待审新闻 '+response.news.pending_count+' 条；目标栏目 '+response.slot.id+'（'+response.slot.publication+' 罗马尼亚时间）。';
     result.textContent=JSON.stringify({slot:response.slot,news:response.news,market_metadata_audit:response.market_metadata_audit,characters:response.characters,review:response.review},null,2);
-  }catch(e){status.textContent='执行失败：'+e.message;result.textContent='没有生成合格的任务包，请核对输入或网络。'}
+  }catch(e){document.querySelector('#news-review-grid').replaceChildren();document.querySelector('#news-review-summary').textContent='数据来源失败，禁止推送';status.textContent='执行失败：'+e.message;result.textContent='没有生成合格的任务包，请核对输入或网络。'}
   finally{buttons.forEach(b=>b.disabled=false)}
 }
 async function fetchApi(path,payload){let r=await window.fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let j=await r.json();if(!r.ok)throw Error(j.error||'HTTP '+r.status);return j}
