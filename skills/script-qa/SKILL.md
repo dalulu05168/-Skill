@@ -25,3 +25,6 @@ description: 对财经资料包和模拟群聊的事实、节奏、角色、媒�
 
 ## 人物情商与跨场记忆增强（2026-10-10）
 交付前加载 `../romania-market-director/references/high-empathy-storycraft-v2.md`：禁止无证据往事、无故跑题、虚构业绩、催促投资、人身贬低与机械附和；有依据的沉默、不同意见和情绪共情允许保留。使用 `tools/storycraft_contract.py` 阻止引用不存在的正式场次/消息，用户明确批准之后方可采用。仅能标出规则化的错误和部分语言警告，自动审稿不等于外部事实核验或群发批准。
+
+## 语域分层审稿（2026-10-10）
+新增 [成员／助理／教授语言风格标准](../romania-market-director/references/member-assistant-professor-voice.md)。逐条区分“成员是否像本人普通聊天”“助理是否专业易懂”“教授是否术语准确、论证严谨”。成员出现明确“我们建议投资者”“投资者应当重点关注”式证券顾问话术时阻断；明显研报/官腔或多个角色相同句式提示人工重写。助理、教授不能因专业术语被错误套用成员的口语规则。运行 `tools/role_voice.py` 的 `audit_member_register`；不声称主观自然度已自动验证。
