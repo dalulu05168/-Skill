@@ -20,7 +20,7 @@ from chennan_writing import (load_profiles, summaries, empty_state, read_state,
 from chennan_writing_ui import PAGE as WRITING_PAGE
 from trading_65 import (read_state as read_trade_state, write_state as write_trade_state,
                         summary as trade_summary, snapshot as trade_snapshot, apply as apply_trade)
-from trading_65_ui import with_trading_ui
+from trading_center_ui import PAGE as TRADING_PAGE
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
 from workspace_layout import wrap_page
@@ -201,8 +201,35 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path in ("/trading", "/writing"):
-                body = wrap_page(apply_visual_system(with_trading_ui(WRITING_PAGE)), "trading").encode("utf-8")
+            elif self.path == "/trading":
+                body = wrap_page(apply_visual_system(TRADING_PAGE), "trading").encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            elif self.path in ("/skill", "/writing"):
+                # Editorial scripts, courses, accepted conversations and role memory
+                # live in Skill, not on the trading buy/sell dashboard.
+                editorial = (WRITING_PAGE
+                    .replace("<title>交易中心 · 65人统一交易与人物工作台</title>",
+                             "<title>财经 Skill · 课程、群聊与记忆</title>")
+                    .replace("NUVEXA <span>· 交易中心</span>",
+                             "NUVEXA <span>· 财经 Skill</span>")
+                    .replace("交易中心 · 统一交易与人物工作台",
+                             "财经 Skill · 课程、群聊与记忆")
+                    .replace('data-tab="script">脚本撰写',
+                             'data-tab="script">群聊脚本')
+                    .replace('data-tab="docs">写作文档',
+                             'data-tab="docs">课程资料与文档')
+                    .replace('data-tab="history">正式会话与记忆',
+                             'data-tab="history">正式会话与人物记忆')
+                    .replace('<button data-tab="people">65人人物库</button>', '')
+                    .replace('href="/trading" aria-current="page"',
+                             'href="/skill" aria-current="page"'))
+                body = wrap_page(apply_visual_system(editorial), "skill").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
