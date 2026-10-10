@@ -260,4 +260,15 @@ def wrap_page(page, active):
     page=page.replace("</style>",SHELL_CSS+"</style>",1)
     page=page.replace("<body>","<body>"+open_frame,1)
     page=page.replace("</body>","</div></body>",1)
+    # Free previews have no persistent disk. Never present draft sessions as durable.
+    if __import__("os").environ.get("FINANCE_PREVIEW_EPHEMERAL") == "1":
+        note = ('<div role="status" style="margin:6px 0 18px;padding:12px 16px;'
+                'border:1px solid #e2c7a6;border-radius:10px;'
+                'background:#fff9f0;color:#73512c;font-weight:600">'
+                '当前为受密码保护的临时云端预览：页面和功能可以查看，'
+                '但尚未连接持久磁盘；请不要保存需要长期保留的正式会话、个人资料或交易记录。'
+                '</div>')
+        page = page.replace('<main class="app">', '<main class="app">'+note, 1)
+        page = page.replace('<div class="app">', '<div class="app">'+note, 1)
+        page = page.replace('财经内容审核 · 需人工确认', '临时云端预览 · 非持久存储', 1)
     return page
