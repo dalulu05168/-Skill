@@ -62,11 +62,11 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 <div class="tag">罗马尼亚财经 · 统一 SKILL 工作台</div></div><div class="pill">本地审核模式 · 不对外发布</div></div>
 <nav class="row" aria-label="工作台模块"><a class="btn active" style="text-decoration:none" href="/" aria-current="page">📰 新闻推送与审核</a><a class="btn alt" style="text-decoration:none;border:1px solid #b99a62" href="/trading">💹 交易中心 · 65人人物</a><a class="btn alt" style="text-decoration:none" href="/trade-platform">↗ 外部交易平台</a></nav>
 <section class="panel" style="margin-top:22px;border-color:#dfd6c4;background:#fffdf9">
-<h2>首选 · 使用你现有的 ChatGPT / 自定义 GPT</h2>
-<p style="font-size:13px">不需要安装Ollama：点击交易中心选取65人人物、生成包含档案的提示词，复制到你自己的 GPT；将GPT返回的JSON粘贴回交易中心做身份和结构校验，再由你人工确认采用。GPT无法读取GitHub时，使用页面已经打包进提示词的人物资料；未经来源核实的财经信息仍需审核。</p>
-<a href="/trading" class="btn" style="display:inline-block;text-decoration:none">进入交易中心 · 使用我的GPT →</a>
+<h2>65人群聊导演 · 使用现有 ChatGPT / 自定义 GPT</h2>
+<p style="font-size:13px">不需要安装Ollama：进入财经 Skill，选择65位人物中适合本话题的成员，生成附有各人完整档案与已采用历史的提示词；将GPT返回的JSON粘贴回工作台，进行个人口吻、连续记忆、结构与来源审查，再由你确认正式采用。GPT无法读取GitHub时，使用页面已经打包进提示词的人物资料；未经来源核实的财经信息仍需审核。</p>
+<a href="/skill" class="btn" style="display:inline-block;text-decoration:none">进入财经 Skill · 群聊编剧与记忆 →</a>
 </section>
-<h1>一次运行，联动五项审核能力。</h1><p>新闻候审、来源核验要求、16节点课程、65人身份约束与最终质量门禁由同一流程协调。只展示真实执行结果，不编造行情或 AI 生成内容。</p>
+<h1>财经资讯 × 65人独立人格 × 专业课程</h1><p>新闻候审、来源核验要求、16节点课程、65人身份约束与最终质量门禁由同一流程协调。只展示真实执行结果，不编造行情或 AI 生成内容。</p>
 <div class="grid">
 <section class="panel"><h2>统一任务入口</h2><p style="font-size:13px">可直接检查规则和下一栏目，也可联网读取BVB新闻候审。大盘数字、台词草稿必须由可核实来源提供。</p>
 <label for="node"><small>课程节点（留空自动选择下一场）</small></label>
@@ -264,7 +264,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                              'data-tab="docs">课程资料与文档')
                     .replace('data-tab="history">正式会话与记忆',
                              'data-tab="history">正式会话与人物记忆')
-                    .replace('<button data-tab="people">65人人物库</button>', '')
+                    .replace('data-tab="people">65人人物库', 'data-tab="people">65人完整档案')
                     .replace('href="/trading" aria-current="page"',
                              'href="/skill" aria-current="page"'))
                 body = wrap_page(apply_visual_system(editorial), "skill").encode("utf-8")
