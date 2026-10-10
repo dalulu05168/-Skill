@@ -1,0 +1,3 @@
+# Python 3.11 standard-library-only finance hub.
+# Exists for Render services configured with: pip install -r requirements.txt
+# No third-party runtime packages are needed for the current finance API.
