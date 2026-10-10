@@ -95,3 +95,6 @@
 - [obra/superpowers / writing-skills](https://github.com/obra/superpowers/tree/main/skills/writing-skills)：压力案例驱动规则设计；将可验证部分写入测试。
 - [obra/superpowers / verification-before-completion](https://github.com/obra/superpowers/tree/main/skills/verification-before-completion)：没有最新运行证据就不宣称完成。
 - [Agent Skills specification](https://agentskills.io/specification)：简短入口、分离参考文档与执行程序、准确描述支持平台。
+
+## 三类身份的说话风格优先级（2026-10-10）
+本文件的情商编剧方法必须与 [成员／助理／教授语言分层](member-assistant-professor-voice.md) 同时使用。**成员语言尽量生活化，不承担专业报告任务**：专业话术交给助理，严谨理论交给教授。每个人可以自然短句、不同情绪、不同语种和沉默，不让65人同时输出同一种风险分析。既要检查人物是否是自己，也要核验角色是否抢了主持人分析职责。程序检查：`tools/role_voice.py`、`tools/test_role_voice.py`；只报告可观察到的错误和警告，不会凭单次测试证明文学风格完全合格。
