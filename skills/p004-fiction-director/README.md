@@ -22,3 +22,14 @@
 
 ## 免费路线
 先依靠零额外付费的文本规范、Python标准库/JSON Schema、本地文件和现有AI会话做手动触发。外部开源框架仅作为**候选**；其代码许可不等于模型推理免费。不安装未评估的大型框架，不导入外部人的真实数据、演示交易或虚构资产。
+
+## 第一阶段：不用 Mem0 的独立 SQLite 记忆账本（2026-10-11）
+
+- 可执行代码：`scripts/scene_memory.py`（Python 3.11 标准库 sqlite3，不需安装包、不依赖模型/API）。
+- 执行测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`。
+- 只认新故事 `story_id=p004-fiction-director-independent`，只从 `characters/approved-roster.json` 中读取经确认的新角色编号；此文件目前**空白**，不使用旧65人档案。
+- 只接受 `simulation_only=true` 且 `approved_by_user=true` 的正式场次，并要求调用方明确传 `operator_confirmed=True`；按 scene_id、message_id、日期、speaker_id 存入 SQLite。
+- 相同 scene_id 重复导入相同内容会去重；内容不同直接拒绝，不能悄悄覆盖已采用的历史。无记录时按空历史处理；可按人物+关键词检索并核验引用是否确实存在。
+- 该数据库**不导入模块二交易记录**；待新角色编号经确认后再开发模块二已成交交易的只读适配器。
+- `memory/state.json` 是历史的**空白启动标记**，不是 SQLite 已采用记录的同步副本。后续一旦启用 SQLite，正式剧情记录以该数据库为准，不把两套状态自动双向同步。数据库文件默认在运行机器本地，已用 .gitignore 防止误提交；正式部署仍需持久卷/备份，容器临时盘不能保证持久。
+- 当前尚未与 `/skill` 页面、自动AI导演或正式发布操作联通。记忆引擎通过模块函数调用，不能据此声称已自动学习整天剧本。
