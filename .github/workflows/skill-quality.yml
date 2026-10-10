@@ -38,6 +38,8 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_approved_scene_memory.py' -v
       - name: Verify upstream news/data evidence is independently reviewed and professor skills exist
         run: python -m unittest discover -s tools -p 'test_upstream_data_review.py' -v
+      - name: Test three-day fictional newsroom rehearsal without fabricated historical memory
+        run: python -m unittest discover -s tools -p 'test_multiday_rehearsal.py' -v
       - name: Verify independent newsroom ranking and disclosed cross-node storyline cues
         run: python -m unittest discover -s tools -p 'test_editorial_storyline.py' -v
       - name: Test member-to-member dialogue quality and hard red lines
