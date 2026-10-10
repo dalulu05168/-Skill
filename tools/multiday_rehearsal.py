@@ -48,7 +48,10 @@ def inspect_three_day_rehearsal(package, profiles, *, adopted_scenes=None):
         if not isinstance(prior, dict) or prior.get("status") not in ("adopted", "approved"):
             continue
         pid = prior.get("id") or prior.get("scene_id")
-        if isinstance(pid, str) and pid:
+        if (isinstance(pid, str) and pid and isinstance(prior.get("messages"), list)
+                and prior["messages"] and all(isinstance(m, dict) and m.get("simulation_only") is True
+                                          and DISCLOSURE in str(m.get("text", ""))
+                                          for m in prior["messages"])):
             approved_book[pid] = prior
 
     source_report = audit_upstream_news_data(package.get("upstream_packet"))
@@ -220,3 +223,28 @@ def inspect_three_day_rehearsal(package, profiles, *, adopted_scenes=None):
         "human_editor_required": True,
         "publication_allowed": False,
     }
+
+
+def main(argv=None):
+    """Offline quality check; does not import memory or send any messages."""
+    import argparse
+    import json
+    from pathlib import Path
+    from chennan_writing import load_profiles
+
+    p = argparse.ArgumentParser(description="Three-day fictional educational rehearsal audit")
+    p.add_argument("--input", required=True, help="JSON three-day rehearsal input")
+    p.add_argument("--out", help="Write a review report JSON; nothing is published")
+    args = p.parse_args(argv)
+    package = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    report = inspect_three_day_rehearsal(package, load_profiles())
+    payload = json.dumps(report, ensure_ascii=False, indent=2)
+    if args.out:
+        Path(args.out).write_text(payload + "\n", encoding="utf-8")
+    else:
+        print(payload)
+    return 2 if report["status"] == "STRUCTURAL_BLOCKED" else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
