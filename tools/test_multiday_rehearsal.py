@@ -115,6 +115,7 @@ class ThreeDayRehearsalTests(unittest.TestCase):
         self.assertEqual(inspect_three_day_rehearsal(
             p, self.profiles, adopted_scenes=[draft])["status"], "STRUCTURAL_BLOCKED")
         draft["status"] = "adopted"
+        draft["messages"] = [member(self.profiles, "01", "hist1", "这是已采用的虚构教学讨论。")]
         self.assertEqual(inspect_three_day_rehearsal(
             p, self.profiles, adopted_scenes=[draft])["status"], "NEEDS_HUMAN_EDITION")
 
