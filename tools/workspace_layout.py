@@ -232,12 +232,11 @@ def wrap_page(page, active):
         raise ValueError("Unexpected standalone page format")
     menu = [
         ("overview", "/", "概览", active=="news"),
-        ("news", "/#news-process", "新闻", False),
-        ("trading", "/trading", "交易", active=="trading"),
-        ("review", "/skill", "Skill", active=="skill"),
-        ("people", "/trading#tc-profile", "65人", False),
+        ("review", "/skill", "群聊编剧", active=="skill"),
+        ("people", "/skill#tab-people", "65人", False),
+        ("news", "/#news-process", "资讯审核", False),
+        ("trading", "/trading", "账本", active=="trading"),
         ("external", "/trade-platform", "外站", active=="external"),
-        ("review", "/#news-process", "审核", False),
     ]
     links="".join(
         '<a class="ws-rail-link'+(" active" if selected else "")+
@@ -255,7 +254,7 @@ def wrap_page(page, active):
           '''+icon("overview")+'''<input aria-label="搜索65人人物" type="search" name="member" maxlength="80" placeholder="搜索65人成员编号、姓名、城市或职业…">
           <button type="submit" aria-label="搜索人物">↵</button>
         </form>
-        <div class="ws-top-right"><span class="ws-top-badge">本地内部审核 · 无自动发布</span>
+        <div class="ws-top-right"><span class="ws-top-badge">财经内容审核 · 需人工确认</span>
           <span class="ws-user" aria-label="NUVEXA">N</span></div>
       </header>'''
     page=page.replace("</style>",SHELL_CSS+"</style>",1)
