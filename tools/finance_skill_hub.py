@@ -22,6 +22,7 @@ sys.path.insert(0, str(DIRECTOR / "scripts"))
 import rss_intake  # noqa: E402
 import validate_persona_roster as personas  # noqa: E402
 from finance_skill_editorial import audit_editorial  # noqa: E402
+from skill_execution_contract import audit_publication_packet  # noqa: E402
 from content_routing import routing_snapshot  # noqa: E402
 from rsi_core.quality import audit_observations  # noqa: E402
 
@@ -115,6 +116,13 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
     issues = validate_messages(messages, roster, selected)
     editorial = audit_editorial(spec.get("editorial_packet"), messages)
     issues.extend(editorial["issues"])
+    publication = (
+        audit_publication_packet(spec.get("publication_packet"))
+        if "publication_packet" in spec else
+        {"status": "not_run", "issues": [], "human_review_required": True,
+         "facts_verified": False, "publication_allowed": False}
+    )
+    issues.extend(publication["issues"])
     if isinstance(spec.get("editorial_packet"), dict):
         packet = spec["editorial_packet"]
         if packet.get("date") != selected["date"] or packet.get("node_id") != selected["id"]:
@@ -176,6 +184,7 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         "generated_at": now.isoformat(),
         "source_scope": "dalulu05168/-Skill only; no cross-project character or data import",
         "slot": selected,
+        "publication_quality": publication,
         "content_classification": {
             "category": next(r["category"] for r in routing_snapshot()["nodes"] if r["id"] == selected["id"]),
             "schedule_unchanged": True, "review_required": True,
