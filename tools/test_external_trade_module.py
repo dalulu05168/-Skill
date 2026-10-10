@@ -41,7 +41,7 @@ class ExternalTradeModuleTests(unittest.TestCase):
         self.assertIn("65人人物", PAGE)
         for section in ("news", "trading", "skill", "external"):
             with self.subTest(section=section):
-                html = wrap_page("<main class='app'><h1>Demo</h1></main>", section)
+                html = wrap_page(PAGE, section)
                 self.assertIn("图片编辑", html)
                 self.assertIn('href="/trading"', html)
                 self.assertIn('href="/skill', html)
