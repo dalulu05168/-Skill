@@ -96,6 +96,7 @@ class RoleVoiceTests(unittest.TestCase):
         self.assertEqual(len(prompt["selected_personal_voice_briefs"]), 2)
         self.assertEqual(prompt["role_voice_contract"]["professor"]["register"], "expert_academic")
         self.assertTrue(any("普通成员" in x for x in prompt["instructions"]))
+        self.assertTrue(any("分享边界" in x for x in prompt["instructions"]))
         draft = state["drafts"][prompt["draft_id"]]
         profile = self.profiles["01"]
         identity = {"character_id": "01",
