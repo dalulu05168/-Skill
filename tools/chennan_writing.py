@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from finance_skill_hub import DIRECTOR, personas, slot_for
 from dialogue_quality import DISCLOSURE, audit_dialogue
+from storycraft_contract import audit_storycraft
 from editorial_storyline import plan_disclosed_scene
 from skill_execution_contract import audit_member_voice, load_official_memory, lesson_for
 
@@ -145,6 +146,8 @@ def make_prompt(payload, profiles, state):
     # sessions (which could omit an infrequent character's older adopted memory).
     recent = [
         {
+            "id": s["id"],
+            "status": "adopted",
             "date": s["date"],
             "source_kind": s["source_kind"],
             "source_text": s["source_text"],
@@ -175,6 +178,8 @@ def make_prompt(payload, profiles, state):
             "do_not_invent_prior_conversations": True,
             "no_fixed_personality_mutations": True,
             "session_memory_scope": "this_workstation_only; other BVB UI history not synced",
+            "history_citation_format": {"continuity_ref": {"session_id": "adopted scene id", "message_id": "approved message id"}},
+            "uncited_memories": "do not treat a confident-sounding backstory as adopted history",
             "unresolved_history": "unknown until imported and approved",
         },
         "professor_course_policy": lesson,
@@ -199,12 +204,18 @@ def make_prompt(payload, profiles, state):
             "助理分析必须含新闻出处/时间/发生事件/对BVB与行业影响链/抵消因素/不确定性/下次核对条件；不杜撰新闻和指数。", 
             "教授仅19:30，周一三五技术课、周二四理念课；技术课原稿缺失必须说明，不冒称已获得旧讲稿。", 
             "记忆只能经人工检查并明确采用后存为正式会话，生成草稿不能自动写历史。",
+            "先阅读 skills/romania-market-director/references/high-empathy-storycraft-v2.md：根据人物情绪、关系和上一句证据安排自然对白，不强制每人发言或每轮起冲突。",
+            "人物对白正文不要说自己是虚拟角色、AI、模拟人物、按剧本表演等出戏台词；身份披露属于作品标识与输出元数据，不得删除独立流转内容的必要披露。",
+            "凡是提及某人昨天说过、前几场发生过或已经改变立场，必须来自 recent_adopted_sessions 或已采用正式记忆；在 JSON 的该消息里提供 continuity_ref 的 session_id 与 message_id；没有证据就写为新问题，不能假装旧事。",
+            "出现质疑、焦虑、后悔、误解时先承接具体问题与情绪，再解释事实、风险和未知，不居高临下、不贴标签、不催促下单。",
+            "把每条消息的主题关联、所据来源和话语目的想清楚；没有关联就删减或标记待核，不制造热点、假历史或无关商业话术。",
         ],
         "output_schema": {"messages": [
             {"character_id": ids[0], "name": profiles[ids[0]]["identity_extension"]["姓名"],
              "gender": profiles[ids[0]]["source_profile"]["性别"],
              "role": profiles[ids[0]]["source_profile"]["学员资历"],
-             "text": "【虚构教学模拟】只用于说明JSON字段格式；不是真实生成的消息"}
+             "text": "【虚构教学模拟】只用于说明JSON字段格式；不是真实生成的消息",
+             "continuity_ref": None}
         ]},
     }
     new_state = dict(state)
@@ -266,7 +277,10 @@ def validate_messages(raw, draft, profiles, sessions):
                         "media_type": m.get("media_type", "TEXT"),
                         "asset_id": m.get("asset_id"),
                         "asset_verified": m.get("asset_verified", False),
-                        "reply_to": m.get("reply_to") or None})
+                        "reply_to": m.get("reply_to") or None,
+                        "continuity_ref": m.get("continuity_ref"),
+                        "historical_claim": m.get("historical_claim", False),
+                        "evidence_ref": m.get("evidence_ref")})
     for m in cleaned:
         if m["reply_to"] and m["reply_to"] != "source" and m["reply_to"] not in used:
             errors.append("Unknown reply reference: " + str(m["reply_to"]))
@@ -274,12 +288,15 @@ def validate_messages(raw, draft, profiles, sessions):
     errors.extend(dialogue["issues"])
     personal_voice = audit_member_voice(cleaned, profiles)
     errors.extend(personal_voice["issues"])
+    storycraft = audit_storycraft(cleaned, draft=draft, sessions=sessions)
+    errors.extend(storycraft["issues"])
     if any(s.get("draft_id") == draft["id"] for s in sessions):
         errors.append("This draft was already formally adopted")
     return {"valid": not errors, "errors": errors,
             "message_count": len(cleaned), "messages": cleaned,
             "dialogue_quality": dialogue,
             "persona_quality": personal_voice,
+            "storycraft_quality": storycraft,
             "warning": "Checks and red-line heuristics are not factual verification. Dialogue naturalness, market facts, and media still need human review."}
 
 
