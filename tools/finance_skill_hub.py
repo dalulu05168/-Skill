@@ -23,6 +23,7 @@ import rss_intake  # noqa: E402
 import validate_persona_roster as personas  # noqa: E402
 from finance_skill_editorial import audit_editorial  # noqa: E402
 from skill_execution_contract import audit_publication_packet, audit_upstream_news_data  # noqa: E402
+from editorial_storyline import rank_news_for_review  # noqa: E402
 from content_routing import routing_snapshot  # noqa: E402
 from rsi_core.quality import audit_observations  # noqa: E402
 
@@ -115,6 +116,10 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
     messages = spec.get("messages", [])
     issues = validate_messages(messages, roster, selected)
     upstream_audit = audit_upstream_news_data(spec.get("upstream_packet"))
+    topic_review = (rank_news_for_review(spec["news_priority_candidates"])
+                    if "news_priority_candidates" in spec else
+                    {"status": "not_requested", "review_queue": [],
+                     "source_facts_verified": False, "not_a_publish_queue": True})
     issues.extend(upstream_audit["issues"])
     editorial = audit_editorial(spec.get("editorial_packet"), messages)
     issues.extend(editorial["issues"])
@@ -188,6 +193,7 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         "slot": selected,
         "publication_quality": publication,
         "upstream_fact_review": upstream_audit,
+        "news_topic_review": topic_review,
         "content_classification": {
             "category": next(r["category"] for r in routing_snapshot()["nodes"] if r["id"] == selected["id"]),
             "schedule_unchanged": True, "review_required": True,
