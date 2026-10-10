@@ -59,6 +59,9 @@ def main():
         "skills/news-priority",
         "skills/character-consistency",
         "skills/script-qa",
+        "skills/professor-core",
+        "skills/technical-course",
+        "skills/investment-philosophy",
         "third_party/orchestra-research",
         "tools/test_accuracy_pack.py",
         "tools/finance_skill_hub.py",
@@ -80,6 +83,9 @@ def main():
         assert "skills/script-qa/SKILL.md" in z.namelist()
         assert "tools/dialogue_quality.py" in z.namelist()
         assert "tools/skill_execution_contract.py" in z.namelist()
+        assert "skills/professor-core/SKILL.md" in z.namelist()
+        assert "skills/technical-course/SKILL.md" in z.namelist()
+        assert "skills/investment-philosophy/SKILL.md" in z.namelist()
         assert "tools/chennan_writing.py" in z.namelist()
         assert "third_party/orchestra-research/AI-Research-SKILLs/LICENSE" in z.namelist()
     print("SUCCESS: verified director", small_count, "and full", large_count, "files.")
