@@ -67,7 +67,7 @@ class UIContractTests(unittest.TestCase):
 
     def test_shell_has_no_external_tracking_or_broken_navigation(self):
         rendered=wrap_page("<html><head><style></style></head><body><main class='app'>ok</main></body></html>","external")
-        self.assertIn('href="/trading#tab-people"',rendered)
+        self.assertIn('href="/trading#tc-profile"',rendered)
         self.assertIn('href="/trade-platform"',rendered)
         self.assertIn('name="member"',rendered)
         self.assertIn('aria-label="主模块"',rendered)
