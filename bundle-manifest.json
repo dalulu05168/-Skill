@@ -35,19 +35,24 @@
     "all_original_times_shift_minutes": -30
   },
   "message_targets": {
-    "scope": "weekday three phases including all stages within each phase, not per individual slot",
+    "scope": "weekday across all scheduled nodes; advice not automatic send",
     "morning": {
-      "min": 40,
-      "max": 45
+      "target": 35,
+      "min": 32,
+      "max": 38
     },
     "afternoon": {
-      "approx": 40
+      "target": 35,
+      "min": 32,
+      "max": 38
     },
     "evening": {
-      "approx": 45
+      "target": 30,
+      "min": 27,
+      "max": 33
     },
-    "exception_policy": "Flex on material events; prioritize quality, cut low-value repeats, no padding",
-    "weekend": "flex based on event and verified content"
+    "exception_policy": "Flex with verified material news, quality before quotas; do not fill with invented activity",
+    "weekend": "separate schedule; no weekday message quotas"
   },
   "identity_gate": {
     "strict": true,
@@ -110,5 +115,14 @@
     "upstream_license": "third_party/orchestra-research/AI-Research-SKILLs/LICENSE",
     "static_test": "tools/test_accuracy_pack.py",
     "auto_deployed": false
+  },
+  "storycraft": {
+    "version": "2.0",
+    "standard": "skills/romania-market-director/references/high-empathy-storycraft-v2.md",
+    "validator": "tools/storycraft_contract.py",
+    "memory_refs": "approved session_id + message_id; no guesswork",
+    "tests": "tools/test_storycraft_contract.py",
+    "disclosure_boundary": "in-scene speech natural; page-level and standalone exported disclosure kept",
+    "qa_scope": "deterministic hard checks and editor warnings; not verification of naturalness or facts"
   }
 }
