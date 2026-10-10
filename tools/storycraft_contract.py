@@ -21,7 +21,7 @@ INVALIDATION = re.compile(
     r"你太敏感了|你不懂就别问|不要再问这种问题)"
 )
 PERSONAL_ATTACK = re.compile(
-    r"(?:你(?:就是|真是|这个)?(?:傻逼|蠢货|废物)|"
+    r"(?:你(?:就是|真是|这个|这种)?(?:傻逼|蠢货|废物)|"
     r"你(?:根本)?不配(?:投资|发言|提问)|滚出(?:这个)?群)"
 )
 PRESSURE = re.compile(
@@ -125,7 +125,7 @@ def audit_storycraft(messages, *, draft=None, sessions=None):
         if ASSERTED_VERIFIED.search(body) and not message.get("evidence_ref"):
             warnings.append(f"message {i}: source-verification claim needs independently checked evidence")
         if body and len(body) >= 8:
-            previous_openings[body[:7]] += 1
+            previous_openings[body[:6]] += 1
 
         ref = message.get("continuity_ref")
         if ref is not None:
