@@ -33,7 +33,7 @@ body{background:#fff!important;color:#20242a}
 <div class="top"><div><div class="brand">NUVEXA <span>· 交易中心</span></div>
 <div class="sub">正式65人数据源 · 模拟股票买卖与持仓</div></div>
 <nav aria-label="主模块"><a href="/">新闻推送</a><a class="active" href="/trading" aria-current="page">交易中心</a>
-<a href="/skill">财经 Skill</a><a href="/trade-platform">外部平台</a></nav></div>
+<a href="/skill">财经 Skill</a><a href="/trade-platform">图片编辑器</a></nav></div>
 <h1>交易中心 · 模拟买卖与持仓</h1>
 <p>65名成员的身份资料直接读取正式 v4.1 人物库。此页面只负责模拟交易资格、股票计划、买入、持仓、卖出与对应的交易事实记录。</p>
 <div class="tc-note">课程资料、群聊脚本、正式会话与人物记忆统一在
