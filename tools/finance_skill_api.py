@@ -88,6 +88,19 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 <h2>新闻与指标 · 重要性候审</h2><p class="news-review-status">只筛选可能影响市场的事件。标题分级不等于真实新闻；必须核对原文、日期、数据及罗马尼亚传导影响。当前不自动群发。</p><div id="news-review-summary" class="news-review-head"></div><div id="news-review-grid" class="news-review-grid" aria-live="polite"></div><h2>本次任务完整审核包</h2><pre id="result">运行后显示原始候审、指标核验、缺失证据与发布闸门。</pre>
 <button id="copy" class="btn alt">复制审核JSON</button></section>
 </div>
+<section class="panel" style="margin-top:18px" id="news-collection">
+<h2>16节点 · 精确来源和采集计划（罗马尼亚时间）</h2>
+<p style="font-size:13px">每个栏目都列出备料时间、来源网站、具体版块、采集内容及可获取状态。BVB RSS可以按需真实抓取；其他网页不是自动实时行情接口，必须打开原始记录人工复核。没有新闻配图任务。</p>
+<div class="row"><button id="plan-reload" class="btn alt">刷新16节点采集清单</button><button id="node-collect" class="btn">抓取所选节点官方RSS</button></div>
+<div class="status" id="plan-status">正在读取正式来源时刻表…</div>
+<div id="collection-plan-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px;margin-top:15px"></div>
+<h2 style="margin-top:26px">独立事实复核 · 模块三使用前必须审核</h2>
+<p style="font-size:13px">需逐条打开原始公告，校验准确标题、发布时间、统计期、数字、单位、比较基准、观测时间、出处及反向因素。审核人签名、原始内容SHA-256和证据摘录必须齐全。这里不声称机器已经认证事实。</p>
+<label for="review-packet"><small>粘贴模块一原文复核 JSON（node_id、date、facts）</small></label>
+<textarea id="review-packet" style="min-height:145px" placeholder='{"node_id":"RO-07","date":"YYYY-MM-DD","facts":[]}'></textarea>
+<div class="row"><button id="review-facts" class="btn alt">核对复核记录并保存</button><a class="btn alt" href="/skill" style="text-decoration:none">进入模块三 →</a></div>
+<div class="status" id="review-facts-status">未收到符合要求的事实复核记录。当前新闻不可作为已确认事实写入人物发言。</div>
+</section>
 <section class="panel" style="margin-top:18px"><h2>本地 AI 教育草稿 · 可选功能</h2>
 <p style="font-size:13px">只有本机 Ollama 和模型实际安装后才可生成。助理、教授和65名虚构成员分别调用原有规则，始终留在内部审核状态。</p>
 <div class="grid" style="margin-top:10px">
@@ -113,6 +126,57 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 <div class="warn">数据真实性规则：RSS抓取成功不等于核实正文；人物仅用于标注的虚构教学演绎；运行任务与已发布内容严格区分。</div></main>
 <script>
 const node=document.querySelector('#node'),status=document.querySelector('#status'),result=document.querySelector('#result');
+async function refreshSourceClock(){
+ const host=document.querySelector('#collection-plan-grid');
+ host.replaceChildren();
+ document.querySelector('#plan-status').textContent='读取官方16节点时刻与来源…';
+ try{
+  const res=await window.fetch('/api/news/collection-plan');
+  const data=await res.json();if(!res.ok)throw Error(data.error||'获取失败');
+  for(const entry of data.nodes){
+   const card=document.createElement('details');card.className='news-review-card';
+   const head=document.createElement('summary');head.style.cursor='pointer';head.style.fontWeight='700';
+   head.textContent=entry.node_id+' · '+entry.topic+'｜备 '+entry.preparation+'／栏目 '+entry.publication;
+   card.append(head);
+   for(const task of entry.tasks){
+    const line=document.createElement('div');line.style.padding='10px 0';
+    line.style.borderBottom='1px solid #e8ebed';line.style.fontSize='12px';
+    const a=document.createElement('a');a.href=task.url;a.target='_blank';a.rel='noopener noreferrer';
+    a.textContent=task.source_id+' · '+task.site_section;
+    const desc=document.createElement('div');desc.textContent='核对：'+task.collect;
+    const mode=document.createElement('small');mode.textContent=task.method==='rss'?
+       '官方RSS可按需拉取，收到后仍需原文核实':'仅官方网站入口：人工进入相关版块核实，不是实时接口';
+    line.append(a,desc,mode);card.append(line);
+   }
+   host.append(card);
+  }
+  document.querySelector('#plan-status').textContent='正式16节点已加载｜Europe/Bucharest，夏冬令时自动转换｜全部未自动发布｜新闻配图已取消';
+ }catch(e){document.querySelector('#plan-status').textContent='采集计划不可用：'+e.message}
+}
+document.querySelector('#plan-reload').onclick=refreshSourceClock;
+document.querySelector('#node-collect').onclick=async()=>{
+ const el=document.querySelector('#node-collect');el.disabled=true;
+ const msg=document.querySelector('#plan-status');msg.textContent='正在抓取官方RSS，非新闻事实认证…';
+ try{
+  const data=await fetchApi('/api/news/collect',{node:node.value});
+  const statuses=data.items.map(x=>x.source_id+': '+x.state).join('；');
+  msg.textContent='已执行采集任务（未核实）：'+statuses;
+ }catch(e){msg.textContent='采集失败：'+e.message}
+ finally{el.disabled=false}
+};
+document.querySelector('#review-facts').onclick=async()=>{
+ const msg=document.querySelector('#review-facts-status');
+ msg.textContent='检查原文来源、时间、数字和人工审核元数据…';
+ try{
+  const packet=JSON.parse(document.querySelector('#review-packet').value);
+  const response=await window.fetch('/api/news/facts/check',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({review_packet:packet,save:true})});
+  const result=await response.json();if(!response.ok)throw Error((result.issues||[]).join('；')||result.error);
+  msg.textContent=result.status+'：'+result.usable_facts.length+'条已带人工复核记录存入本机。仅供模块三参考；最终发布仍需审稿。';
+ }catch(e){msg.textContent='复核未通过，不能给模块三作为事实：'+e.message}
+};
+refreshSourceClock();
+
 let last=null;
 for(let i=1;i<=16;i++){let opt=document.createElement('option');opt.value='RO-'+String(i).padStart(2,'0');opt.textContent=opt.value;node.append(opt)}
 function paintNewsReview(packet){
