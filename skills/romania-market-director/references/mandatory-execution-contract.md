@@ -57,3 +57,6 @@
 6. 产出候审报告：`CONFIRMED`（确有人工/外部证据核实）、`CONFLICT`、`UNVERIFIED`、`REJECTED`；本地纯代码只能检查格式及证据声明，**不得自行把UNVERIFIED升为CONFIRMED**。任何对外发布依赖单独人工批准。
 
 课程重构来源：现有 `skills/professor-core/SKILL.md`、`skills/technical-course/SKILL.md`、`skills/investment-philosophy/SKILL.md` 为当前可执行*新建框架*，并非旧原版完整技术课；原始材料缺口需要透明保留。
+
+## 多线剧情与新闻筛选新增约束
+以 `references/storyline-director.md` 为细化规则。新闻的重要性/罗马尼亚关联/真正新增证据优先，讨论性次之，**不得只挑有利于短期市场判断的新闻**。新新闻发布时成员完全可以继续讨论上一轮已实际采用场景里的未解问题；助理可记录而非强制结束争议。冲突围绕证据和因果关系，不能使用辱骂、真人造谣、伪造投资经历或未披露的人物代言。短周期风险与市场观察可以自然融入，不承诺盈利或隐瞒重大风险。用户约35/35/30为弹性内容节奏，不要求固定冲突次数和固定角色出场。
