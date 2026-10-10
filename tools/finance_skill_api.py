@@ -348,6 +348,17 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                         profiles = load_profiles()
                         if self.path in ("/api/trading/prompt", "/api/writing/prompt"):
                             prompt, changed = make_prompt(request, profiles, state)
+                            if self.path == "/api/trading/prompt":
+                                ledger = read_trade_state(trade_path)
+                                snapshot = trade_snapshot(ledger, request.get("date"))
+                                selected = {str(value).zfill(2) for value in request.get("selected_ids", [])}
+                                prompt["trade_facts"] = [fact for fact in snapshot["facts"]
+                                                         if fact["character_id"] in selected]
+                                prompt["trade_fact_source"] = "trading-65-confirmed-simulation-only"
+                                prompt["instructions"].append(
+                                    "角色若提及已买入、持仓或卖出，仅可引用trade_facts内有证据的本角色模拟记录；"
+                                    "没有记录就不得编造交易、收益或账户状态；所有交易对话标明虚构教学模拟。"
+                                )
                             write_state(writing_path, changed)
                             output = {"prompt": prompt, "revision": changed["revision"]}
                         elif self.path in ("/api/trading/validate", "/api/writing/validate"):
