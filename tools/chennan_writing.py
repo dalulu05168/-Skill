@@ -138,7 +138,21 @@ def make_prompt(payload, profiles, state):
             raise ValueError
     except (ValueError, TypeError):
         raise ValueError("Date must be YYYY-MM-DD") from None
-    lesson = lesson_for(day, node["id"])
+    # Module 1 is the sole handoff for dated market/news claims. An optional
+    # educational scene without evidence must not imply today's facts are known.
+    from news_evidence_gate import review_handoff
+    from datetime import datetime as _current_datetime
+    packet = payload.get("news_review_packet")
+    evidence = (review_handoff(packet, no_later_than=_current_datetime.now(timezone.utc))
+                if packet is not None else
+                {"status": "NO_MODULE1_EVIDENCE_EDUCATION_ONLY", "issues": [],
+                 "usable_facts": [], "facts_machine_verified": False,
+                 "public_release_allowed": False})
+    if payload.get("use_current_news") is True and evidence["status"] != "EDITOR_REVIEWED_FOR_SCRIPT":
+        raise ValueError("Module 1 factual review is required before current news or prices may enter Module 3: " + "; ".join(evidence.get("issues", [])))
+    if payload.get("use_current_news") not in (None, True, False):
+        raise ValueError("use_current_news must be boolean")
+        lesson = lesson_for(day, node["id"])
     if kind == "professor" and not lesson["can_speak"]:
         raise ValueError("Professor course is permitted only on weekdays at RO-10")
     topic = str(payload.get("topic") or "课程互动").strip()[:160]
@@ -169,6 +183,9 @@ def make_prompt(payload, profiles, state):
         "node": node["id"],
         "source_kind": kind,
         "source_text": source,
+        "module1_fact_handoff": evidence,
+        "current_news_enabled": payload.get("use_current_news") is True,
+        "news_images_enabled": False,
         "roster_source": ROSTER_SOURCE,
         "selected_characters": [profiles[cid] for cid in ids],
         "role_voice_contract": role_voice_contract(),
@@ -202,6 +219,9 @@ def make_prompt(payload, profiles, state):
             "所有模拟个人买卖、持仓及盈亏情节必须标【假设】；任何单独流转的成员文本必须带【虚构教学模拟】。",
             "所有人物和对白均为虚构教学演练，不能冒充真实投资者或真实客户见证。",
             "不得编造行情、收益、交易记录、账户数据、新闻来源或已经发送的媒体。",
+            "模块一→事实复核→模块三：只有 module1_fact_handoff.usable_facts 中逐条提供来源、发布时间、观察时间、数值/基准及复核人的事实，才能作为当日行情或新闻依据；引用必须保留出处和不确定性。",
+            "如果 current_news_enabled=false 或没有合规核实包，则只可写不依赖当日数字的概念教学、问题与明确【假设】的案例；不得把 source_text 原文的财经断言当作已核实事实。",
+            "不制作、不提出、不插入新闻配图任务；GIF/成员表情按原人物许可规则独立处理。",
             "只返回 JSON：messages 数组；每条含 character_id、name、gender、role、text；可选 message_id、reply_to。",
             "逐人读取本人语言DNA、句长偏好、Emoji/GIF许可、16节点/活跃时段与实际已采用记忆；未记录的人物旧事必须说未知，不编造。", 
             "助理分析必须含新闻出处/时间/发生事件/对BVB与行业影响链/抵消因素/不确定性/下次核对条件；不杜撰新闻和指数。", 
@@ -231,6 +251,8 @@ def make_prompt(payload, profiles, state):
     new_state["drafts"][draft_id] = {
         "id": draft_id, "date": day, "topic": topic, "node": node["id"],
         "selected_ids": ids, "source_kind": kind, "source_text": source,
+        "current_news_enabled": payload.get("use_current_news") is True,
+        "module1_evidence_urls": [f["original_url"] for f in evidence.get("usable_facts", [])],
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     # Bound pending prompt metadata, not the 65 full profiles.
