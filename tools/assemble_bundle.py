@@ -68,6 +68,7 @@ def main():
         "tools/finance_skill_editorial.py",
         "tools/dialogue_quality.py",
         "tools/skill_execution_contract.py",
+        "tools/approved_scene_memory.py",
         "tools/chennan_writing.py",
         "tools/chennan_writing_ui.py",
         "tools/external_trade_ui.py",
