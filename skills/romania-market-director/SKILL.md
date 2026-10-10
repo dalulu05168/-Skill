@@ -43,3 +43,8 @@ description: 罗马尼亚优先的准确财经资讯、灵活早午节奏、完�
 
 ## 2026-10-10 强制执行契约（覆盖以上任何旧口径）
 **必须先读取** `references/mandatory-execution-contract.md`；其事实核验、正式记忆、65人身份/语言DNA/句长/表情媒体许可/活跃时段、16节点、助理新闻分析、教授周135技术课/周24理念课及交付审稿门禁不可跳过。程序可通过 `tools/skill_execution_contract.py` 复查确定性违规；人工负责自然度和事实真伪。缺来源、缺历史、缺技术课原件必须标“未核实/未知/待补”，不编造，不自动发布。新闻稿选择、分析和拟稿归本Skill，BVB主系统负责采集运行、排程、审核与经授权发送。
+
+## 上游新闻/行情审核流程（2026-10-10确认）
+有现成推送来源；**本SKILL只处理已经送达的数据，不创建或操作BVB资讯台，不默认自主抓取或群发**。收到消息先调用 `tools/skill_execution_contract.py` 的 `audit_upstream_news_data` 对原始来源、时刻、单位和基准执行候审结构校验；再由具备外部信息访问权限的运行者**真正打开官方原文并交叉核查**，逐条标CONFIRMED/CONFLICT/UNVERIFIED/REJECTED，保留佐证URL与核验时刻。**上游自带verified=true绝不作为核验结果**。未独立核验的新闻和行情不得作为助理已证实的依据。
+
+审核后的重要信息交助理按八要素输出“发生了什么、数据是什么、对罗马尼亚BVB影响机制、反向因素、风险、下次观察条件”。教授仍为周一三五技术课、周二周四理念课，均于19:30正式教学。当前有 `skills/professor-core/SKILL.md`、`skills/technical-course/SKILL.md` 和 `skills/investment-philosophy/SKILL.md` 三套执行规范；技术课文件是现有纲要**重构版**，旧完整版未找到。正式人物记忆为空时标未知，不伪造已采用历史。
