@@ -97,6 +97,17 @@ SCRIPT = r'''<script>
 'use strict';
 const tradeRoot=document.getElementById('tab-sim');
 const byid=s=>document.getElementById(s);
+async function api(path,payload){
+ const options=payload===undefined
+  ? {credentials:'same-origin'}
+  : {method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)};
+ const response=await fetch(path,options);
+ let data;
+ try{data=await response.json()}
+ catch(error){throw new Error('接口没有返回有效JSON（HTTP '+response.status+'）')}
+ if(!response.ok)throw new Error(data?.error||'HTTP '+response.status);
+ return data;
+}
 const escapeHtml=s=>String(s===null||s===undefined?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let tradeData=null,initialized=false;
 function setMsg(s){byid('sim-message').textContent=s}

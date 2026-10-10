@@ -36,6 +36,8 @@ class TradingSkillUiSeparation(unittest.TestCase):
                         self.assertIn('href="/skill"', page)
                         self.assertIn('href="/trading"', page)
                     self.assertIn('id="sim-people-table"', trading)
+                    self.assertIn('async function api(path,payload)', trading,
+                                  'Trading browser controls require their own API helper')
                     self.assertIn('id="tc-profile-select"', trading)
                     self.assertIn('data-tab="sim"', trading)
                     for blocked in ('id="tab-script"', 'id="tab-docs"', 'id="tab-history"'):

@@ -44,9 +44,9 @@ body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Mi
  display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 23px}
 .ws-top-search{min-width:250px;width:min(430px,70%);display:flex;align-items:center;gap:11px;
  height:42px;padding:0 12px;background:#fff;border:1px solid #e5e8eb;border-radius:9px;color:#8a949b}
-.ws-top-search input{width:100%;flex:1;font-size:12px;color:#37414a;border:0;padding:2px;min-width:0;height:auto;min-height:0;outline:0;background:transparent}
+.ws-top-search input{width:100%;flex:1;font-size:13px;color:#37414a;border:0;padding:2px;min-width:0;height:32px;min-height:32px;outline:0;background:transparent}
 .ws-top-search input:focus-visible{outline:0;border:0}
-.ws-top-search button{border:0;background:transparent;color:#8a949b;padding:2px;cursor:pointer;min-height:0;font-size:16px}
+.ws-top-search button{border:0;background:transparent;color:#68737d;padding:6px;cursor:pointer;width:38px;min-width:38px;height:38px;min-height:38px;display:grid;place-items:center;font-size:16px}
 .ws-top-right{display:flex;gap:11px;align-items:center}
 .ws-top-badge{font-size:11px;color:#68757a;border:1px solid #e5e8eb;border-radius:7px;padding:6px 9px;white-space:nowrap}
 .ws-user{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e7f7f4;border:1px solid #d0e9e4;color:#18827c;font-size:13px;font-weight:850}
