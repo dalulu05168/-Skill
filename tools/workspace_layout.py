@@ -20,12 +20,12 @@ def icon(name):
 SHELL_CSS = r'''
 /* Shared design system: approved white/gray + soft teal fintech screenshot */
 :root{
- --ws-teal:#008f88;--ws-teal-pale:#ecf8f6;--ws-ink:#1d2329;--ws-dim:#77818a;
- --ws-border:#e8eaed;--ws-line:#eef0f2;--ws-shadow:0 18px 46px #668e8920;
- --ui-gold:#008f88;--ui-gold-soft:#e9f6f4;
+ --ws-teal:#3b4652;--ws-teal-pale:#f3f5f7;--ws-ink:#1d2329;--ws-dim:#77818a;
+ --ws-border:#e6e9ed;--ws-line:#eef0f2;--ws-shadow:0 12px 36px #1118270c;
+ --ui-gold:#3b4652;--ui-gold-soft:#f3f5f7;
 }
 html{scroll-behavior:smooth}
-body{background:radial-gradient(circle at 12% 13%,#b7e0dc 0%,#e4f4f3 31%,#d9eded 65%,#e6f1f0 100%);color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
 .ws-frame{display:grid;grid-template-columns:76px minmax(0,1fr);grid-template-rows:66px minmax(0,1fr);
  min-height:min(900px,calc(100vh - 60px));width:min(1510px,calc(100% - 58px));margin:30px auto;
  background:#fff;border:1px solid #e7edec;border-radius:8px;box-shadow:var(--ws-shadow);overflow:clip}
@@ -136,12 +136,63 @@ body{background:radial-gradient(circle at 12% 13%,#b7e0dc 0%,#e4f4f3 31%,#d9eded
 .ws-controls{align-items:flex-start;flex-direction:column}.ws-search-label,.ws-search-label input{width:100%}
 .ws-tabs{gap:14px}.ws-tabs a{font-size:11px}
 }
+
+/* Consistent white UI across news, trade, skill and external modules. */
+.ws-frame{background:#fff;border-color:#e6e9ed;box-shadow:0 12px 36px #1118270c}
+.ws-frame .ws-rail,.ws-frame .ws-top,.ws-frame>.app{background:#fff!important}
+.ws-frame .ws-rail-link:hover,.ws-frame .ws-rail-link.active{background:#f5f6f8;color:#27313d!important}
+.ws-frame .ws-kpi,.ws-frame>.app .card,.ws-frame>.app .panel,.ws-frame .sim-counter{
+  background:#fff!important;border:1px solid #e4e8ed!important;
+  box-shadow:0 3px 12px #1c283008!important;
+  transition:transform .23s ease,border-color .23s ease,box-shadow .23s ease,background .23s ease;
+}
+.ws-frame>.app .note,.ws-frame>.app .warn,.ws-frame .sim-alert,.ws-frame .tc-note{
+  background:#fff!important;color:#515c68!important;border:1px solid #e6e9ed!important;
+}
+.ws-frame>.app .btn.alt,.ws-frame>.app button.alt,.ws-frame>.app .btnlink{
+  background:#f5f6f8!important;color:#28323d!important;border:1px solid #e3e7ec!important
+}
+.ws-frame>.app input,.ws-frame>.app select,.ws-frame>.app textarea,
+.ws-frame>.app pre,.ws-frame .sim-tablewrap{background:#fff!important;color:#242a33;border-color:#dfe4e9}
+.ws-frame>.app .sim-tag.warn{background:#f3f5f7;color:#485564}
+.ws-frame .ws-user{background:#f2f4f6;color:#343e49;border-color:#e3e8ee}
+.ws-frame .ws-filter.active{background:#f4f6f8!important;color:#25303b!important;border-color:#c5cdd6!important}
+.ws-frame .ws-row-action{background:#f4f6f8;color:#2f3a45;border-color:#dce2e8}
+.ws-frame .ws-row-action:hover{background:#edf0f4}
+.ws-frame .ws-tabs a.active{color:#293541}
+.ws-frame .ws-tabs a.active::after{background:#586577}
+.ws-frame>.app .status{border-left-color:#64748b}
+.ws-frame>.app h1{color:#1c2530;font-weight:800}
+.ws-frame>.app h2{color:#242d38;font-weight:760}
+.ws-frame>.app .card p,.ws-frame>.app .panel p{color:#5d6875}
+.ws-frame>.app input:focus-visible,.ws-frame>.app textarea:focus-visible,
+.ws-frame>.app select:focus-visible{outline:2px solid #8894a3;outline-offset:1px;border-color:#8894a3}
+.ws-frame>.app .tabs button.active{background:#303844;color:#fff}
+.ws-frame>.app .tabs button:not(.active){background:#f3f5f7;color:#343f4b}
+.ws-frame>.app .tabs button:hover,.ws-frame>.app nav a:hover{border-color:#c8d0d9}
+.ws-frame>.app button,.ws-frame>.app .btn{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}
+.ws-frame>.app button:hover:not(:disabled),.ws-frame>.app .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 18px #1b273011}
+.ws-frame>.app button:active:not(:disabled){transform:translateY(0)}
+.ws-frame>.app{animation:ws-page-enter .24s ease-out both}
+@keyframes ws-page-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(hover:hover) and (pointer:fine){
+ .ws-frame .ws-kpi:hover,.ws-frame>.app .card:hover,.ws-frame>.app .panel:hover,.ws-frame .sim-counter:hover{
+   transform:translateY(-3px);border-color:#c6ced9!important;
+   box-shadow:0 12px 24px #16213113!important;
+ }
+ .ws-frame .sim-table tbody tr:hover,.ws-frame .ws-table tbody tr:hover{background:#f7f8fa}
+}
+@media(prefers-reduced-motion:reduce){
+ .ws-frame>.app{animation:none!important}
+ .ws-frame .ws-kpi,.ws-frame>.app .card,.ws-frame>.app .panel,.ws-frame .sim-counter,
+ .ws-frame>.app button,.ws-frame>.app .btn{transition:none!important;transform:none!important}
+}
 @media(prefers-reduced-motion:reduce){.ws-rail-link{transition:none}}
 '''
 
 def wrap_page(page, active):
     """Embed old, functioning body unchanged inside a three-module visual frame."""
-    if active not in {"news","trading","external"}:
+    if active not in {"news","trading","external","skill"}:
         raise ValueError("Unknown workspace module")
     if "<body>" not in page or "</body>" not in page or "</style>" not in page:
         raise ValueError("Unexpected standalone page format")
@@ -149,6 +200,7 @@ def wrap_page(page, active):
         ("overview", "/", "概览", active=="news"),
         ("news", "/#news-process", "新闻", False),
         ("trading", "/trading", "交易", active=="trading"),
+        ("review", "/skill", "Skill", active=="skill"),
         ("people", "/trading#tab-people", "65人", False),
         ("external", "/trade-platform", "外站", active=="external"),
         ("review", "/#news-process", "审核", False),
