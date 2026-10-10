@@ -152,6 +152,7 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         source = "submitted_queue_not_source_attested" if queue else "no_news_input"
 
     news = []
+    grouped = {}
     for i, item in enumerate(rows):
         if not isinstance(item, dict) or not all(
             isinstance(item.get(f), str) and item.get(f)
@@ -163,19 +164,39 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
             issues.append(f"news item {i+1}: untrusted article URL")
             continue
         significance = assess_news(item, now)
-        news.append({
+        detail = str(item.get("summary") or "").strip()
+        # BVB RSS commonly publishes the same issuer event as two PDFs and
+        # one official NewsItem page. Keep all original source versions, but
+        # recommend the story once only if issuer+event+calendar day match.
+        event_key = (
+            " ".join(item["title"].casefold().split()),
+            " ".join((detail or item["url"]).casefold().split()),
+            str(item.get("published_at") or "")[:10],
+        )
+        original = {"item_id": item["item_id"], "digest": item["digest"],
+                    "url": item["url"], "change_state": item.get("change_state", "unconfirmed")}
+        if event_key in grouped:
+            target = grouped[event_key]
+            target["source_variants"].append(original)
+            if ("/FinancialInstruments/SelectedData/NewsItem/" in item["url"]
+                    and "/FinancialInstruments/SelectedData/NewsItem/" not in target["url"]):
+                target["url"] = item["url"]  # prefer canonical reader page
+            continue
+        target = {
             "item_id": item["item_id"], "digest": item["digest"],
-            "title": item["title"], "url": item["url"],
+            "title": item["title"], "event_summary_unverified": detail,
+            "display_title": (item["title"] + " · " + detail if detail else item["title"]),
+            "url": item["url"], "source_variants": [original],
             "published_at": item.get("published_at"),
             "change_state": item.get("change_state", "unconfirmed"),
-            # Strictly preliminary: neither metadata validity nor a high-impact
-            # headline proves the original article, issuer, metric or causality.
             "review_priority": significance["headline_review_priority"],
             "materiality": significance,
             "evidence_status": "UNVERIFIED",
             "requires_human_article_review": True,
             "distribution_status": "NOT_PUBLISHED",
-        })
+        }
+        grouped[event_key] = target
+        news.append(target)
     order = {"P0": 0, "P1": 1, "P2": 2}
     news.sort(key=lambda r: (
         r["review_priority"] == "hold_metadata_review",
@@ -223,7 +244,9 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
             "script_qa": "structural_check_plus_manual_editor_required",
         },
         "news": {"feed": SOURCE_ID if fetch_rss else None, "acquisition": source,
-                 "pending_count": len(news), "high_impact_review_candidates": len(highlights),
+                 "pending_count": len(news), "raw_pending_versions": len(rows),
+                 "duplicate_source_versions": sum(len(r["source_variants"])-1 for r in news),
+                 "high_impact_review_candidates": len(highlights),
                  "metadata_hold_count": len(held),
                  "editorial_shortlist": [r["item_id"] for r in highlights],
                  "shortlist_status": "UNVERIFIED_REQUIRES_ORIGINAL_ARTICLE_AND_INDEPENDENT_REVIEW",
