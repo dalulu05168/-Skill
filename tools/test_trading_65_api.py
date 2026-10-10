@@ -65,6 +65,19 @@ class TradingAPIIntegration(unittest.TestCase):
                         self.assertEqual([x['type'] for x in state['transactions']],['buy','sell'])
                         self.assertEqual(state['people'][0]['available_funds']['RON'],210)
                         self.assertEqual(json.loads(Path(folder,'trading-65.json').read_text())['roster_source'],'finance-director-65-v4.1')
+                        post('eligibility',person_id='02',opened=True,currency='RON',funds=200,
+                             frequency='HIGH',required_today=False)
+                        another=post('create_offer',symbol='BATCH',name='批量',market='BVB',currency='RON',
+                                     unit_price=10,min_shares=1,participant_count=3,discount_pct=0)
+                        new_oid=another['result']['id']
+                        post('recommend',offer_id=new_oid,date=day)
+                        bought=post('batch_buy',offer_id=new_oid,date=day,allocation_pct=25,person_ids=['01','02'])
+                        self.assertEqual(bought['result']['count'],2)
+                        self.assertEqual([p['quantity'] for p in bought['result']['purchased']],[5,5])
+                        hids=[p['holding_id'] for p in bought['result']['purchased']]
+                        sold=post('batch_sell',offer_id=new_oid,holding_ids=hids,sell_price=11)
+                        self.assertEqual(sold['result']['count'],2)
+                        self.assertEqual(get('/api/trading/sim/state')['metrics']['active_holdings'],0)
                     finally:
                         server.shutdown();thread.join(timeout=5)
 
