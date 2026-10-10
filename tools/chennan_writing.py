@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from finance_skill_hub import DIRECTOR, personas, slot_for
 from dialogue_quality import DISCLOSURE, audit_dialogue
+from skill_execution_contract import audit_member_voice, load_official_memory, lesson_for
 
 ROSTER_SOURCE = "finance-director-65-v4.1"
 MAX_SOURCE_CHARS = 20000
@@ -134,8 +135,13 @@ def make_prompt(payload, profiles, state):
             raise ValueError
     except (ValueError, TypeError):
         raise ValueError("Date must be YYYY-MM-DD") from None
+    lesson = lesson_for(day, node["id"])
+    if kind == "professor" and not lesson["can_speak"]:
+        raise ValueError("Professor course is permitted only on weekdays at RO-10")
     topic = str(payload.get("topic") or "课程互动").strip()[:160]
     draft_id = uuid4().hex
+    # Select by the actual selected characters, not merely the last five global
+    # sessions (which could omit an infrequent character's older adopted memory).
     recent = [
         {
             "date": s["date"],
@@ -143,8 +149,10 @@ def make_prompt(payload, profiles, state):
             "source_text": s["source_text"],
             "messages": [m for m in s.get("messages", []) if m.get("character_id") in ids],
         }
-        for s in state["sessions"][-5:]
-    ]
+        for s in state["sessions"]
+        if any(m.get("character_id") in ids for m in s.get("messages", []))
+    ][-12:]
+    official_memory = load_official_memory(ids)
     prompt = {
         "engine": "交易中心 · 65人统一人物版",
         "mode": "explicitly_disclosed_fictional_educational_simulation",
@@ -157,6 +165,15 @@ def make_prompt(payload, profiles, state):
         "roster_source": ROSTER_SOURCE,
         "selected_characters": [profiles[cid] for cid in ids],
         "recent_adopted_sessions": recent,
+        "official_memory": official_memory,
+        "memory_policy": {
+            "adopted_only": True,
+            "do_not_invent_prior_conversations": True,
+            "no_fixed_personality_mutations": True,
+            "session_memory_scope": "this_workstation_only; other BVB UI history not synced",
+            "unresolved_history": "unknown until imported and approved",
+        },
+        "professor_course_policy": lesson,
         "instructions": [
             "先读 skills/romania-market-director/references/teaching-editorial-standard.md：不集中吹捧教授；每条一个重点，问题可延迟引用前文，由助理答疑。",
             "每条模拟消息显著标注【虚构教学模拟】；案例标【假设】，禁止把虚构盈亏、持仓和机构背书当真人社会证明促销。真实经验只用已授权可核证信息。",
@@ -170,6 +187,9 @@ def make_prompt(payload, profiles, state):
             "所有人物和对白均为虚构教学演练，不能冒充真实投资者或真实客户见证。",
             "不得编造行情、收益、交易记录、账户数据、新闻来源或已经发送的媒体。",
             "只返回 JSON：messages 数组；每条含 character_id、name、gender、role、text；可选 message_id、reply_to。",
+            "逐人读取本人语言DNA、句长偏好、Emoji/GIF许可、16节点/活跃时段与实际已采用记忆；未记录的人物旧事必须说未知，不编造。", 
+            "助理分析必须含新闻出处/时间/发生事件/对BVB与行业影响链/抵消因素/不确定性/下次核对条件；不杜撰新闻和指数。", 
+            "教授仅19:30，周一三五技术课、周二四理念课；技术课原稿缺失必须说明，不冒称已获得旧讲稿。", 
             "记忆只能经人工检查并明确采用后存为正式会话，生成草稿不能自动写历史。",
         ],
         "output_schema": {"messages": [
@@ -235,17 +255,23 @@ def validate_messages(raw, draft, profiles, sessions):
                         "gender": expected[1], "role": expected[2],
                         "text": message.strip() if DISCLOSURE in message else DISCLOSURE + message.strip(),
                         "simulation_only": True, "experience_kind": m.get("experience_kind", "none"),
+                        "media_type": m.get("media_type", "TEXT"),
+                        "asset_id": m.get("asset_id"),
+                        "asset_verified": m.get("asset_verified", False),
                         "reply_to": m.get("reply_to") or None})
     for m in cleaned:
         if m["reply_to"] and m["reply_to"] != "source" and m["reply_to"] not in used:
             errors.append("Unknown reply reference: " + str(m["reply_to"]))
     dialogue = audit_dialogue(cleaned)
     errors.extend(dialogue["issues"])
+    personal_voice = audit_member_voice(cleaned, profiles)
+    errors.extend(personal_voice["issues"])
     if any(s.get("draft_id") == draft["id"] for s in sessions):
         errors.append("This draft was already formally adopted")
     return {"valid": not errors, "errors": errors,
             "message_count": len(cleaned), "messages": cleaned,
             "dialogue_quality": dialogue,
+            "persona_quality": personal_voice,
             "warning": "Checks and red-line heuristics are not factual verification. Dialogue naturalness, market facts, and media still need human review."}
 
 

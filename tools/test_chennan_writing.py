@@ -119,10 +119,17 @@ class TradingCenter65Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             writing.make_prompt({**self.request(), "source_kind": "professor"}, self.profiles,
                                 writing.empty_state())
-        prompt, _ = writing.make_prompt({**self.request(), "node": "RO-10",
-                                         "source_kind": "professor"}, self.profiles,
-                                        writing.empty_state())
+        with self.assertRaises(ValueError):
+            writing.make_prompt({**self.request(), "node": "RO-10",
+                                 "source_kind": "professor"}, self.profiles,
+                                writing.empty_state())  # Saturday cannot host weekday lesson
+        prompt, _ = writing.make_prompt({**self.request(), "date": "2026-10-12",
+                                         "node": "RO-10", "source_kind": "professor"},
+                                        self.profiles, writing.empty_state())
         self.assertEqual(prompt["node"], "RO-10")
+        self.assertEqual(prompt["professor_course_policy"]["mode"], "technical")
+        self.assertEqual(prompt["professor_course_policy"]["technical_source_status"],
+                         "original_user_technical_course_not_in_repository")
 
     def test_documents_and_atomic_local_backup_boundary(self):
         state = writing.empty_state()
