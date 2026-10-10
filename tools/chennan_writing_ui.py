@@ -51,6 +51,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 <label for="find">选择需要回应的人物（65人正式档案）</label><input id="find" type="search" placeholder="搜索编号、姓名、职业、城市">
 <p class="muted">已选择 <strong id="selected-count">0</strong> 人。可留出沉默角色，不按人数凑发言。</p>
 <div class="people" id="peoplelist"><span class="muted">正在读取正式人物库…</span></div>
+<label for="use-module1-news" style="display:flex;align-items:center;gap:9px;margin-top:15px">
+<input type="checkbox" id="use-module1-news" style="width:20px;height:20px">
+采用模块一同一日期/节点的已审核事实资料（无审核记录则拒绝生成当日新闻稿）
+</label>
+<p class="muted">不勾选时仅用于概念课和明确标注【假设】的模拟对话，输入的新闻/行情原话不能自动当作事实。新闻配图已取消。</p>
 <div class="row"><button id="make">生成可复制提示词</button><button id="clear" class="alt">清除选择</button></div>
 <div class="status" id="make-status">尚未创建草稿。</div>
 </section>
@@ -149,9 +154,10 @@ $('#make').onclick=async()=>{
   verified=false;draftId=null;$('#make').disabled=true;status('#make-status','正在核对65人资料与场次…');
   try{
     const p=await api('/api/trading/prompt',{date:$('#date').value,node:$('#node').value,topic:$('#topic').value,
-      source_kind:$('#source_kind').value,source_text:$('#source_text').value,selected_ids:[...selected]});
+      source_kind:$('#source_kind').value,source_text:$('#source_text').value,
+       use_current_news:$('#use-module1-news').checked,selected_ids:[...selected]});
     draftId=p.prompt.draft_id;$('#prompt').value=JSON.stringify(p.prompt,null,2);
-    status('#make-status','提示词已生成，人物：'+p.prompt.selected_characters.length+'，草稿ID：'+draftId.slice(0,8));
+    status('#make-status','提示词已生成｜模块一事实：'+p.prompt.module1_fact_handoff.status+'｜人物：'+p.prompt.selected_characters.length+'，草稿ID：'+draftId.slice(0,8));
   }catch(e){status('#make-status','生成失败：'+e.message)}
   finally{$('#make').disabled=false}
 };
