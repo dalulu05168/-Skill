@@ -43,6 +43,38 @@ jobs:
           python .agents/skills/romania-stock-intelligence/scripts/rss_intake.py \
             --source-id BVB_FINANCIAL_RSS --fetch \
             --out build/rss-endpoint-check/bvb-financial-candidates.json
+      - name: Test live RSS significance gate without publishing
+        if: steps.news.outcome == 'success'
+        run: |
+          PYTHONPATH=tools python - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
+          from news_materiality import assess_news
+          p = Path("build/rss-endpoint-check/bvb-news-candidates.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          if (data.get("source_attestation") != "official_feed_fetched_not_article_verified"
+                  or data.get("publish_status") != "blocked_pending_manual_evidence_review"
+                  or not data.get("items")):
+              raise SystemExit("BVB source missing, empty, or not blocked for review")
+          checks = [assess_news(x, datetime.now(timezone.utc)) for x in data["items"]]
+          stats = {
+              "source": "BVB_NEWS_RSS",
+              "feed_reachable": True,
+              "candidate_count": len(checks),
+              "potential_P0": sum(x["tier_candidate"] == "P0" for x in checks),
+              "potential_P1": sum(x["tier_candidate"] == "P1" for x in checks),
+              "metadata_hold": sum(x["metadata_holds_highlight"] for x in checks),
+              "human_fact_review": "required",
+              "verified_article_count": 0,
+              "automatic_push_count": 0,
+              "publish_allowed": False
+          }
+          Path("build/rss-endpoint-check/editorial-smoke-result.json").write_text(
+              json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")
+          print(json.dumps(stats, ensure_ascii=False))
+          assert all(not x["publishable"] and not x["facts_verified"] for x in checks)
+          PY
       - name: Upload review evidence, never broadcast or auto-publish
         if: always()
         uses: actions/upload-artifact@v4
