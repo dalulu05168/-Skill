@@ -25,6 +25,7 @@ PROFESSIONAL_SELF_LABEL = re.compile(
     r"(?:投资顾问|金融分析师|证券分析师|研究员|基金经理)|"
     r"作为(?:持牌|注册)(?:投资顾问|证券分析师))"
 )
+UNSUPPORTED_ANALYST_ADVICE = ("我们建议投资者", "投资者应当重点关注", "根据我们的研究判断")
 PERSONAL_TRADE_PRESSURE = re.compile(
     r"(?:听我的(?:就)?买|大家(?:必须|都要)跟上|"
     r"跟着(?:我|教授|助理)买(?:就)?能赚)"
@@ -129,6 +130,8 @@ def audit_member_register(messages, profiles):
         if not text:
             continue
         style_hits = [phrase for phrase in FORMAL_ANALYST if phrase in text]
+        if any(phrase in text for phrase in UNSUPPORTED_ANALYST_ADVICE):
+            issues.append(f"message {index}: member {cid} is speaking as a professional investment adviser")
         if style_hits or (len(text) >= 90 and
                           sum(text.count(x) for x in ("因此", "同时", "此外", "综上", "值得关注")) >= 3):
             warnings.append(f"message {index}: member {cid} sounds like a professional market report; rewrite in own everyday voice")
