@@ -236,7 +236,7 @@ def wrap_page(page, active):
         ("people", "/skill#tab-people", "65人", False),
         ("news", "/#news-process", "资讯审核", False),
         ("trading", "/trading", "账本", active=="trading"),
-        ("external", "/trade-platform", "外站", active=="external"),
+        ("external", "/trade-platform", "图片编辑", active=="external"),
     ]
     links="".join(
         '<a class="ws-rail-link'+(" active" if selected else "")+
