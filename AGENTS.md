@@ -20,3 +20,6 @@
 先读 `skills/romania-market-director/references/high-empathy-storycraft-v2.md` 和 `skills/romania-market-director/references/mandatory-execution-contract.md`；人物跨场回忆必须链接到已经采用的场次/消息。新程序 `tools/storycraft_contract.py` 已用于本地写作保存前的检查；“历史似乎存在”“上游声称已验证”“模型说已经发送”均不可当证据。台词正文可自然，不让角色解释作者或系统设定；作品整体及单独流转内容必须诚实披露角色性质，不能伪装真人投资群、收益或客户背书。
 
 **纠正本文件第6条的过期节奏：2026-10-10 以 `operating-standard-2026-10-09.md` 最近新增的 35/35/30 为准（上午约35、下午约35、晚上约30，各±2–3）；旧40–45/40/45完全废止。** 该数量只作弹性编排参考，不用于强制凑句，16节点及19:30教授出场规则不变。
+
+## 2026-10-10 三类角色分别写作（重要新增）
+读取 `skills/romania-market-director/references/member-assistant-professor-voice.md`。**成员＝每人独特的自然口语，不说金融专业报告套话；助理＝专业但通俗、有证据；教授＝非常专业、定义精确、有完整论证与反例**。个人身份、职业、母语、句长、媒体习惯、已采用长期记忆不可串号。模型提示词由 `tools/role_voice.py` 根据65人正式全档案提取各自摘要，保存前进行专业话术、同句复制和交易施压校验。明确的职业越权推荐阻止采用，其余文学自然度需人工检查。该要求优先于把所有角色写成同级财经评论员的旧通用指令。
