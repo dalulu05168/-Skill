@@ -42,3 +42,6 @@
 在 P004 的 `/skill` 准备角色内容前，请把 `skills/romania-market-director/references/high-empathy-storycraft-v2.md` 连同正式档案一起交给当前 ChatGPT。人物台词不自述AI/演绎身份、不写舞台指令；页面级展示与脱离语境的导出仍须保留作品性质说明。需引用历史时，JSON 每条可带 `continuity_ref:{session_id,message_id}`，并确保它真实对应 `recent_adopted_sessions` 中已经采用的消息。缺乏来源时不生成回忆，也不把待审稿当作昨天发生的对话。
 
 粘贴回工作台后会执行人物身份、个人口吻、压力话术、剧情连续性、来源引用与风险审查；规则校验只能给出程序可验证的问题和人工复查提示，**不能自动认定事实、写作水平、模型能力或真实群组推送已经通过**。完整流程还需人工复核和确认采用。
+
+## 角色个性与专业层级（2026-10-10）
+生成 P004 人物讨论前请同时提供 [三类角色语言层级](../skills/romania-market-director/references/member-assistant-professor-voice.md)：65名成员各取本人完整档案中真实存在的语言、职业、性格和记忆，优先简短生活口语，避免同一批人统一输出助理型市场研报；助理使用金融术语并说明含义；教授为高专业度严谨授课（定义、前提、证据、反例、风险、练习）。工作台生成的 `selected_personal_voice_briefs` 给出每个人独立风格摘要，不意味着样例句子要原封不动照抄。专业话术检查报告和人工复核必须一起阅读。
