@@ -1,13 +1,15 @@
-"""External trade website access module.
+"""External image editing website entry (legacy route /trade-platform).
 
 This module intentionally does not frame, proxy, authenticate, scrape, trade,
 or synchronize with an unverified external service.
 """
 EXTERNAL_TRADE_URL = "https://trade.sasakic.cc/"
+# Backward compatible export name; site is an image editor, not a trading API.
+EXTERNAL_IMAGE_EDITOR_URL = EXTERNAL_TRADE_URL
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>外部交易平台 · NUVEXA FINANCE</title>
+<title>图片编辑器 · NUVEXA FINANCE</title>
 <style>
 :root{font-family:Inter,"Microsoft YaHei",system-ui,sans-serif;color:#272b30;background:#f5f6f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(125deg,#fafafa,#f4f5f7 60%,#f3f8f6)}
@@ -36,21 +38,21 @@ p{color:#646a72;line-height:1.8;margin:0}
 @media(max-width:790px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.app{padding:17px 15px 38px}.panel{padding:19px}nav{width:100%}nav a{flex:1;text-align:center}}
 </style></head>
 <body><main class="app">
-<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">统一工作台 · 第三方交易平台入口</div></div>
+<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">统一工作台 · 图片编辑工具入口</div></div>
 <nav aria-label="工作台模块">
 <a href="/">📰 新闻推送</a>
 <a href="/trading">💹 交易中心</a>
-<a href="/trade-platform" class="active" aria-current="page">↗ 外部交易平台</a>
+<a href="/trade-platform" class="active" aria-current="page">↗ 图片编辑器</a>
 </nav></div>
-<h1>外部交易平台</h1>
-<p>已纳入统一工作台导航，独立访问第三方网站，不改变新闻推送、交易中心或65人人物数据。</p>
+<h1>图片编辑器</h1>
+<p>这是独立图片制作工具入口。只打开原站，不关联 65 人人物的身份、模拟交易、持仓、资金或新闻审核数据。</p>
 <div class="grid">
 <section class="panel" aria-labelledby="platform-heading">
-<h2 id="platform-heading">SASAKIC Trade · 网站入口</h2>
-<p>目标站点由第三方提供。此页面不代理登录，不保存密码，也不获取其持仓、资金或交易信息。</p>
+<h2 id="platform-heading">SASAKIC · 图片编辑工具</h2>
+<p>目标站点是图片编辑用途，不属于交易账户或实盘交易系统。本页不代理登录、不保存账号密码，也不读取其他系统的账户或交易记录。</p>
 <div class="address">https://trade.sasakic.cc/</div>
 <div class="row">
-<a class="action" href="https://trade.sasakic.cc/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="新标签页打开外部交易平台">打开交易平台 ↗</a>
+<a class="action" href="https://trade.sasakic.cc/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="新标签页打开图片编辑器">打开交易平台 ↗</a>
 <a class="action alt" href="/trading">返回交易中心</a>
 </div>
 <div class="notice">网站内容、可访问性、登录状态及嵌入策略尚未验证。为避免白屏、跨站限制和账号风险，当前不使用 iframe 强行嵌入，也不声称已完成数据或交易接口对接。</div>
@@ -59,9 +61,9 @@ p{color:#646a72;line-height:1.8;margin:0}
 <h2 id="boundary-heading">接入范围</h2>
 <div class="meta"><span>导航与入口</span><strong>已接入本工作台</strong></div>
 <div class="meta"><span>第三方网站运行</span><strong>由目标站点负责</strong></div>
-<div class="meta"><span>第三方账户与交易</span><strong>不接入、不传输</strong></div>
+<div class="meta"><span>实盘账户与交易</span><strong>不接入、不传输</strong></div>
 <div class="meta"><span>65人人物系统</span><strong>维持独立来源</strong></div>
 <div class="meta"><span>新闻核验/审核</span><strong>原有流程保留</strong></div>
-<p class="note">在外部网站的任何登录或交易行为都由用户直接在该站点完成；本地统一工作台无法代表它保证订单执行或账户安全。</p>
+<p class="note">图片编辑操作在原站独立进行；该入口不提供证券交易下单，也不接入 65 人物模拟账本。</p>
 </aside>
 </div></main></body></html>'''
