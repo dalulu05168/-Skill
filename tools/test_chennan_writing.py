@@ -168,7 +168,7 @@ class TradingCenterApiTests(unittest.TestCase):
                     with urlopen(url + "/trading") as r:
                         page = r.read().decode("utf-8")
                         self.assertIn("交易中心", page)
-                        self.assertIn('id="peoplelist"', page)
+                        self.assertIn('id="tc-profile-select"', page)  # current integrated Trading Center roster picker
                     with urlopen(url + "/api/trading/people") as r:
                         roster = json.load(r)
                         self.assertEqual(roster["count"], 65)
