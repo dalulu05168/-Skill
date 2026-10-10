@@ -60,7 +60,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="row"><button class="alt" id="copy">复制提示词</button><a class="btnlink" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">打开 ChatGPT · 选择我的GPT ↗</a></div>
 <label for="response">AI 返回的 JSON 草稿（messages 数组）</label><textarea id="response" placeholder='{"messages":[{"character_id":"01","name":"Andrei Popescu","gender":"男","role":"新男","text":"..."}]}'></textarea>
 <div class="row"><button id="check" class="alt">检查角色与格式</button><button id="adopt">确认正式采用并保存</button></div>
-<div class="status" id="review-status">草稿尚未检查。</div><pre id="review-output">校验结果会在这里显示，保存后可在“正式会话与记忆”查看。</pre>
+<div class="status" id="review-status">草稿尚未检查。</div><label for="dialogue-preview">人物对白阅读预览（制作说明与角色台词分开；仅供审稿）</label><pre id="dialogue-preview">完成校验后显示角色对白。上方已说明作品性质；单条复制到其他平台需保留必要身份说明。</pre><pre id="review-output">完整校验报告（含原始结构、角色标识及回忆引用）将在这里显示。</pre>
 </section></div></div>
 <div class="section" id="tab-people"><div class="card"><h2>65人统一人物资料</h2>
 <p>本页面通过正式索引与65份完整AI档案交叉核验；只读，无法在写作模块修改源人物身份。</p>
@@ -151,14 +151,20 @@ $('#make').onclick=async()=>{
   finally{$('#make').disabled=false}
 };
 $('#copy').onclick=async()=>{if(!$('#prompt').value)return;try{await navigator.clipboard.writeText($('#prompt').value);status('#make-status','完整提示词已复制')}catch(e){$('#prompt').focus();$('#prompt').select();status('#make-status','已选中提示词，请按 Ctrl+C 复制')}};
-$('#response').oninput=()=>{verified=false;status('#review-status','内容已修改，需要重新检查')};
+$('#response').oninput=()=>{verified=false;$('#dialogue-preview').textContent='内容已修改，等待重新校验。';status('#review-status','内容已修改，需要重新检查')};
 $('#check').onclick=async()=>{
   try{
     if(!draftId)throw Error('先生成提示词');
     const raw=JSON.parse($('#response').value),r=await api('/api/trading/validate',{draft_id:draftId,response:raw});
     verified=r.valid;$('#review-output').textContent=JSON.stringify(r,null,2);
+    // Reading preview: remove production labels from spoken text ONLY.
+    // Source JSON, metadata, standalone disclosures and adoption checks stay intact.
+    $('#dialogue-preview').textContent=(r.messages||[]).map(m=>{
+      const spoken=String(m.text||'').replaceAll('【虚构教学模拟】','').trim();
+      return m.name+'｜'+spoken;
+    }).join('\n\n')||'没有可展示的对白。';
     status('#review-status',r.valid?'结构与65人身份校验通过；仍需人工核对自然语言与事实。':'检查未通过：'+r.errors.join('；'));
-  }catch(e){verified=false;status('#review-status','检查失败：'+e.message)}
+  }catch(e){verified=false;$('#dialogue-preview').textContent='检查失败，未生成预览。';status('#review-status','检查失败：'+e.message)}
 };
 $('#adopt').onclick=async()=>{
   if(!draftId||!verified){status('#review-status','先生成提示词并完成草稿检查。');return}
