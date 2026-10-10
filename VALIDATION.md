@@ -6,4 +6,4 @@
 
 上午试稿为假设数据的人工结构验证；没有执行实时行情采集，也未在另一个GPT平台调用模型测试。另一GPT能否自动读取ZIP和仓库依赖其工具能力。课程首次日期和实际开课时间尚未设定。
 
-下载包位于dist/romania-market-director-skill.zip，**但当前不是最新v2.2.0**；更新安装包需重新构建后另行验证。仓库README提供迁移读取步骤。
+旧 `dist/` 包不再作为下载源；最新导演资料包通过 `Romanian Skill Quality Gate` 工作流的 `romania-skill-bundles` 构建产物获取，或运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 重建。仓库README提供迁移读取步骤。
