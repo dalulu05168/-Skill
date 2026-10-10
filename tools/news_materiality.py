@@ -34,10 +34,12 @@ IMPORTANT = (
     )),
     ("issuer profits / revision", (
         r"\b(?:profit\s+warning|earnings\s+warning|revenue\s+guidance|financial\s+results|raport\s+financiar|rezultate\s+financiare|earnings\s+report)\b",
+        r"\b(?:trading\s+update|operational\s+update|actualizare\s+tranzacționare|trading\s+statement)\b",
         r"业绩预警", r"利润预警", r"财报公告", r"盈利预测下调",
     )),
     ("capital structure / material transaction", (
         r"\b(?:dividend|dividende|major\s+acquisition|takeover|merger|fuziune|major\s+contract|capital\s+increase|majorare\s+de\s+capital|bond\s+issuance)\b",
+        r"\b(?:credit\s+facilit(?:y|ies)|loan\s+agreement|bank\s+loan|major\s+credit|acquisition\s+contract)\b",
         r"分红决定", r"重大并购", r"增发", r"重大合同", r"融资调整",
     )),
     ("energy / supply shock", (
@@ -68,7 +70,12 @@ def assess_news(item, now):
         raise ValueError("News item with title required")
     if not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("Timezone-aware review time required")
+    # BVB often uses only the issuer name as the RSS title and puts the
+    # actual filing topic in <description>. Headline-only filtering misses
+    # earnings/trading updates and important issuer actions.
     headline = re.sub(r"\s+", " ", item["title"]).strip()
+    detail = re.sub(r"\s+", " ", str(item.get("summary") or "")).strip()
+    review_text = (headline + " " + detail).strip()
     timestamp = _published_at(item.get("published_at"))
     gaps = []
     if timestamp is None:
@@ -79,12 +86,12 @@ def assess_news(item, now):
             gaps.append("future_publication_timestamp")
         if delay > timedelta(days=7):
             gaps.append("stale_or_historical_older_than_7_days")
-    if re.search(r"\d(?:[.,]\d+)?\s*(?:%|pct|bps|basis\s+points|ron|eur|lei|mil(?:ion|lioane)|mld|miliard)", headline, flags=re.I):
+    if re.search(r"\d(?:[.,]\d+)?\s*(?:%|pct|bps|basis\s+points|ron|eur|lei|mil(?:ion|lioane)|mld|miliard)", review_text, flags=re.I):
         gaps.append("quantitative_claim_needs_original_table_and_baseline")
     category = "routine"
     tier = "P2"
     for label, patterns in CRITICAL:
-        if _has(headline, patterns):
+        if _has(review_text, patterns):
             category, tier = label, "P0"
             break
     if tier == "P2":
@@ -103,6 +110,7 @@ def assess_news(item, now):
         "tier_candidate": tier,
         "event_category_candidate": category,
         "headline_only": True,
+        "uses_rss_description_as_unverified_event_hint": bool(detail),
         "impact_on_romania": "UNVERIFIED_REQUIRES_CAUSAL_ANALYSIS",
         "significance_reason": (
             "Potential high-impact event: verify market interruption, source and affected securities" if tier == "P0"
