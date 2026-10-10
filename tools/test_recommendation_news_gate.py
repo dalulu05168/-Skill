@@ -84,6 +84,31 @@ class CardAndSignalTests(unittest.TestCase):
         # RSS urgency is only a hint and cannot turn generic PR into P0.
         self.assertFalse(trivial["metadata_holds_highlight"])
 
+    def test_real_bvb_feed_shape_issuer_title_and_three_source_versions(self):
+        issuer = "OMV PETROM S.A. (SNP)"
+        with_detail = candidate(issuer, ident="a")
+        with_detail["summary"] = "Trading Update T3/26"
+        self.assertEqual(assess_news(with_detail, NOW)["tier_candidate"], "P1")
+        # Three versions (PDF Romanian, PDF English, canonical HTML) represent
+        # one issuer event and must not appear as three talking points.
+        versions = []
+        for n, source in enumerate(("ro.pdf", "en.pdf",
+                                    "/FinancialInstruments/SelectedData/NewsItem/SNP-trading-update/X")):
+            item = {**with_detail, "item_id": str(n), "digest": "v"+str(n),
+                    "url": ("https://www.bvb.ro"+source if source.startswith("/")
+                            else "https://bvb.ro/infocont/"+source)}
+            versions.append(item)
+        result = hub.run_pipeline({"news_queue": {"items": versions}}, at=NOW)
+        self.assertEqual(result["news"]["raw_pending_versions"], 3)
+        self.assertEqual(result["news"]["pending_count"], 1)
+        self.assertEqual(result["news"]["duplicate_source_versions"], 2)
+        self.assertEqual(result["news"]["high_impact_review_candidates"], 1)
+        self.assertEqual(len(result["news"]["items"][0]["source_variants"]), 3)
+        self.assertIn("/FinancialInstruments/SelectedData/NewsItem/",
+                      result["news"]["items"][0]["url"])
+        self.assertIn("Trading Update", result["news"]["items"][0]["display_title"])
+        self.assertEqual(result["news"]["push_delivery"]["sent_count"], 0)
+
     def test_unreliable_dates_and_numbers_are_flagged(self):
         future = candidate("BVB trading suspension", (NOW + timedelta(days=3)).isoformat())
         future_gate = assess_news(future, NOW)
