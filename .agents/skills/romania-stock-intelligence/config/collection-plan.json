@@ -1,0 +1,362 @@
+{
+  "schema_version": "1.0",
+  "timezone": "Europe/Bucharest",
+  "source": "config/schedule.json authoritative 16-node timing",
+  "status": "collection_tasks_defined_not_real_time_feed_certified",
+  "news_images_enabled": false,
+  "image_generation_tasks": [],
+  "automatic_publication": false,
+  "assistant_professor_persona_handoff": "human_verified_facts_only",
+  "source_sections": {
+    "RO-01": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "新闻标题、公告时间、链接、修订标记",
+        "rss"
+      ],
+      [
+        "BVB_FINANCIAL_RSS",
+        "BVB 公司财务披露 RSS",
+        "发行人财报与重大公告；链接无效必须隔离",
+        "rss"
+      ],
+      [
+        "BVB_INDICES",
+        "BVB Indici / Privire generală",
+        "BET、BET-NG 与上一可确认交易日指数，必须记观察时刻",
+        "manual"
+      ],
+      [
+        "ECB_FX",
+        "ECB 外汇参考汇率",
+        "EUR/RON 与 EUR/USD 最近发布日期（不是实时交易汇率）",
+        "manual"
+      ],
+      [
+        "FED",
+        "Fed FOMC 日历",
+        "美联储公告和已公布决议",
+        "manual"
+      ]
+    ],
+    "RO-02": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "可核实的早间重要新闻与来源",
+        "rss"
+      ],
+      [
+        "BVB_CALENDAR",
+        "BVB Calendar Financiar",
+        "当天及未来上市公司公告日程",
+        "manual"
+      ],
+      [
+        "BNR",
+        "BNR 新闻/利率/汇率",
+        "已发布的罗马尼亚央行信息（不是实时数据）",
+        "manual"
+      ]
+    ],
+    "RO-03": [
+      [
+        "BVB_FINANCIAL_RSS",
+        "BVB 财务披露 RSS",
+        "Watchlist 对应公司公告、盈警、除息、财报",
+        "rss"
+      ],
+      [
+        "BVB_CALENDAR",
+        "BVB Calendar Financiar",
+        "具体股票的业绩与股息日程",
+        "manual"
+      ],
+      [
+        "BVB_BET",
+        "BVB Index Profile BET",
+        "BET 成分、权重、交易前参考基准",
+        "manual"
+      ]
+    ],
+    "RO-04": [
+      [
+        "BVB_SESSIONS",
+        "BVB Trading Sessions Schedule",
+        "核实当天是否交易以及竞价阶段与时段",
+        "manual"
+      ],
+      [
+        "BVB_BET",
+        "BVB 官方行情/指数入口",
+        "仅在实际授权可读时核实挂单、竞价量；无权限则标不可获取",
+        "manual"
+      ]
+    ],
+    "RO-05": [
+      [
+        "BVB_SESSIONS",
+        "BVB Trading Sessions Schedule",
+        "检查09:30 是栏目时刻，不等于股票已开盘",
+        "manual"
+      ],
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "开盘前新公告和短线条件风险",
+        "rss"
+      ],
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "最近有效前收和指数成分结构；不得写成当前价格",
+        "manual"
+      ]
+    ],
+    "RO-06": [
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "BET、BET-NG 最新可核实快照、时间戳和延迟",
+        "manual"
+      ],
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "午间新增事件及发行人影响",
+        "rss"
+      ],
+      [
+        "BVB_FINANCIAL_RSS",
+        "BVB 财务披露 RSS",
+        "午间财报/公司重大事项、原文待核",
+        "rss"
+      ]
+    ],
+    "RO-07": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "罗马尼亚突发市场资讯、影响行业、发布时间",
+        "rss"
+      ],
+      [
+        "BVB_FINANCIAL_RSS",
+        "BVB 财务披露 RSS",
+        "发行人公告及修订（逐条人工核原文）",
+        "rss"
+      ],
+      [
+        "ECB_POLICY",
+        "ECB Governing Council decisions",
+        "欧央行最新已发布决定",
+        "manual"
+      ],
+      [
+        "BNR",
+        "BNR",
+        "罗马尼亚央行政策/汇率公告",
+        "manual"
+      ]
+    ],
+    "RO-08": [
+      [
+        "FED",
+        "Fed FOMC",
+        "已公布美国政策/会议日程，不冒充美股即时行情",
+        "manual"
+      ],
+      [
+        "SP_DJI",
+        "S&P Dow Jones Indices",
+        "S&P500/Dow 指数最近确认时点、期别",
+        "manual"
+      ],
+      [
+        "NASDAQ",
+        "Nasdaq 指数",
+        "Nasdaq Composite 最新已核实基准（非即时承诺）",
+        "manual"
+      ],
+      [
+        "EIA",
+        "US EIA 能源统计",
+        "油气库存、能源报告和发布日期（非 ICE 实时报价）",
+        "manual"
+      ],
+      [
+        "ECB_FX",
+        "ECB 外汇参考汇率",
+        "EUR/RON 最近有效参考价",
+        "manual"
+      ]
+    ],
+    "RO-09": [
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "17:15仅为收盘前观察，不宣称最终收盘",
+        "manual"
+      ],
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "尾盘影响事件和教授晚课线索",
+        "rss"
+      ],
+      [
+        "BVB_CALENDAR",
+        "BVB 公司金融日历",
+        "次日及未来公司披露/除息日",
+        "manual"
+      ]
+    ],
+    "RO-10": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "课程中的真实罗马尼亚上市公司事件原文",
+        "rss"
+      ],
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "课程实际引用的指数观察时刻和相关背景",
+        "manual"
+      ],
+      [
+        "ECB_POLICY",
+        "ECB 利率决定",
+        "央行已公布原文、政策生效时间",
+        "manual"
+      ],
+      [
+        "FED",
+        "美联储 FOMC",
+        "案例所涉及的正式决定与原文",
+        "manual"
+      ]
+    ],
+    "RO-11": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "成员问答中的发行人事件核查",
+        "rss"
+      ],
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "被问及的指数数字须重新对时核实",
+        "manual"
+      ]
+    ],
+    "RO-12": [
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "当日公告回顾、修订与未解问题",
+        "rss"
+      ],
+      [
+        "BVB_CALENDAR",
+        "BVB 公司金融日历",
+        "下一交易日事件与公告提醒",
+        "manual"
+      ],
+      [
+        "ECB_FX",
+        "ECB 外汇参考汇率",
+        "最后公布的参考汇率及发布日期",
+        "manual"
+      ]
+    ],
+    "RO-13": [
+      [
+        "EUROSTAT",
+        "Eurostat Database",
+        "罗马尼亚/欧盟通胀、GDP 等，注明统计期/修订",
+        "manual"
+      ],
+      [
+        "INS",
+        "INS 罗马尼亚统计局",
+        "官方经济指标的最新已公布统计期",
+        "manual"
+      ],
+      [
+        "BNR",
+        "BNR",
+        "罗马尼亚政策、外汇、通胀背景",
+        "manual"
+      ],
+      [
+        "ECB_POLICY",
+        "ECB",
+        "欧央行最新已公布政策",
+        "manual"
+      ]
+    ],
+    "RO-14": [
+      [
+        "BVB_CALENDAR",
+        "BVB 公司金融日历",
+        "下周已公布上市公司日程作知识问答资料",
+        "manual"
+      ],
+      [
+        "BVB_SESSIONS",
+        "BVB 交易日历",
+        "下周交易日及休市核验",
+        "manual"
+      ]
+    ],
+    "RO-15": [
+      [
+        "BVB_INDICES",
+        "BVB Indici",
+        "上一交易周最后有效交易日收盘/指数（注明日期）",
+        "manual"
+      ],
+      [
+        "BVB_NEWS_RSS",
+        "BVB 官方新闻 RSS",
+        "一周大事回顾（只基于原文、不得虚构）",
+        "rss"
+      ],
+      [
+        "ECB_FX",
+        "ECB 参考汇率",
+        "上一有效发布日汇率，不写周日实时价",
+        "manual"
+      ]
+    ],
+    "RO-16": [
+      [
+        "BVB_CALENDAR",
+        "BVB 公司金融日历",
+        "下周业绩/股息/公告日程",
+        "manual"
+      ],
+      [
+        "BVB_SESSIONS",
+        "BVB 交易日历",
+        "下周休市/可交易日",
+        "manual"
+      ],
+      [
+        "FED",
+        "Fed FOMC",
+        "下周已公布货币政策会议日程",
+        "manual"
+      ],
+      [
+        "EUROSTAT",
+        "Eurostat",
+        "预定统计发布信息，仅根据真实日历",
+        "manual"
+      ]
+    ]
+  }
+}
