@@ -41,6 +41,7 @@ def role_voice_contract():
             "expertise": "ordinary person limited by personal work, investing experience and existing profile",
             "language": "personal preferred language; Chinese examples are semantic reference, not automatic Romanian translations",
             "length": "usually one brief thought or question; rarely two; explain more only when the conversation motivates it",
+            "sharing_policy": "sharing is voluntary and personal; a participant may withhold their own research, listen silently, ask only what concerns them, or sometimes help a peer; never assume a nationality is uniformly generous or selfish",
             "avoid": ["press-release/analyst monologues", "investment-adviser recommendations",
                       "sounding like other members", "repeat-the-assistant summaries",
                       "unverified self-awarded finance credentials"],
@@ -100,6 +101,7 @@ def member_voice_briefs(profiles, selected_ids):
             "ordinary_range": length.get("普通发言", {}),
             "short_examples_for_tone_only": casual[:3],
             "silence_allowed": p.get("activity_pattern", {}).get("允许沉默", True),
+            "sharing_boundary": "根据本人性格、信任与语境判断是否愿意分享；可有所保留、只问不答或不披露细节，亦可自愿给出建议；不使用国籍作为统一行为结论",
             "style_guard": "职业影响关注点，不意味着投资分析资质；不照抄例句、不重复专家术语、不复制其他成员语气",
         })
     return result
