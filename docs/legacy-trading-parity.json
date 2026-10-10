@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "evaluated_against": "-Skill main f65ab9cb2519ed53530f80fb58868a09e95ed469",
+  "scope": "legacy/005-trading vs tools/trading_65.py + tools/trading_65_ui.py",
+  "legacy_persona_count": 70,
+  "canonical_persona_count": 65,
+  "mapped_data": false,
+  "workflow_actions_verified": [
+    "eligibility",
+    "create_offer",
+    "recommend",
+    "invite",
+    "reject",
+    "buy",
+    "sell"
+  ],
+  "current_surface_verified": [
+    "member_configuration",
+    "new_offer",
+    "daily_recommendations",
+    "invite_reject",
+    "single_buy",
+    "holdings_table",
+    "single_sell",
+    "transaction_log",
+    "read_only_snapshot"
+  ],
+  "open_gaps": [
+    {
+      "id": "edit_existing_offer",
+      "legacy": "legacy/005-trading/trading-simulator.js::editOffer",
+      "current": "tools/trading_65.py::apply",
+      "condition": "Add validated edit action and UI, handle existing invited/held plans without rewriting historical purchases",
+      "status": "unverified"
+    },
+    {
+      "id": "chart_unique_holders_by_stock",
+      "legacy": "legacy/005-trading/trading-simulator.js::stockGroups/renderStockChart",
+      "current": "tools/trading_65_ui.py::renderHoldings",
+      "condition": "Render a chart with unique person counts by market,currency,symbol; no fabricated quote series",
+      "status": "unverified"
+    },
+    {
+      "id": "batch_holdings_and_sale",
+      "legacy": "legacy/005-trading/trading-simulator.js::batches/renderBatches/openSellBatch",
+      "current": "tools/trading_65.py::apply(sell)",
+      "condition": "Group real simulation holdings by batch and support selective sold-ready members in one auditable operation, preserving each trade event",
+      "status": "unverified"
+    },
+    {
+      "id": "next_sale_countdown",
+      "legacy": "legacy/005-trading/trading-simulator.js::remaining/holdingStatus",
+      "current": "tools/trading_65_ui.py::renderHoldings",
+      "condition": "Show next eligible sale date, relative countdown and recently due positions without implying real-time market events",
+      "status": "unverified"
+    },
+    {
+      "id": "manual_holding_input",
+      "legacy": "legacy/005-trading/trade-dashboard.js::openManualBuy/openHolding",
+      "current": "tools/trading_65.py::apply",
+      "condition": "Assess whether manual holding import is truly required; if added, validate identities, money and record provenance",
+      "status": "unverified"
+    },
+    {
+      "id": "standalone_daily_buy_list",
+      "legacy": "legacy/005-trading/trade-dashboard.js::generateBuyList/renderBuy",
+      "current": "tools/trading_65.py::apply(recommend)",
+      "condition": "Verify independent daily buy-list behavior, preferences and candidate scoring semantics; avoid importing 70-person history",
+      "status": "unverified"
+    }
+  ],
+  "deletion_preconditions": [
+    "No unverified gaps remain, or product owner explicitly signs off on removing the specific legacy-only functionality",
+    "No runtime or deployed branch depends on legacy JavaScript",
+    "Validate 65-person identity and reject 70/72 historical person ID auto-mapping",
+    "Recoverable backup of the original legacy source and any required user-owned transaction/history data exists",
+    "Run functional, browser/mobile, and end-to-end trade acceptance tests and record results",
+    "Confirm separately that live deployment points to the validated revision"
+  ]
+}

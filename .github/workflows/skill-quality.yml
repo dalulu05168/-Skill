@@ -30,6 +30,10 @@ jobs:
           python -m unittest discover -s tools -p 'test_trading_65_api.py' -v
       - name: Test Trading Center 65-person writing and local API
         run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
+      - name: Guard canonical data sources and prevent premature legacy deletion
+        run: |
+          python -m unittest discover -s tools -p 'test_canonical_sources.py' -v
+          python -m unittest discover -s tools -p 'test_legacy_trading_parity.py' -v
       - name: Confirm trading-only dashboard, white theme and Skill editorial isolation
         run: python -m unittest discover -s tools -p 'test_trading_skill_separation.py' -v
       - name: Verify mandatory persona memory/media, professor 135/24 routing and assistant/news evidence
