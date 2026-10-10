@@ -18,6 +18,9 @@ from finance_skill_generate import generate_draft, model_status
 from chennan_writing import (load_profiles, summaries, empty_state, read_state,
                              write_state, make_prompt, validate_messages, adopt, save_doc)
 from chennan_writing_ui import PAGE as WRITING_PAGE
+from trading_65 import (read_state as read_trade_state, write_state as write_trade_state,
+                        summary as trade_summary, snapshot as trade_snapshot, apply as apply_trade)
+from trading_65_ui import with_trading_ui
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
 from workspace_layout import wrap_page
@@ -150,6 +153,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
     state_path = data_dir / "bvb-news-review-state.json"
     report_path = data_dir / "latest-internal-review.json"
     writing_path = data_dir / "chennan-writing-65.json"
+    trade_path = data_dir / "trading-65.json"
     run_lock = Lock()  # Avoid concurrent RSS/state writes from separate browser tabs.
     model_lock = Lock()  # Avoid concurrent requests consuming local-model memory.
 
@@ -198,7 +202,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path in ("/trading", "/writing"):
-                body = wrap_page(apply_visual_system(WRITING_PAGE), "trading").encode("utf-8")
+                body = wrap_page(apply_visual_system(with_trading_ui(WRITING_PAGE)), "trading").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -230,6 +234,26 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, summary)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
+            elif self.path == "/api/trading/sim/state":
+                try:
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        profiles = load_profiles()
+                        result = trade_summary(ledger, profiles)
+                    self.respond(200, result)
+                except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(409, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/trading/sim/snapshot":
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    day = query.get("date", [None])[0] or None
+                    offer_id = query.get("offer_id", [None])[0] or None
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        result = trade_snapshot(ledger, day, offer_id)
+                    self.respond(200, result)
+                except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(400, {"error": str(exc)})
             elif self.path in ("/api/trading/people", "/api/writing/people"):
                 try:
                     p = load_profiles()
@@ -270,6 +294,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             if self.path not in ("/api/prepare", "/api/generate",
                                  "/api/trading/prompt", "/api/trading/validate",
                                  "/api/trading/adopt", "/api/trading/docs",
+                                 "/api/trading/sim/action",
                                  "/api/writing/prompt", "/api/writing/validate",
                                  "/api/writing/adopt", "/api/writing/docs"):
                 self.respond(404, {"error": "Not found"})
@@ -307,6 +332,15 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                         )
                         rss_intake.write_json(data_dir / "latest-ai-draft-internal.json", draft)
                     self.respond(200, draft)
+                    return
+                if self.path == "/api/trading/sim/action":
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        profiles = load_profiles()
+                        output = apply_trade(ledger, profiles, request.get("action"), request)
+                        write_trade_state(trade_path, ledger)
+                        revision = ledger["revision"]
+                    self.respond(200, {"result": output, "revision": revision, "simulation_only": True})
                     return
                 if (self.path.startswith("/api/trading/") or self.path.startswith("/api/writing/")):
                     with run_lock:
