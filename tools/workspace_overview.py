@@ -12,23 +12,27 @@ OVERVIEW = r'''
 <section class="ws-overview" id="ws-overview" aria-label="工作台概览">
   <div class="ws-pageheading">
     <div><div class="ws-eyebrow">FINANCE OPERATIONS · UNIFIED WORKSPACE</div>
-      <h1>统一交易工作台</h1>
-      <p>新闻推送、交易中心与65人虚构成员资料在同一工作台管理；所有显示数字均来自本机已保存记录。</p>
-    </div><div class="ws-readonly">● 内部工作台 · 非实盘</div>
+      <h1>罗马尼亚财经 · 群聊导演工作台</h1>
+      <p>新闻资讯、65位独立人物、助理与教授课程、连续剧情和已确认的会话记忆集中管理；所有统计来自实际读取或存储的数据。</p>
+    </div><div class="ws-readonly">● 财经内容与人物导演 · 审稿后采用</div>
   </div>
   <div class="ws-kpis">
     <article class="ws-kpi" aria-label="上次审核候审新闻数量"><div class="ws-kpi-top"><span class="ws-kpi-icon teal">▤</span><div><strong>新闻候审</strong><small>上次审核结果</small></div></div><div class="ws-kpi-num" id="ws-news-count">—</div><div class="ws-kpi-note" id="ws-news-note">尚无审核数据</div></article>
-    <article class="ws-kpi" aria-label="已正式采用会话数量"><div class="ws-kpi-top"><span class="ws-kpi-icon blue">▥</span><div><strong>交易中心</strong><small>正式采用的模拟会话</small></div></div><div class="ws-kpi-num" id="ws-trading-count">—</div><div class="ws-kpi-note" id="ws-trading-note">正在读取本机归档</div></article>
+    <article class="ws-kpi" aria-label="已正式采用会话数量"><div class="ws-kpi-top"><span class="ws-kpi-icon blue">▥</span><div><strong>人物会话</strong><small>经明确确认采用的记录</small></div></div><div class="ws-kpi-num" id="ws-trading-count">—</div><div class="ws-kpi-note" id="ws-trading-note">正在读取本机归档</div></article>
     <article class="ws-kpi" aria-label="正式人物档案总数量"><div class="ws-kpi-top"><span class="ws-kpi-icon purple">♧</span><div><strong>65人成员</strong><small>唯一正式档案库</small></div></div><div class="ws-kpi-num" id="ws-people-count">—</div><div class="ws-kpi-note" id="ws-people-note">正在进行身份交叉校验</div></article>
     <article class="ws-kpi" aria-label="审核闸门状态"><div class="ws-kpi-top"><span class="ws-kpi-icon orange">✓</span><div><strong>审核与发布</strong><small>仅显示已知审批状态</small></div></div><div class="ws-kpi-num" id="ws-review-count">—</div><div class="ws-kpi-note" id="ws-review-note">无自动外部发布</div></article>
   </div>
   <nav class="ws-tabs" aria-label="业务模块标签">
     <a class="active" href="#ws-overview" aria-current="page">概览</a>
     <a href="#news-process">新闻推送</a>
-    <a href="/trading">交易中心</a>
-    <a href="/trading#tc-profile">65人人物档案</a>
-    <a href="/trade-platform">外部交易平台</a>
+    <a href="/skill">群聊编剧与长期记忆</a>
+    <a href="/skill#tab-people">65人人物档案</a>
+    <a href="/trading">交易账本</a>
   </nav>
+  <div style="margin:14px 0 18px;display:flex;gap:10px;flex-wrap:wrap">
+    <a href="/skill" style="display:inline-flex;align-items:center;min-height:44px;padding:10px 17px;border-radius:10px;background:#28353f;color:#fff;text-decoration:none;font-weight:700">进入65人群聊编剧与人物记忆 →</a>
+    <a href="#news-process" style="display:inline-flex;align-items:center;min-height:44px;padding:10px 17px;border-radius:10px;border:1px solid #dbe1e6;text-decoration:none;color:#27333d">查看新闻来源审核</a>
+  </div>
   <div class="ws-controls">
     <div class="ws-filter-group" role="group" aria-label="人物类型筛选">
       <button type="button" class="ws-filter active" data-ws-role="all">全部成员 (65)</button>

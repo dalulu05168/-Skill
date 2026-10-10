@@ -34,15 +34,15 @@ pre{white-space:pre-wrap;word-wrap:break-word;background:#f7f7f8;padding:14px;bo
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #b08a42}
 @media(max-width:800px){.layout{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.people{grid-template-columns:1fr}.card{padding:17px}}
 </style></head><body><div class="app">
-<div class="top"><div><div class="brand">NUVEXA <span>· 交易中心</span></div><div class="sub">统一 65 人人物档案 · 独立交易中心模块</div></div>
-<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/trading" aria-current="page">💹 交易中心</a><a href="/trade-platform">↗ 外部交易平台</a></nav></div>
-<h1>交易中心 · 统一交易与人物工作台</h1>
-<p>与新闻审核共享同一套65人人物资料，写作草稿、文档和已确认会话单独保存；不导入旧72人历史。</p>
+<div class="top"><div><div class="brand">NUVEXA <span>· 财经 Skill</span></div><div class="sub">65位独立人物 · 新闻课程 · 群聊导演 · 连续记忆</div></div>
+<nav class="nav" aria-label="主模块"><a href="/">📰 新闻推送</a><a class="active" href="/skill" aria-current="page">✍ 群聊编剧</a><a href="/trade-platform">↗ 外部交易平台</a></nav></div>
+<h1>财经 Skill · 65人群聊导演与长期记忆</h1>
+<p>选择有理由发言的人物；成员各有自己的生活、立场与分享边界。助理专业易懂，教授深入严谨。草稿经检查、人工确认才成为正式记忆，不导入其他人物库。</p>
 <div class="note">人物皆为虚构教育演绎。只生成可复制给现有AI的提示词；AI不会在此网页自动运行。检查合格不代表新闻已核实、内容已发送或真实成交。</div>
-<div class="tabs" role="tablist" aria-label="交易中心工作区">
+<div class="tabs" role="tablist" aria-label="财经 Skill 工作区">
 <button class="active" data-tab="script">脚本撰写</button><button data-tab="people">65人人物库</button><button data-tab="docs">写作文档</button><button data-tab="history">正式会话与记忆</button></div>
 <div class="section active" id="tab-script"><div class="layout">
-<section class="card"><h2>01 · 配置模拟场次</h2>
+<section class="card"><h2>01 · 配置群聊创作场次</h2>
 <div class="flex"><div><label for="date">场次日期</label><input type="date" id="date"></div>
 <div><label for="node">新闻/课程节点</label><select id="node"></select></div>
 <div><label for="source_kind">原话角色</label><select id="source_kind"><option value="assistant">助理</option><option value="professor">教授（仅 RO-10）</option></select></div></div>
@@ -60,16 +60,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="row"><button class="alt" id="copy">复制提示词</button><a class="btnlink" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">打开 ChatGPT · 选择我的GPT ↗</a></div>
 <label for="response">AI 返回的 JSON 草稿（messages 数组）</label><textarea id="response" placeholder='{"messages":[{"character_id":"01","name":"Andrei Popescu","gender":"男","role":"新男","text":"..."}]}'></textarea>
 <div class="row"><button id="check" class="alt">检查角色与格式</button><button id="adopt">确认正式采用并保存</button></div>
-<div class="status" id="review-status">草稿尚未检查。</div><pre id="review-output">校验结果会在这里显示，保存后可在“正式会话与记忆”查看。</pre>
+<div class="status" id="review-status">草稿尚未检查。</div><label for="dialogue-preview">人物对白阅读预览（制作说明与角色台词分开；仅供审稿）</label><pre id="dialogue-preview">完成校验后显示角色对白。上方已说明作品性质；单条复制到其他平台需保留必要身份说明。</pre><pre id="review-output">完整校验报告（含原始结构、角色标识及回忆引用）将在这里显示。</pre>
 </section></div></div>
 <div class="section" id="tab-people"><div class="card"><h2>65人统一人物资料</h2>
-<p>本页面通过正式索引与65份完整AI档案交叉核验；只读，无法在写作模块修改源人物身份。</p>
+<p>65位人物有各自的职业、性格、语言习惯、知识、情绪和私人分享边界；请先查看完整档案，避免让每个人都说成财经分析师。人物源数据只读。</p>
 <input type="search" id="people-search" placeholder="搜索人物编号、姓名、职业、城市">
 <div id="roster" class="layout"></div><pre id="profile-view">点击人物卡片查看完整档案（只读）。</pre></div></div>
 <div class="section" id="tab-docs"><div class="layout">
 <section class="card"><h2>写作文档</h2><label for="doc-title">文档标题</label><input id="doc-title" maxlength="160" placeholder="章节或写作备忘">
 <label for="doc-body">正文</label><textarea id="doc-body" style="min-height:350px" placeholder="在此记录章节、剧情提纲或作者说明"></textarea>
-<div class="row"><button id="save-doc">保存文档</button><button id="new-doc" class="alt">新文档</button></div><div class="status" id="doc-status">文档仅保存在这台电脑的本地写作工作区。</div></section>
+<div class="row"><button id="save-doc">保存文档</button><button id="new-doc" class="alt">新文档</button></div><div class="status" id="doc-status">文档保存于当前服务的工作区；云端环境必须配置持久磁盘和备份，才可保证长期保存。</div></section>
 <section class="card"><h2>已有文档</h2><div id="docs-list">尚未读取。</div></section></div></div>
 <div class="section" id="tab-history"><div class="card"><h2>正式采用的会话</h2>
 <p>只有点击“确认正式采用并保存”的内容才记为历史。测试草稿不进入正式会话，且与新闻待审队列独立。</p>
@@ -138,6 +138,11 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()
   if(b.dataset.tab==='docs')refreshDocs().catch(e=>status('#doc-status',e.message));
   if(b.dataset.tab==='history')refreshHistory().catch(e=>status('#history-view',e.message));
 }));
+if(/^#tab-(script|people|docs|history)$/.test(location.hash)){
+  const target=location.hash.slice(5);
+  const b=document.querySelector('[data-tab="'+target+'"]');
+  if(b)b.click();
+}
 $('#find').addEventListener('input',paintSelector);$('#people-search').addEventListener('input',paintRoster);
 $('#clear').onclick=()=>{selected.clear();paintSelector()};
 $('#make').onclick=async()=>{
@@ -151,14 +156,20 @@ $('#make').onclick=async()=>{
   finally{$('#make').disabled=false}
 };
 $('#copy').onclick=async()=>{if(!$('#prompt').value)return;try{await navigator.clipboard.writeText($('#prompt').value);status('#make-status','完整提示词已复制')}catch(e){$('#prompt').focus();$('#prompt').select();status('#make-status','已选中提示词，请按 Ctrl+C 复制')}};
-$('#response').oninput=()=>{verified=false;status('#review-status','内容已修改，需要重新检查')};
+$('#response').oninput=()=>{verified=false;$('#dialogue-preview').textContent='内容已修改，等待重新校验。';status('#review-status','内容已修改，需要重新检查')};
 $('#check').onclick=async()=>{
   try{
     if(!draftId)throw Error('先生成提示词');
     const raw=JSON.parse($('#response').value),r=await api('/api/trading/validate',{draft_id:draftId,response:raw});
     verified=r.valid;$('#review-output').textContent=JSON.stringify(r,null,2);
+    // Reading preview: remove production labels from spoken text ONLY.
+    // Source JSON, metadata, standalone disclosures and adoption checks stay intact.
+    $('#dialogue-preview').textContent=(r.messages||[]).map(m=>{
+      const spoken=String(m.text||'').replaceAll('【虚构教学模拟】','').trim();
+      return m.name+'｜'+spoken;
+    }).join('\n\n')||'没有可展示的对白。';
     status('#review-status',r.valid?'结构与65人身份校验通过；仍需人工核对自然语言与事实。':'检查未通过：'+r.errors.join('；'));
-  }catch(e){verified=false;status('#review-status','检查失败：'+e.message)}
+  }catch(e){verified=false;$('#dialogue-preview').textContent='检查失败，未生成预览。';status('#review-status','检查失败：'+e.message)}
 };
 $('#adopt').onclick=async()=>{
   if(!draftId||!verified){status('#review-status','先生成提示词并完成草稿检查。');return}

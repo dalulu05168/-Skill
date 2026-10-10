@@ -83,3 +83,13 @@
 新增[准确性增强包](skills/accuracy-enhancement/README.md)：4项专属SKILL、6份MIT开源技术参考，全部纳入完整版可重建ZIP和CI检查。保留原导演/新闻核验技能及65名v4.1人物文件、现行16节点与审批约束。
 
 此项仅集成文档及质量门禁指南；未安装Python第三方依赖、未实现跨来源语义引擎、未恢复500行情接口、未自动群发。使用`python tools/test_accuracy_pack.py`做静态检查。
+
+## 2026-10-10 高情商编剧 / 有源长期记忆增强（待合并测试）
+- 新规则：[高情商编剧与可追溯人物记忆](skills/romania-market-director/references/high-empathy-storycraft-v2.md)。65位角色通过各自完整档案保留性格、语言、情绪、相互关系和自然沉默，避免机械赞美、空话和没来由的历史。
+- 新校验：`tools/storycraft_contract.py` 结构阻断无效历史引用、交易施压与贬低；语气、主题关联和元台词只提示编辑，不能替代真人审稿。
+- 已采用会话可以通过 `session_id + message_id` 回溯；未采用草稿不生效；本机历史不自动同步到所有GPT或GitHub，正式仓库初始记忆为空不表示已拥有客户聊天。
+- 工作台对白阅读预览将身份说明与**人物说出的正文**分开显示；审稿JSON、单独导出和外部流转仍保留必要身份说明。没有 WhatsApp 群发、金融事实自动认证或真实交易能力。
+- 当前全日弹性数量以最新 `operating-standard-2026-10-09.md` 的 **上午35/下午35/晚上30（±2–3）** 为准，历史说明中的40–45/40/45作废。
+
+## P004 新增三层角色语言标准（2026-10-10）
+原65人完整档案没有重建。写稿时自动生成逐人独立 `selected_personal_voice_briefs`；成员使用简短日常口语，助理专业易懂，教授高度专业。见 [角色说话层级及示例](skills/romania-market-director/references/member-assistant-professor-voice.md)。代码 `tools/role_voice.py` 会拦截明确的成员越权推荐和交易施压，对研报腔、不同人复制句子给出人工修订警告，不能取代真人语感验收或行情事实核验。
