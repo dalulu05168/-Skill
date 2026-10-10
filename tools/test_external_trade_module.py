@@ -31,6 +31,21 @@ class ExternalTradeModuleTests(unittest.TestCase):
                        "window.location=", "fetch(", "XMLHttpRequest", "<script"):
             self.assertNotIn(unsafe, PAGE)
 
+    def test_fourth_navigation_item_is_image_editor_not_a_trading_account_platform(self):
+        """Preserve the 65-person app's identity and the legacy URL without false trading claims."""
+        from workspace_layout import wrap_page
+        self.assertIn("图片编辑器", PAGE)
+        self.assertNotIn("外部交易平台", PAGE)
+        self.assertIn('href="/trade-platform"', PAGE)
+        self.assertIn("不属于交易账户或实盘交易系统", PAGE)
+        self.assertIn("65人人物", PAGE)
+        for section in ("news", "trading", "skill", "external"):
+            with self.subTest(section=section):
+                html = wrap_page("<main class='app'><h1>Demo</h1></main>", section)
+                self.assertIn("图片编辑", html)
+                self.assertIn('href="/trading"', html)
+                self.assertIn('href="/skill', html)
+
     def test_all_three_pages_link_each_other_and_keep_existing_business_routes(self):
         with tempfile.TemporaryDirectory() as folder:
             data_dir = Path(folder)
