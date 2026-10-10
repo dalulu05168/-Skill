@@ -64,6 +64,7 @@ def main():
         "tools/finance_skill_hub.py",
         "tools/finance_skill_editorial.py",
         "tools/dialogue_quality.py",
+        "tools/skill_execution_contract.py",
         "tools/chennan_writing.py",
         "tools/chennan_writing_ui.py",
         "tools/external_trade_ui.py",
@@ -78,6 +79,7 @@ def main():
         assert "skills/bvb-fact-check/SKILL.md" in z.namelist()
         assert "skills/script-qa/SKILL.md" in z.namelist()
         assert "tools/dialogue_quality.py" in z.namelist()
+        assert "tools/skill_execution_contract.py" in z.namelist()
         assert "tools/chennan_writing.py" in z.namelist()
         assert "third_party/orchestra-research/AI-Research-SKILLs/LICENSE" in z.namelist()
     print("SUCCESS: verified director", small_count, "and full", large_count, "files.")
