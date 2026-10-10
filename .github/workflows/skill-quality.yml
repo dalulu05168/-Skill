@@ -28,6 +28,8 @@ jobs:
           python -m unittest discover -s tools -p 'test_trading_65_api.py' -v
       - name: Test Trading Center 65-person writing and local API
         run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
+      - name: Confirm trading-only dashboard, white theme and Skill editorial isolation
+        run: python -m unittest discover -s tools -p 'test_trading_skill_separation.py' -v
       - name: Verify mandatory persona memory/media, professor 135/24 routing and assistant/news evidence
         run: python -m unittest discover -s tools -p 'test_skill_execution_contract.py' -v
       - name: Verify no drafts or fabricated histories can enter approved persona memory
