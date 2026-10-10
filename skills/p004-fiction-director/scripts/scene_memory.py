@@ -15,8 +15,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 STORY_ID = "p004-fiction-director-independent"
-ID = re.compile(r"[A-Za-z0-9_-]{1,80}\\Z")
-PERSON_ID = re.compile(r"(?:0[1-9]|[1-5][0-9]|6[0-5])\\Z")
+ID = re.compile(r"[A-Za-z0-9_-]{1,80}\Z")
+PERSON_ID = re.compile(r"(?:0[1-9]|[1-5][0-9]|6[0-5])\Z")
 SPEAKERS = frozenset({"assistant", "professor"})
 MAX_MESSAGES = 200
 MAX_TEXT = 5000
