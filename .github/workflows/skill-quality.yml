@@ -32,6 +32,10 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_trading_skill_separation.py' -v
       - name: Verify mandatory persona memory/media, professor 135/24 routing and assistant/news evidence
         run: python -m unittest discover -s tools -p 'test_skill_execution_contract.py' -v
+      - name: Verify no drafts or fabricated histories can enter approved persona memory
+        run: python -m unittest discover -s tools -p 'test_approved_scene_memory.py' -v
+      - name: Verify upstream news/data evidence is independently reviewed and professor skills exist
+        run: python -m unittest discover -s tools -p 'test_upstream_data_review.py' -v
       - name: Test member-to-member dialogue quality and hard red lines
         run: python -m unittest discover -s tools -p 'test_dialogue_quality.py' -v
       - name: Test third-party trading platform navigation and isolation

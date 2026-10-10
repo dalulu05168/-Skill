@@ -174,3 +174,74 @@ def audit_publication_packet(packet):
             "issues": errors, "human_review_required": True,
             "facts_verified": False, "language_quality_verified": False,
             "publication_allowed": False}
+
+
+def audit_upstream_news_data(packet):
+    """Triage externally supplied news/quotes without contacting or trusting an upstream publisher.
+
+    This validates provenance *metadata*, not the claims. In particular a flag
+    sent by the producer can NEVER set a fact to CONFIRMED.
+    """
+    from datetime import datetime
+    from urllib.parse import urlparse
+
+    if packet is None:
+        return {"status": "NOT_RECEIVED", "issues": [], "items": [],
+                "facts_verified": False, "independent_source_review_required": True}
+    if not isinstance(packet, dict):
+        return {"status": "REJECTED", "issues": ["upstream_packet must be an object"],
+                "items": [], "facts_verified": False,
+                "independent_source_review_required": True}
+
+    issues, entries = [], []
+    for category, fields in (
+        ("news", ("headline", "original_url", "publisher", "published_at", "event_at")),
+        ("market", ("instrument", "market", "value", "unit", "baseline",
+                    "observed_at", "source_url", "delay_status")),
+    ):
+        rows = packet.get(category)
+        if not isinstance(rows, list):
+            issues.append(category + " must be a list (may be empty)")
+            continue
+        for index, row in enumerate(rows, 1):
+            item_errors = []
+            if not isinstance(row, dict):
+                item_errors.append("object required")
+                row = {}
+            for key in fields:
+                v = row.get(key)
+                if isinstance(v, bool) or not isinstance(v, (str, int, float)) or not str(v).strip():
+                    item_errors.append("missing " + key)
+            url = row.get("original_url") if category == "news" else row.get("source_url")
+            if isinstance(url, str):
+                u = urlparse(url)
+                if u.scheme not in ("http", "https") or not u.netloc or u.username or u.password:
+                    item_errors.append("invalid original source URL")
+            dtfield = "published_at" if category == "news" else "observed_at"
+            stamp = row.get(dtfield)
+            if isinstance(stamp, str) and stamp:
+                try:
+                    d = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+                    if d.utcoffset() is None:
+                        item_errors.append(dtfield + " must include timezone")
+                except ValueError:
+                    item_errors.append("invalid " + dtfield)
+            if category == "market":
+                v = row.get("value")
+                if isinstance(v, bool) or not isinstance(v, (int, float, str)):
+                    item_errors.append("invalid market value")
+            entries.append({
+                "type": category, "position": index,
+                "status": "REJECTED" if item_errors else "UNVERIFIED",
+                "issues": item_errors,
+                "upstream_verified_claim_ignored": bool(row.get("verified")),
+                "independent_review_required": True
+            })
+            issues.extend(f"{category} {index}: {e}" for e in item_errors)
+    return {
+        "status": "REJECTED" if issues else "AWAITING_INDEPENDENT_VERIFICATION",
+        "issues": issues, "items": entries,
+        "facts_verified": False,
+        "independent_source_review_required": True,
+        "next_steps": "Check original publisher and data against trusted external sources before assistant analysis",
+    }
