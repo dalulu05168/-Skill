@@ -188,6 +188,40 @@ body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Mi
  .ws-frame>.app button,.ws-frame>.app .btn{transition:none!important;transform:none!important}
 }
 @media(prefers-reduced-motion:reduce){.ws-rail-link{transition:none}}
+
+/* UI detail acceptance: readable supporting text, aligned chrome and touch controls.
+   Only layout/typography; no change to API, trading state, or data provenance. */
+.ws-frame{--ws-control-radius:9px}
+/* The universal nav selector must never impose 128px links in the 56px mobile rail. */
+.ws-frame .ws-rail .ws-rail-links{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:7px;width:100%;padding:0;border:0;border-radius:0;background:transparent}
+.ws-frame .ws-rail .ws-rail-link{width:100%;min-width:0;max-width:100%;flex:none;border:0;border-radius:0;margin:0;padding:11px 2px;background:transparent}
+.ws-frame .ws-rail-link{font-size:12px;line-height:1.45}
+.ws-frame .ws-top-badge{font-size:12px}
+.ws-frame .ws-pageheading p{font-size:13px}
+.ws-frame .ws-eyebrow{font-size:12px}
+.ws-frame .ws-readonly{font-size:12px}
+.ws-frame .ws-kpi-top small,.ws-frame .ws-kpi-note{font-size:12px}
+.ws-frame .ws-filter{font-size:12px!important;min-height:40px!important;border-radius:var(--ws-control-radius)!important}
+.ws-frame .ws-search-label{font-size:12px}
+.ws-frame .ws-search-label input{height:40px;min-height:40px;font-size:13px;border-radius:var(--ws-control-radius)}
+.ws-frame .ws-table{font-size:13px}
+.ws-frame .ws-table th{font-size:12px}
+.ws-frame .ws-person-cell small{font-size:12px}
+.ws-frame .ws-person-avatar{font-size:12px}
+.ws-frame .ws-row-action,.ws-frame .ws-secondary-button{font-size:12px;min-height:40px;border-radius:var(--ws-control-radius)}
+.ws-frame .ws-clarification{font-size:12px;line-height:1.6}
+.ws-frame .ws-section-label{font-size:12px}
+.ws-frame .ws-dialog pre{font-size:12px;line-height:1.6}
+.ws-frame .ws-dialog-close{min-height:40px;min-width:40px;border-radius:var(--ws-control-radius)}
+.ws-frame .ws-rail-link:focus-visible,
+.ws-frame .ws-row-action:focus-visible,
+.ws-frame .ws-filter:focus-visible{outline:2px solid #687989;outline-offset:2px}
+@media(max-width:760px){
+ .ws-frame .ws-rail-link{font-size:11px;min-height:62px}
+ .ws-frame .ws-kpi-top small{font-size:12px}
+ .ws-frame .ws-tabs a{font-size:12px}
+ .ws-frame .ws-table-scroll{overscroll-behavior-x:contain}
+}
 '''
 
 def wrap_page(page, active):

@@ -56,6 +56,33 @@ SECTION = r'''
 @media(prefers-reduced-motion:reduce){.sim-candidate-card{transition:none}
  .sim-candidate-card:hover{transform:none}}
 @media(max-width:900px){.sim-grid{grid-template-columns:1fr}.sim-counters{grid-template-columns:repeat(2,1fr)}}
+/* Consistent readable type scale, borders and controls in the trading center. */
+.sim-grid{gap:18px}
+.sim-counters{gap:12px}
+.sim-counter{border-color:#e4e8ed;border-radius:12px;min-width:0}
+.sim-counter small{font-size:12px;line-height:1.5}
+.sim-alert,.sim-label{font-size:13px;line-height:1.65}
+.sim-table{font-size:13px}
+.sim-table th,.sim-table td{padding:12px 13px;line-height:1.55}
+.sim-table input{font-size:13px;min-height:40px;border-radius:9px}
+.sim-table button{font-size:13px;min-height:40px;border-radius:9px}
+.sim-candidate-card{border-color:#e4e8ed;border-radius:12px;padding:18px}
+.sim-person-identity small,.sim-person-status{font-size:12px}
+.sim-person-status{line-height:1.5}
+.sim-person-detail,.sim-person-facts b{font-size:13px}
+.sim-person-tags span,.sim-person-facts small{font-size:12px;line-height:1.5}
+.sim-person-actions button{font-size:13px;min-height:40px}
+.sim-person-actions [data-qty]{min-height:40px;font-size:13px}
+.sim-tag{font-size:12px;line-height:1.5}
+.sim-recommend-overview small{font-size:12px;line-height:1.5}
+.sim-tablewrap{border-color:#e4e8ed;border-radius:12px}
+@media(max-width:600px){
+ .sim-person-head{flex-wrap:wrap}
+ .sim-person-status{margin-left:auto}
+ .sim-candidate-card{padding:15px}
+ .sim-person-actions button{flex:1 1 auto}
+ .sim-person-facts{grid-template-columns:1fr}
+}
 </style>
 <div class="section" id="tab-sim">
 <div class="sim-alert">仅限65名虚构成员的教学模拟账本；买入、卖出、持仓、资金及成交价格均为用户填写的模拟数据，不是证券市场真实执行结果。未配置模拟开户与资金的成员不能自动买入。</div>
