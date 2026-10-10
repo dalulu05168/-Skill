@@ -23,6 +23,7 @@ import rss_intake  # noqa: E402
 import validate_persona_roster as personas  # noqa: E402
 from finance_skill_editorial import audit_editorial  # noqa: E402
 from skill_execution_contract import audit_publication_packet, audit_upstream_news_data  # noqa: E402
+from news_materiality import assess_news  # News importance candidate only, never publication approval
 from editorial_storyline import rank_news_for_review  # noqa: E402
 from content_routing import routing_snapshot  # noqa: E402
 from rsi_core.quality import audit_observations  # noqa: E402
@@ -161,16 +162,28 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         if not rss_intake._official(item["url"]):
             issues.append(f"news item {i+1}: untrusted article URL")
             continue
+        significance = assess_news(item, now)
         news.append({
             "item_id": item["item_id"], "digest": item["digest"],
             "title": item["title"], "url": item["url"],
             "published_at": item.get("published_at"),
             "change_state": item.get("change_state", "unconfirmed"),
-            "review_priority": ("review_soon" if item.get("urgency_hint") ==
-                                "priority_review_candidate" else "routine_review"),
-            "evidence_status": "UNVERIFIED", "requires_human_article_review": True,
+            # Strictly preliminary: neither metadata validity nor a high-impact
+            # headline proves the original article, issuer, metric or causality.
+            "review_priority": significance["headline_review_priority"],
+            "materiality": significance,
+            "evidence_status": "UNVERIFIED",
+            "requires_human_article_review": True,
+            "distribution_status": "NOT_PUBLISHED",
         })
-    news.sort(key=lambda r: (r["review_priority"] != "review_soon", r["title"]))
+    order = {"P0": 0, "P1": 1, "P2": 2}
+    news.sort(key=lambda r: (
+        r["review_priority"] == "hold_metadata_review",
+        order.get(r["materiality"]["tier_candidate"], 3),
+        r["title"],
+    ))
+    highlights = [r for r in news if r["review_priority"] == "review_soon"]
+    held = [r for r in news if r["review_priority"] == "hold_metadata_review"]
 
     observations = spec.get("observations")
     audit = None
@@ -202,7 +215,7 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
         "routing": {
             "skill_sequence": SKILL_ORDER,
             "news_fact_check": "manual_original_article_review_required",
-            "news_priority": "keyword_triage_only_not_verified",
+            "news_priority": "materiality_and_freshness_review_candidates_only_not_verified",
             "assistant": "editorial_brief_task_only_not_generated",
             "professor": ("evening_class_editorial_brief_task_only_not_generated"
                           if selected["id"] == "RO-10" else "not_in_current_slot"),
@@ -210,7 +223,15 @@ def run_pipeline(spec=None, *, at=None, node_id=None, fetch_rss=False, state_fil
             "script_qa": "structural_check_plus_manual_editor_required",
         },
         "news": {"feed": SOURCE_ID if fetch_rss else None, "acquisition": source,
-                 "pending_count": len(news), "items": news},
+                 "pending_count": len(news), "high_impact_review_candidates": len(highlights),
+                 "metadata_hold_count": len(held),
+                 "editorial_shortlist": [r["item_id"] for r in highlights],
+                 "shortlist_status": "UNVERIFIED_REQUIRES_ORIGINAL_ARTICLE_AND_INDEPENDENT_REVIEW",
+                 "push_delivery": {"status": "NOT_CONFIGURED_NO_WHATSAPP_SEND",
+                                   "sent_count": 0,
+                                   "approval_required": True,
+                                   "facts_verified": False},
+                 "items": news},
         "market_metadata_audit": audit or {"gate": "not_run", "reason": "No observations supplied"},
         "editorial_audit": editorial,
         "characters": {"roster_count": len(roster), "draft_message_count": len(messages),
