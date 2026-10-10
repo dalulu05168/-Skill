@@ -124,10 +124,10 @@ python skills/romania-market-director/scripts/validate_persona_roster.py
 API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`GET /api/trading/state`、`POST /api/trading/prompt`、`POST /api/trading/validate`、`POST /api/trading/adopt`、`POST /api/trading/docs`；本地监听仍限定 `127.0.0.1`，不公开公网部署。
 
 
-## 外部交易平台入口（第三个独立模块）
+## 外部图片编辑器入口（第三个独立模块）
 
 - 工作台页面：`http://127.0.0.1:8765/trade-platform`，与 `/` 新闻推送、`/trading` 交易中心形成统一的三模块导航。
-- 用户提供的第三方站点：`https://trade.sasakic.cc/`。点击“打开交易平台”才在新浏览器标签打开真实外站；不在本地服务器代理，不复制页面，不绕过登录，不读取令牌、交易账户、订单、持仓或资产。
+- 用户提供的第三方站点：`https://trade.sasakic.cc/`。点击“打开图片编辑器”才在新浏览器标签打开真实外站；不在本地服务器代理，不复制页面，不绕过登录，不读取令牌、交易账户、订单、持仓或资产。
 - 目前无法从执行环境访问目标站点，也未确认其 iframe / CSP 规则，**不承诺站内嵌入可用**。页面清楚显示第三方网站可用性尚未验证；任何外部功能由原站点提供。
 - 统一65人 v4.1 人物仍由本仓库单一权威资料决定，外部平台没有人物关联或自动同步；原新闻审核、Ollama本地可选草稿及交易中心已确认记忆独立。
 - 若未来希望把真正的交易平台操作嵌入当前域名，需先提供可使用的正式API文档/源代码、必要授权和测试环境，并单独设计身份、隔离、审计及访问控制；不能仅凭网站URL实现实际交易数据合并。
