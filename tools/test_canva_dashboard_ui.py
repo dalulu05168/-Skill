@@ -67,7 +67,7 @@ class UIContractTests(unittest.TestCase):
 
     def test_shell_has_no_external_tracking_or_broken_navigation(self):
         rendered=wrap_page("<html><head><style></style></head><body><main class='app'>ok</main></body></html>","external")
-        self.assertIn('href="/trading#tc-profile"',rendered)
+        self.assertIn('href="/skill#tab-people"',rendered)
         self.assertIn('href="/trade-platform"',rendered)
         self.assertIn('name="member"',rendered)
         self.assertIn('aria-label="主模块"',rendered)
@@ -92,9 +92,13 @@ class UIContractTests(unittest.TestCase):
                             self.assertIn('href="/trading"',html)
                             self.assertIn('href="/"',html)
                             self.assertIn("65人",html)
+                            self.assertIn('href="/skill"',html)
                     with urlopen(base+"/") as r:
                         html=r.read().decode("utf-8")
                         self.assertIn('id="ws-members-body"',html)
+                        self.assertIn("罗马尼亚财经 · 群聊导演工作台",html)
+                        self.assertIn("进入65人群聊编剧与人物记忆",html)
+                        self.assertNotIn("统一交易工作台",html)
                         self.assertIn("ws-unknown",html)
                         self.assertIn("fetchApi",html,"Original news workflow must stay available")
                         self.assertIn('id="generate"',html,"Original optional Ollama feature retained")
