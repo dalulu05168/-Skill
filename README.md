@@ -49,7 +49,7 @@
 
 ## 下载与更换GPT
 
-推荐完整包：[romania-finance-bundle.zip](dist/romania-finance-bundle.zip)，包含导演资料与独立资讯审核模块，目录与仓库一致。较小的[导演单模块包](dist/romania-market-director-skill.zip)仅包含导演目录，不含资讯代码。**注意：仓库源码已更新至2.3.0，但dist中的两个ZIP尚未重新打包，现为旧版本；跨GPT导入前须重新构建。** 两个包的内容范围仍不同。
+资料包统一从[GitHub Actions 的 Romanian Skill Quality Gate](https://github.com/dalulu05168/-Skill/actions/workflows/skill-quality.yml)下载最近一次**成功的 main 分支构建**所附的 `romania-skill-bundles`，解压后有完整包 `romania-finance-bundle.zip` 和导演单模块包 `romania-market-director-skill.zip`。两者范围不同；不要再使用过去提交在 `dist/` 的过期二进制。构建产物保留14天，过期时可以手动运行该工作流，或在本地运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles`。
 
 支持文件解压和读取的GPT：上传完整包并说明“先读README.md和bundle-manifest.json，再读导演SKILL.md，按当天需求读取资讯、完整人物、素材与记忆”。不支持解压的平台需先本地解压，分批上传规则与所需资料。运行Python审核代码需要代码工具，知识文件上传本身不会执行代码。
 
@@ -69,13 +69,13 @@
 [2026-10-09统一执行标准](skills/romania-market-director/references/operating-standard-2026-10-09.md) · [国际新闻配图标准](skills/romania-market-director/references/news-visual-standard.md) · [跨GitHub工具入口](AGENTS.md)。更新GitHub不等于所有ChatGPT窗口自动安装。本库保留导演、资讯核验两个有效Skill，没有确认可安全删除的废弃技能。
 
 ## 当前v2.3.0一体化执行标准
-[强制身份核对、GIF/新闻图片触发、三时段八项、最终角色记忆](skills/romania-market-director/references/identity-media-memory-workflow.md)；独立验证器`skills/romania-market-director/scripts/validate_persona_roster.py`。新闻数字核验在人物选角前；编号姓名性别新老四重比对。助理八项上午/下午/晚上各一条；GIF合规随机且场景匹配；有真实图片任务立即执行而非只写占位。用户明确确认修改定稿时，具备权限的会话须归档原文及`memory/state.json`并核验GitHub提交。原独立教授Skill路径在历史v1.2文件中有引用，但当前仓库未保存原件；晚间19:30课程仍按现有规则及可获得讲稿执行。旧dist ZIP尚未重建。
+[强制身份核对、GIF/新闻图片触发、三时段八项、最终角色记忆](skills/romania-market-director/references/identity-media-memory-workflow.md)；独立验证器`skills/romania-market-director/scripts/validate_persona_roster.py`。新闻数字核验在人物选角前；编号姓名性别新老四重比对。助理八项上午/下午/晚上各一条；GIF合规随机且场景匹配；有真实图片任务立即执行而非只写占位。用户明确确认修改定稿时，具备权限的会话须归档原文及`memory/state.json`并核验GitHub提交。原独立教授Skill路径在历史v1.2文件中有引用，但当前仓库未保存原件；晚间19:30课程仍按现有规则及可获得讲稿执行。旧dist ZIP不再作为当前下载源，使用质量检查构建产物。
 
 ## 资讯与维护增强（2026-10-09）
 
 - [B 方案新闻接入、审核和发布执行说明](docs/NEWS-OPERATIONS-2026-10-09.md)。现已增加官方 BVB RSS 人工审核候选队列与去重测试，但**没有**开启实时行情、定时推送或自动审稿发布。
 - 运行 `python -m unittest discover -s .agents/skills/romania-stock-intelligence/tests -v` 和 `python skills/romania-market-director/scripts/validate_persona_roster.py` 回归测试。
-- 运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 从当前源码生成两个 ZIP，或者使用 GitHub Actions 的 `Romanian Skill Quality Gate` 工件。旧 `dist/` ZIP 未自动替换，不可声称已同步最新版。
+- 运行 `python tools/assemble_bundle.py --out-dir build/skill-bundles` 从当前源码生成两个 ZIP，或者使用 GitHub Actions 的 `Romanian Skill Quality Gate` 工件。`dist/` 的旧 ZIP 已停止提供；请下载当次通过验证的构建产物，或自行从当前源码重建。
 - 此处只保留本仓库 65 位 v4.1 成员档案与导演规则；不读取、写入、覆盖或同步任何其他项目的人物、课程、记忆及交易信息。人物编号只在本仓库内有效。
 
 ## BVB准确性增强技能 v1.0

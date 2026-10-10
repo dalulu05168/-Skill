@@ -1,0 +1,5 @@
+# Generated release bundles: use the successful quality-gate artifact, not stale binary snapshots.
+/dist/*.zip
+/build/
+__pycache__/
+.pytest_cache/
