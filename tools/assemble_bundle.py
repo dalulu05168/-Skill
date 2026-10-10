@@ -70,6 +70,7 @@ def main():
         "tools/skill_execution_contract.py",
         "tools/approved_scene_memory.py",
         "tools/editorial_storyline.py",
+        "tools/multiday_rehearsal.py",
         "tools/chennan_writing.py",
         "tools/chennan_writing_ui.py",
         "tools/external_trade_ui.py",
