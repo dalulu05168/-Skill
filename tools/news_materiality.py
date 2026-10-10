@@ -96,7 +96,7 @@ def assess_news(item, now):
             break
     if tier == "P2":
         for label, patterns in IMPORTANT:
-            if _has(headline, patterns):
+            if _has(review_text, patterns):
                 category, tier = label, "P1"
                 break
     # Generic announcements, opinion and PR do not become important just
