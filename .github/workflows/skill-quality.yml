@@ -22,6 +22,10 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_finance_skill*.py' -v
       - name: Verify four content categories and 35/35/30 guidance without shifting 16 nodes
         run: python -m unittest discover -s tools -p 'test_content_routing.py' -v
+      - name: Test 65-person simulated trading rules and HTTP records
+        run: |
+          python -m unittest discover -s tools -p 'test_trading_65.py' -v
+          python -m unittest discover -s tools -p 'test_trading_65_api.py' -v
       - name: Test Trading Center 65-person writing and local API
         run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
       - name: Test member-to-member dialogue quality and hard red lines
