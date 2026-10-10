@@ -39,11 +39,54 @@ class Trading65Tests(unittest.TestCase):
     def test_duplicate_purchase_denied(self):
         self.buy()
         with self.assertRaises(ValueError):apply(self.s,P,'buy',{'offer_id':self.o['id'],'person_id':'01','quantity':5,'date':self.day})
-    def test_early_sale_denied(self):
+    def test_immediate_sell_without_countdown(self):
         h=self.buy()['holding']
-        with self.assertRaises(ValueError):apply(self.s,P,'sell',{'holding_id':h['id'],'sell_price':12})
-    def test_sell_and_record(self):
-        h=self.buy()['holding'];h['planned_sell_at']=(datetime.now(timezone.utc)-timedelta(minutes=1)).isoformat();x=apply(self.s,P,'sell',{'holding_id':h['id'],'sell_price':12});self.assertEqual(x['transaction']['type'],'sell');self.assertEqual(h['status'],'sold')
+        self.assertNotIn('planned_sell_at', h)
+        x=apply(self.s,P,'sell',{'holding_id':h['id'],'sell_price':12})
+        self.assertEqual(x['transaction']['type'],'sell')
+        self.assertEqual(h['status'],'sold')
+        self.assertEqual(summary(self.s,P)['people'][0]['available_funds']['RON'],1010)
+    def test_old_holdings_ignore_legacy_sell_lock(self):
+        h=self.buy()['holding'];h['planned_sell_at']=(datetime.now(timezone.utc)+timedelta(days=999)).isoformat()
+        apply(self.s,P,'sell',{'holding_id':h['id'],'sell_price':12})
+        self.assertEqual(h['status'],'sold')
+    def test_batch_buy_funds_percentage_and_cash_accounting(self):
+        self.rec()
+        res=apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':25,'person_ids':['01','02']})
+        self.assertEqual(res['count'],2)
+        self.assertEqual([r['quantity'] for r in res['purchased']],[25,25])
+        self.assertEqual(summary(self.s,P)['people'][0]['available_funds']['RON'],750)
+        self.assertEqual(self.s['revision'],5)  # setup eligibility*2, offer, recommend, batch
+        self.assertEqual(len(self.s['transactions']),2)
+        with self.assertRaises(ValueError):apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':25,'person_ids':['01','02']})
+        self.assertEqual(len(self.s['transactions']),2)
+    def test_batch_buy_fail_atomic_if_second_member_insufficient(self):
+        self.rec()
+        apply(self.s,P,'eligibility',{'person_id':'02','opened':True,'currency':'RON','funds':30})
+        previous=copy.deepcopy(self.s)
+        with self.assertRaises(ValueError):apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':25,'person_ids':['01','02']})
+        self.assertEqual(self.s,previous)
+    def test_batch_sell_and_realized_profit(self):
+        self.rec()
+        apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':20,'person_ids':['01','02']})
+        hids=[h['id'] for h in self.s['holdings']]
+        result=apply(self.s,P,'batch_sell',{'offer_id':self.o['id'],'holding_ids':hids,'sell_price':12})
+        self.assertEqual(result['count'],2)
+        self.assertEqual([p['available_funds']['RON'] for p in summary(self.s,P)['people'][:2]],[1040,1040])
+        self.assertEqual(len(self.s['transactions']),4)
+        with self.assertRaises(ValueError):apply(self.s,P,'sell',{'holding_id':hids[0],'sell_price':12})
+    def test_batch_sell_failure_rollback(self):
+        self.rec()
+        apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':20,'person_ids':['01','02']})
+        previous=copy.deepcopy(self.s)
+        with self.assertRaises(ValueError):apply(self.s,P,'batch_sell',{'offer_id':self.o['id'],'holding_ids':[self.s['holdings'][0]['id'],'invalid'],'sell_price':12})
+        self.assertEqual(self.s,previous)
+    def test_percentage_fraction_and_minimum(self):
+        self.rec()
+        res=apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':19.9,'person_ids':['01']})
+        self.assertEqual(res['purchased'][0]['quantity'],19)
+        self.assertAlmostEqual(summary(self.s,P)['people'][0]['available_funds']['RON'],810)
+        with self.assertRaises(ValueError):apply(self.s,P,'batch_buy',{'offer_id':self.o['id'],'date':self.day,'allocation_pct':0,'person_ids':['02']})
     def test_snapshot_read_only(self):
         self.buy();before=copy.deepcopy(self.s);shot=snapshot(self.s,self.day,self.o['id']);self.assertGreater(len(shot['facts']),0);self.assertEqual(self.s,before)
     def test_atomic_read_write(self):

@@ -6,6 +6,7 @@ Trading figures are manually entered fictional simulation values, not actual hol
 from __future__ import annotations
 
 import hashlib
+import copy
 import json
 import math
 import os
@@ -142,8 +143,13 @@ def _funds(state, pid, currency):
     cap = setting.get("funds", {}).get(currency)
     if cap is None:
         return None
+    # Opening capital minus open positions, plus realized gains/losses from closed
+    # positions. This preserves old holding records and restores sale proceeds.
     spent = sum(float(h["quantity"]) * float(h["buy_price"]) for h in _active(state, pid) if h["currency"] == currency)
-    return round(max(0.0, float(cap) - spent), 2)
+    realized = sum((float(h["sold_price"]) - float(h["buy_price"])) * float(h["quantity"])
+                   for h in state["holdings"] if h["person_id"] == pid and h["currency"] == currency
+                   and h["status"] == "sold" and "sold_price" in h)
+    return round(max(0.0, float(cap) - spent + realized), 2)
 
 
 def _offer(state, oid):
@@ -190,6 +196,7 @@ def summary(state, profiles):
                        "persona_description": str(group.get("角色定位") or ""),
                        "traits": list(identity.get("核心标签") or [])[:3],
                        "opened": cfg.get("opened", False), "funds": cfg.get("funds", {}),
+                       "available_funds": {c: _funds(state, pid, c) for c in cfg.get("funds", {})},
                        "frequency": cfg.get("frequency", "MEDIUM"),
                        "required_today": cfg.get("required_today", False),
                        "hold_count": sum(h["person_id"] == pid for h in holds)})
@@ -268,7 +275,6 @@ def apply(state, profiles, action, data):
         offer = {"id": "of-" + uuid.uuid4().hex, "symbol": symbol, "name": name, "market": market,
                  "currency": currency, "unit_price": _number(data.get("unit_price"), "模拟单价", minimum=0.000001),
                  "min_shares": _number(data.get("min_shares"), "最低股数", integer=True, minimum=1),
-                 "hold_days": _number(data.get("hold_days"), "持有天数", integer=True, minimum=0, maximum=3650),
                  "participant_count": _number(data.get("participant_count"), "参与人数", integer=True, minimum=1, maximum=65),
                  "discount_pct": _number(data.get("discount_pct", 0), "折扣比例", minimum=0, maximum=99),
                  "created_at": stamp, "simulation_only": True}
@@ -316,6 +322,62 @@ def apply(state, profiles, action, data):
             c["status"] = "rejected"
             state["buy_plans"] = [x for x in state["buy_plans"] if not (x["offer_id"] == offer["id"] and x["person_id"] == pid and x["status"] == "planned")]
         result = {"person_id": pid, "status": c["status"]}
+    elif action == "batch_buy":
+        offer = _offer(state, data.get("offer_id"))
+        day = _date(data.get("date") or today())
+        percent = _number(data.get("allocation_pct"), "购买资金比例", minimum=0.01, maximum=100)
+        ids = data.get("person_ids")
+        if (not isinstance(ids, list) or not 1 <= len(ids) <= 65 or
+                len(set(str(x) for x in ids)) != len(ids)):
+            raise ValueError("请选择1至65名不重复的交易成员")
+        # Stage everything in memory before changing the caller's ledger: any
+        # invalid member/price/balance causes complete rollback of the batch.
+        staged = copy.deepcopy(state)
+        results = []
+        for raw_pid in ids:
+            pid = _id(raw_pid)
+            rec = _rec(staged, offer["id"], day)
+            candidate = next((c for c in rec["candidates"] if c["person_id"] == pid), None)
+            if candidate is None or candidate["status"] not in ("pending", "invited"):
+                raise ValueError(f"成员{pid}不在可购买的候选名单")
+            available = _funds(staged, pid, offer["currency"])
+            if available is None or not _member_eligibility(staged, pid).get("opened"):
+                raise ValueError(f"成员{pid}资金或开户信息不足")
+            qty = math.floor((available * percent / 100) / offer["unit_price"] + 1e-10)
+            if qty < offer["min_shares"]:
+                raise ValueError(f"成员{pid}按{percent:g}%分配的资金不足以购买最低股数")
+            if candidate["status"] == "pending":
+                apply(staged, profiles, "invite", {"offer_id": offer["id"], "date": day, "person_id": pid})
+            one = apply(staged, profiles, "buy", {"offer_id": offer["id"], "date": day,
+                                                   "person_id": pid, "quantity": qty})
+            results.append({"person_id": pid, "quantity": qty, "amount": round(qty * offer["unit_price"], 2),
+                            "holding_id": one["holding"]["id"]})
+        staged["revision"] = state["revision"] + 1
+        state.clear()
+        state.update(staged)
+        return {"purchased": results, "count": len(results), "allocation_pct": percent}
+    elif action == "batch_sell":
+        offer = _offer(state, data.get("offer_id"))
+        price = _number(data.get("sell_price"), "模拟卖出价", minimum=0.000001)
+        ids = data.get("holding_ids")
+        if (not isinstance(ids, list) or not 1 <= len(ids) <= 65 or
+                len(set(str(x) for x in ids)) != len(ids)):
+            raise ValueError("请选择1至65笔不重复的持仓")
+        staged = copy.deepcopy(state)
+        results = []
+        for raw_hid in ids:
+            hid = _text(raw_hid, "持仓编号")
+            holding = next((h for h in staged["holdings"] if h["id"] == hid), None)
+            if not holding or holding["offer_id"] != offer["id"]:
+                raise ValueError("只能批量卖出当前股票计划内的持仓")
+            one = apply(staged, profiles, "sell", {"holding_id": hid, "sell_price": price})
+            results.append({"person_id": holding["person_id"], "holding_id": hid,
+                            "quantity": holding["quantity"], "proceeds": round(holding["quantity"] * price, 2),
+                            "transaction_id": one["transaction"]["id"]})
+        staged["revision"] = state["revision"] + 1
+        state.clear()
+        state.update(staged)
+        return {"sold": results, "count": len(results)}
     elif action == "buy":
         offer = _offer(state, data.get("offer_id"))
         day = _date(data.get("date") or today())
@@ -330,12 +392,10 @@ def apply(state, profiles, action, data):
             raise ValueError("模拟资金未录入或不足")
         if any(x["person_id"] == pid and x["offer_id"] == offer["id"] and x["status"] == "holding" for x in state["holdings"]):
             raise ValueError("同一成员不可重复持有同一股票计划")
-        buy_at = _iso(stamp)
-        planned_sell = (buy_at + timedelta(days=offer["hold_days"])).isoformat()
         holding = {"id": "hd-" + uuid.uuid4().hex, "person_id": pid,
                    "offer_id": offer["id"], "symbol": offer["symbol"], "name": offer["name"],
                    "market": offer["market"], "currency": offer["currency"], "quantity": qty,
-                   "buy_price": offer["unit_price"], "buy_at": stamp, "planned_sell_at": planned_sell,
+                   "buy_price": offer["unit_price"], "buy_at": stamp,
                    "status": "holding", "simulation_only": True}
         state["holdings"].append(holding)
         candidate["status"] = "bought"
@@ -350,8 +410,6 @@ def apply(state, profiles, action, data):
         holding = next((h for h in state["holdings"] if h["id"] == hid), None) or _raise("持仓不存在")
         if holding["status"] != "holding":
             raise ValueError("这笔持仓已经卖出")
-        if _iso(stamp) < _iso(holding["planned_sell_at"]):
-            raise ValueError("尚未达到最低持有期限，不得卖出")
         price = _number(data.get("sell_price"), "模拟卖出价", minimum=0.000001)
         holding.update({"status": "sold", "sold_at": stamp, "sold_price": price})
         event = _event(state, "sell", holding["person_id"], holding["offer_id"], hid,
