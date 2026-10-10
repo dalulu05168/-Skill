@@ -58,11 +58,12 @@ class TradingAPIIntegration(unittest.TestCase):
                         hid=out['result']['holding']['id']
                         shot=get('/api/trading/sim/snapshot?date='+day+'&offer_id='+oid)
                         self.assertTrue(any(x['kind']=='holding' and x['character_id']=='01' for x in shot['facts']))
-                        with self.assertRaises(HTTPError):
-                            post('sell',holding_id=hid,sell_price=12)
+                        out=post('sell',holding_id=hid,sell_price=12)
+                        self.assertEqual(out['result']['transaction']['type'],'sell')
                         state=get('/api/trading/sim/state')
-                        self.assertEqual(state['metrics']['active_holdings'],1)
-                        self.assertEqual([x['type'] for x in state['transactions']],['buy'])
+                        self.assertEqual(state['metrics']['active_holdings'],0)
+                        self.assertEqual([x['type'] for x in state['transactions']],['buy','sell'])
+                        self.assertEqual(state['people'][0]['available_funds']['RON'],210)
                         self.assertEqual(json.loads(Path(folder,'trading-65.json').read_text())['roster_source'],'finance-director-65-v4.1')
                     finally:
                         server.shutdown();thread.join(timeout=5)
