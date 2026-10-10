@@ -68,7 +68,7 @@ class UIContractTests(unittest.TestCase):
     def test_shell_has_no_external_tracking_or_broken_navigation(self):
         rendered=wrap_page("<html><head><style></style></head><body><main class='app'>ok</main></body></html>","external")
         self.assertIn('href="/trading#tc-profile"',rendered)
-        self.assertIn('href="/trade-platform"',rendered)
+        self.assertIn('href="/image-editor"',rendered)
         self.assertIn('name="member"',rendered)
         self.assertIn('aria-label="主模块"',rendered)
         for unsafe in ("https://fonts.googleapis.com","example.com/price","iframe","localStorage"):
@@ -81,14 +81,14 @@ class UIContractTests(unittest.TestCase):
                 t=threading.Thread(target=server.serve_forever,daemon=True);t.start()
                 base=f"http://127.0.0.1:{server.server_port}"
                 try:
-                    for route in ("/","/?member=01","/trading","/trade-platform"):
+                    for route in ("/","/?member=01","/trading","/image-editor","/trade-platform"):
                         with self.subTest(route=route),urlopen(base+route) as r:
                             self.assertEqual(r.status,200)
                             html=r.read().decode("utf-8")
                             self.assertIn('class="ws-frame"',html)
                             self.assertIn('class="ws-rail"',html)
                             self.assertIn('class="ws-top"',html)
-                            self.assertIn('href="/trade-platform"',html)
+                            self.assertIn('href="/image-editor"',html)
                             self.assertIn('href="/trading"',html)
                             self.assertIn('href="/"',html)
                             self.assertIn("65人",html)

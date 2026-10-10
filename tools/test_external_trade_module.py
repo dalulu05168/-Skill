@@ -44,16 +44,17 @@ class ExternalTradeModuleTests(unittest.TestCase):
                             self.assertEqual(response.status, 200)
                             self.assertIn("text/html", response.headers.get("Content-Type"))
                             html = response.read().decode("utf-8")
-                            for item in ('href="/"', 'href="/trading"', 'href="/trade-platform"'):
+                            for item in ('href="/"', 'href="/trading"', 'href="/image-editor"'):
                                 self.assertIn(item, html)
                             self.assertNotIn("fake equity", html)
                     with urlopen(base+"/trade-platform") as response:
                         policy=response.headers.get("Content-Security-Policy", "")
-                        self.assertIn("frame-src 'none'", policy)
+                        self.assertEqual(response.url,base+"/image-editor")
+                        self.assertIn("frame-src https://trade.sasakic.cc", policy)
                         self.assertIn("script-src 'none'", policy)
                         self.assertIn("no-store", response.headers.get("Cache-Control", ""))
                         text=response.read().decode("utf-8")
-                        self.assertIn("网站内容、可访问性、登录状态及嵌入策略尚未验证", text)
+                        self.assertIn("图片编辑 · 大宗交易通知", text)
                     with urlopen(base + "/api/trading/people") as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     with urlopen(base + "/healthz") as response:

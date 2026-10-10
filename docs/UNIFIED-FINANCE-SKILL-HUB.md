@@ -132,3 +132,16 @@ API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`
 - 统一65人 v4.1 人物仍由本仓库单一权威资料决定，外部平台没有人物关联或自动同步；原新闻审核、Ollama本地可选草稿及交易中心已确认记忆独立。
 - 若未来希望把真正的交易平台操作嵌入当前域名，需先提供可使用的正式API文档/源代码、必要授权和测试环境，并单独设计身份、隔离、审计及访问控制；不能仅凭网站URL实现实际交易数据合并。
 - 测试：`python -m unittest discover -s tools -p 'test_external_trade_module.py' -v`。只测试本地三页面导航、外站跳转标记、无iframe以及65人/新闻流程未被修改，不会触发站外交易。
+
+
+## 图片编辑器接入同一工作台（更正原外部交易平台误标）
+
+现有网站 https://trade.sasakic.cc/ 实际上是 Brantone Veylor Block Trade Studio 买入/卖出通知图片编辑器，不是证券委托下单平台。独立源站继续负责股票代码解析、TradingView图表获取、背景上传和浏览器本地3840×2160 PNG导出。
+
+- 内部入口 /image-editor，统一侧栏显示「图片」，使用受限 iframe 打开原站编辑器，并提供直接访问原站的备用按钮
+- 旧入口 /trade-platform 返回临时重定向至 /image-editor，避免旧收藏链接断开或继续误标为交易平台
+- 安全策略仅为该页面允许 iframe 的 frame-src https://trade.sasakic.cc；工作台其他页面不添加第三方嵌入权限
+- 未复制、重写或迁移原编辑器的源代码；框架里只嵌入远端网站，源站中断时编辑器仍可能无法使用
+- 不传递当前工作台登录凭据，不把编辑器当作65人模拟订单接口，也不改变新闻审核或人物历史
+
+验证：python -m unittest discover -s tools -p test_image_editor_module.py -v，并在真实浏览器检查嵌入视图及原站备用入口。

@@ -27,7 +27,7 @@ OVERVIEW = r'''
     <a href="#news-process">新闻推送</a>
     <a href="/trading">交易中心</a>
     <a href="/trading#tc-profile">65人人物档案</a>
-    <a href="/trade-platform">外部交易平台</a>
+    <a href="/image-editor">图片编辑</a>
   </nav>
   <div class="ws-controls">
     <div class="ws-filter-group" role="group" aria-label="人物类型筛选">
