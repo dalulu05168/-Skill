@@ -306,6 +306,32 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                                        "nodes": plans, "all_data_verified": False})
                 except (ValueError, OSError, KeyError) as exc:
                     self.respond(400, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/news/facts/status":
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    date = query.get("date", [None])[0]
+                    node = query.get("node", [None])[0]
+                    if not isinstance(date, str) or not isinstance(node, str):
+                        raise ValueError("date and node required")
+                    # Prevent path traversal by strict date/node round-trip.
+                    from datetime import date as date_type
+                    if date_type.fromisoformat(date).isoformat() != date:
+                        raise ValueError("date must be YYYY-MM-DD")
+                    if not (len(node) == 5 and node.startswith("RO-") and node[3:].isdigit()
+                            and 1 <= int(node[3:]) <= 16):
+                        raise ValueError("unknown node")
+                    evidence_path = data_dir / "news-facts" / (date + "-" + node + ".json")
+                    if not evidence_path.exists():
+                        self.respond(200, {"status": "NO_REVIEWED_FACTS", "usable": False, "news_images_enabled": False})
+                    else:
+                        signed = json.loads(evidence_path.read_text(encoding="utf-8"))
+                        checked = review_news_handoff(signed, no_later_than=datetime.now(timezone.utc))
+                        self.respond(200, {"status": checked["status"],
+                                           "usable": checked["status"] == "EDITOR_REVIEWED_FOR_SCRIPT",
+                                           "issues": checked["issues"], "facts_count": len(checked["usable_facts"]),
+                                           "news_images_enabled": False})
+                except (ValueError, OSError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(400, {"error": str(exc)})
             elif self.path == "/api/content/categories":
                 try:
                     self.respond(200, routing_snapshot())
@@ -414,8 +440,14 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, collection)
                     return
                 if self.path == "/api/news/facts/check":
-                    output = review_news_handoff(request.get("review_packet"),
+                    packet = request.get("review_packet")
+                    output = review_news_handoff(packet,
                                                  no_later_than=datetime.now(timezone.utc))
+                    if output["status"] == "EDITOR_REVIEWED_FOR_SCRIPT" and request.get("save") is True:
+                        archive = data_dir / "news-facts" / (packet["date"] + "-" + packet["node_id"] + ".json")
+                        with run_lock:
+                            rss_intake.write_json(archive, packet)
+                        output["saved_locally"] = True
                     self.respond(200 if output["status"] != "BLOCKED" else 422, output)
                     return
                 if self.path == "/api/generate":
@@ -445,6 +477,16 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                         state = read_state(writing_path)
                         profiles = load_profiles()
                         if self.path in ("/api/trading/prompt", "/api/writing/prompt"):
+                            if request.get("use_current_news") is True and request.get("news_review_packet") is None:
+                                day, nid = request.get("date"), request.get("node")
+                                if not isinstance(day, str) or not isinstance(nid, str) or any(
+                                    c not in "0123456789-" for c in day) or any(c not in "RO-0123456789" for c in nid):
+                                    raise ValueError("Invalid requested fact review date/node")
+                                archive = data_dir / "news-facts" / (day + "-" + nid + ".json")
+                                if not archive.exists():
+                                    raise ValueError("Module 1 has no approved source review for this date/node")
+                                request = {**request, "news_review_packet": json.loads(
+                                    archive.read_text(encoding="utf-8"))}
                             prompt, changed = make_prompt(request, profiles, state)
                             if self.path == "/api/trading/prompt":
                                 ledger = read_trade_state(trade_path)
