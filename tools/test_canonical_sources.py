@@ -32,10 +32,9 @@ class CanonicalSourceTests(unittest.TestCase):
         self.assertEqual(len(list(directory.glob("*_AI_Profile.json"))), 65)
         self.assertTrue((ROOT / "skills/romania-market-director/characters/index.json").exists())
 
-    def test_old_005_js_is_archived_and_not_loaded_by_active_workspace(self):
+    def test_old_005_js_removed_and_not_loaded_by_active_workspace(self):
         old = ROOT / "legacy/005-trading"
-        self.assertTrue((old / "trading-simulator.js").exists())
-        self.assertTrue((old / "trade-dashboard.js").exists())
+        self.assertFalse(old.exists(), "70-person JS must be recoverable from Git history, not shipped")
         # Active services must not import or serve the unadapted legacy 70-person JS.
         for relative in (
             "tools/finance_skill_api.py",
