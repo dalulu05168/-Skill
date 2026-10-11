@@ -41,3 +41,9 @@
 - `scripts/validate_draft_roster.py` 只检查结构与唯一性，不保证文学生动、地道罗语或人物动机全部自然。
 - `tests/test_draft_roster.py` 检验误批准、伪造初始历史、重复台词、编号等可确定性错误。
 - `examples/first-day-ensemble-audition.md` 是初日假设讨论的试听稿；不得保存为正式人物记忆，也不得冒充真实投资者对话。
+
+## v2 具体选角材料（仍为候选）
+
+最新档案是`characters/drafts/roster-v2.json`，五批人类审阅表在`characters/drafts/REVIEW-65-v2.md`。保留了原v1作为比对；不要将任一版本自动导入正式`characters/approved-roster.json`。每个v2候选角色增加了自然出场建议（`turn_taking.starts_when/pacing/confronted/may_decline_to_speak`）与一条罗语试听（`voice.romanian_audition_line`，且标为**非历史**）。这些均是导演提示，不是每场固定台词。
+
+`examples/65-person-multiscene-audition-v2.json`展示无虚构真实行情数字的跨上午/下午/晚间样例，成员可在下午回应上午消息，教授仅晚间授课；尚未连通自动AI编剧。独立CI已配置专门检查假样稿引用和角色，文学感染力及罗马尼亚口语须继续验收。
