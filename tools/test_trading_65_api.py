@@ -39,6 +39,10 @@ class TradingAPIIntegration(unittest.TestCase):
                             self.assertIn('65人成员交易资料',html)
                             self.assertIn('id="sim-stock-chart"', html)
                             self.assertIn('id="sim-batch-sell"', html)
+                        with urlopen(base+'/favicon.svg') as favicon:
+                            self.assertEqual(favicon.status,200)
+                            self.assertIn('image/svg+xml',favicon.headers['Content-Type'])
+                            self.assertIn('<svg',favicon.read().decode('utf-8'))
                         state=get('/api/trading/sim/state')
                         self.assertEqual(len(state['people']),65)
                         self.assertEqual(state['metrics']['active_holdings'],0)

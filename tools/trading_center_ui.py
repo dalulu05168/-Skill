@@ -17,7 +17,7 @@ SIM_BODY = SECTION.split("</style>", 1)[1].replace(
 PAGE = (
     '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
     '<meta name="viewport" content="width=device-width,initial-scale=1">'
-    + '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2712%27%20fill%3D%27%23262b34%27%2F%3E%3Cpath%20d%3D%27M18%2046V18l28%2028V18%27%20fill%3D%27none%27%20stroke%3D%27%23e8d3a0%27%20stroke-width%3D%277%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E">'
+    + '<link rel="icon" type="image/svg+xml" href="/favicon.svg">'
     '<title>交易中心 · 65人模拟买卖与持仓</title><style>'
     + BASE_CSS + "\n" + SIM_CSS + """
 :root{color-scheme:light}
