@@ -81,7 +81,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <div class="columns"><label class="field">文字颜色<input id="color" type="color" value="#22334a"></label>
 <label class="field">字号<input id="font" type="range" min="36" max="155" value="84"></label></div>
 <div class="columns"><label class="field">亮度<input id="brightness" type="range" min="40" max="160" value="100"></label>
-<label class="field">适配<input id="fit" type="select"><option value="cover">填充</option><option value="contain">完整显示</option></select></label></div>
+<label class="field">适配<select id="fit"><option value="cover">填充</option><option value="contain">完整显示</option></select></label></div>
 <div class="rule"></div>
 <div class="actions"><button id="reset" type="button">重置</button><button id="export" type="button" class="primary">导出 4K PNG ↓</button></div>
 <div class="status" role="status" id="status" aria-live="polite">准备就绪 · 图片仅在本机处理</div>
