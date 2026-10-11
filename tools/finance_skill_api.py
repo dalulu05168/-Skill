@@ -24,6 +24,7 @@ from trading_center_ui import PAGE as TRADING_PAGE
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
 from workspace_layout import wrap_page
+from four_module_gateway import render_gateway
 from workspace_overview import dashboard_summary, add_overview
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
@@ -60,7 +61,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f7f7f8;border:1px sol
 </style></head><body><main class="app">
 <div class="top"><div><div class="logo">NUVEXA <span style="color:#aa832d">FINANCE</span></div>
 <div class="tag">罗马尼亚财经 · 统一 SKILL 工作台</div></div><div class="pill">本地审核模式 · 不对外发布</div></div>
-<nav class="row" aria-label="工作台模块"><a class="btn active" style="text-decoration:none" href="/" aria-current="page">📰 新闻推送与审核</a><a class="btn alt" style="text-decoration:none;border:1px solid #b99a62" href="/trading">💹 交易中心 · 65人人物</a><a class="btn alt" style="text-decoration:none" href="/trade-platform">↗ 外部交易平台</a></nav>
+<nav class="row" aria-label="工作台模块"><a class="btn active" style="text-decoration:none" href="/news" aria-current="page">📰 新闻推送与审核</a><a class="btn alt" style="text-decoration:none;border:1px solid #b99a62" href="/trading">💹 交易中心 · 65人人物</a><a class="btn alt" style="text-decoration:none" href="/trade-platform">↗ 外部交易平台</a></nav>
 <section class="panel" style="margin-top:22px;border-color:#dfd6c4;background:#fffdf9">
 <h2>65人群聊导演 · 使用现有 ChatGPT / 自定义 GPT</h2>
 <p style="font-size:13px">不需要安装Ollama：进入财经 Skill，选择65位人物中适合本话题的成员，生成附有各人完整档案与已采用历史的提示词；将GPT返回的JSON粘贴回工作台，进行个人口吻、连续记忆、结构与来源审查，再由你确认正式采用。GPT无法读取GitHub时，使用页面已经打包进提示词的人物资料；未经来源核实的财经信息仍需审核。</p>
@@ -231,11 +232,23 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self._challenge()
                 return
             if urlsplit(self.path).path == "/":
-                body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
+                body = render_gateway().encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            elif urlsplit(self.path).path == "/news":
+                body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Security-Policy",
+                                 "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
+                                 "object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
