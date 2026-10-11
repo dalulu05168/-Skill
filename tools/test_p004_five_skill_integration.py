@@ -110,7 +110,8 @@ class FiveSkillIntegrationTests(unittest.TestCase):
     def test_live_plan_review_and_mandatory_approval_gate(self):
         code,out=self.begin()
         self.assertEqual(code,200)
-        self.assertEqual(out["stage"],"AWAITING_AI_SCREENWRITER")
+        self.assertEqual(out["stage"],"AWAITING_WRITER_SKILL")
+        self.assertEqual(out["next_skill"],"p004-writer")
         self.assertFalse(out["model_invoked"])
         self.assertEqual(out["task"]["approved_history"],[])
         self.assertIn("只写罗马尼亚语",out["prompt"])
@@ -167,6 +168,69 @@ class FiveSkillIntegrationTests(unittest.TestCase):
             again=json.loads(response.read())
         self.assertTrue(again["people"][0]["approved"])
         self.assertFalse(again["people"][1]["approved"])
+
+    def test_five_first_class_skill_metadata_is_real_not_an_ai_program(self):
+        self.assertEqual(set(bridge.SKILL_FILES), set(bridge.ROLES))
+        metadata=bridge.skill_registry()
+        self.assertEqual(len(metadata),5)
+        for item in metadata:
+            with self.subTest(role=item["role"]):
+                self.assertTrue(item["defined"])
+                self.assertFalse(item["installed_in_chatgpt"])
+                self.assertTrue(item["file"].startswith("skills/p004-"))
+                self.assertTrue(bridge.SKILL_FILES[item["role"]].is_file())
+        with urlopen(self.base+"/api/p004/status") as response:
+            state=json.loads(response.read())
+        self.assertTrue(state["skill_only_mode"])
+        self.assertTrue(state["writer_skill_defined"])
+        self.assertFalse(state["writer_skill_automatically_invoked"])
+        self.assertEqual(state["skill_definitions"],metadata)
+        _,page=self.get("/skill")
+        self.assertIn("编剧 Skill",page)
+        self.assertNotIn("自动AI编剧",page)
+
+    def test_adopted_story_history_reaches_next_director_and_writer_skill(self):
+        """Synthetic approvals exist ONLY inside a temp test workspace."""
+        draft=bridge.read_json(bridge.DRAFT)
+        approvals=bridge.read_json(bridge.APPROVED)
+        approvals["characters"]=[{
+            "id":p["id"],"name":p["name"],
+            "approved_by_user":True,
+            "profile_fingerprint":bridge.fingerprint(p)}
+            for p in draft["people"]]
+        tmp_roster=self.directory/"p004-five-skills"/"approved-roster.json"
+        bridge.save_json(tmp_roster,approvals)
+        code,first=self.begin(scene="first-synthetic-scene")
+        self.assertEqual(code,200)
+        manuscript=self.manuscript(first["task"])
+        code,result=self.post("/api/p004/review",{
+            "token":first["token"],"manuscript":manuscript})
+        self.assertEqual(code,200)
+        self.assertFalse(result["report"]["blocking_issues"])
+        code,adopted=self.post("/api/p004/adopt",{
+            "token":first["token"],"editorial_confirmed":True,"operator_confirmed":True})
+        self.assertEqual(code,200)
+        self.assertTrue(adopted["adoption"]["official_story_memory_written"])
+        code,next_scene=self.begin(scene="second-synthetic-scene")
+        self.assertEqual(code,200)
+        previous=next_scene["task"]["approved_history"]
+        self.assertGreater(len(previous),0)
+        self.assertTrue(any(
+            row["scene_id"]=="first-synthetic-scene"
+            and row["message_id"]=="m01"
+            and row["speaker_id"]=="assistant"
+            for row in previous))
+        self.assertIn("first-synthetic-scene",next_scene["prompt"])
+        valid=self.manuscript(next_scene["task"])
+        valid["messages"][1]["history_reference"]={
+            "scene_id":"first-synthetic-scene",
+            "message_id":"m01",
+            "speaker_id":"assistant"}
+        code,reviewed=self.post("/api/p004/review",{
+            "token":next_scene["token"],"manuscript":valid})
+        self.assertEqual(code,200)
+        self.assertEqual(reviewed["report"]["status"],"EDITORIAL_REVIEW_REQUIRED")
+        self.assertFalse((self.directory/"chennan-writing-65.json").exists())
 
     def test_invalid_speaker_refused_and_no_memory(self):
         _,p=self.begin(scene="p004-unknown-speaker")
