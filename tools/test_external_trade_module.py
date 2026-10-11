@@ -44,8 +44,14 @@ class ExternalTradeModuleTests(unittest.TestCase):
                             self.assertEqual(response.status, 200)
                             self.assertIn("text/html", response.headers.get("Content-Type"))
                             html = response.read().decode("utf-8")
-                            for item in ('href="/"', 'href="/trading"', 'href="/trade-platform"'):
-                                self.assertIn(item, html)
+                            if route == "/":
+                                self.assertIn("四合一管理工作台", html)
+                                for item in ('href="/news"', 'href="/trading"',
+                                             'href="/skill"', 'href="/trade-platform"'):
+                                    self.assertIn(item, html)
+                            else:
+                                for item in ('href="/"', 'href="/trading"', 'href="/trade-platform"'):
+                                    self.assertIn(item, html)
                             self.assertNotIn("fake equity", html)
                     with urlopen(base+"/trade-platform") as response:
                         policy=response.headers.get("Content-Security-Policy", "")
