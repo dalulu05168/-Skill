@@ -217,7 +217,8 @@ function renderRecordList(){
 }
 function render(){if(!tradeData)return;
 const m=tradeData.metrics,curPerson=val('sim-member'),curOffer=val('sim-offer');
-byid('sim-stats').innerHTML=[['65人资料',m.people],['已配置模拟开户',m.opened],['当前持仓人数',m.holding_members],['已确认卖出记录',m.sold_records]].map(x=>'<div class="sim-counter"><strong>'+x[1]+'</strong><small>'+x[0]+'</small></div>').join('');
+const tx=tradeData.transactions;
+byid('sim-stats').innerHTML=[['已登记记录',tx.length],['手工录入',tx.filter(t=>t.record_origin==='manual-entry').length],['买入明细',tx.filter(t=>t.type==='buy').length],['卖出明细',tx.filter(t=>t.type==='sell').length]].map(x=>'<div class="sim-counter"><strong>'+x[1]+'</strong><small>'+x[0]+'</small></div>').join('');
 byid('sim-member').innerHTML=tradeData.people.map(p=>'<option value="'+p.id+'">'+escapeHtml(p.id+' · '+p.name+' · '+p.role)+'</option>').join('');
 byid('sim-member').value=person(curPerson)?curPerson:'01';infoPerson();
 byid('sim-offer').innerHTML='<option value="">请选择股票计划</option>'+tradeData.offers.map(o=>'<option value="'+escapeHtml(o.id)+'">'+escapeHtml(o.symbol+' · '+o.name+' ('+o.currency+')')+'</option>').join('');
