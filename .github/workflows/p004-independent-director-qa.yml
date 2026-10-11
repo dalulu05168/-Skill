@@ -31,3 +31,30 @@ jobs:
         run: python skills/p004-fiction-director/scripts/validate_draft_roster.py skills/p004-fiction-director/characters/drafts/roster-v2.json
       - name: Verify initial v1 preserved for reference
         run: python skills/p004-fiction-director/scripts/validate_draft_roster.py skills/p004-fiction-director/characters/drafts/roster-v1.json
+      - name: Build standalone Windows director package (only after QA)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          project = Path("skills/p004-fiction-director")
+          output = Path("dist/p004-director-studio-windows.zip")
+          output.parent.mkdir(parents=True, exist_ok=True)
+          with ZipFile(output, "w", compression=ZIP_DEFLATED) as archive:
+              for file in sorted(project.rglob("*")):
+                  if not file.is_file():
+                      continue
+                  if any(part in {"__pycache__", ".git", ".venv"} for part in file.parts):
+                      continue
+                  if file.suffix in {".pyc", ".sqlite3", ".db"}:
+                      continue
+                  archive.write(file, "P004-Director-Studio/" + str(file.relative_to(project)))
+          assert output.stat().st_size > 1000
+          print("Built:", output, "bytes:", output.stat().st_size)
+          PY
+      - name: Upload Windows director studio ZIP for review (14-day retention)
+        uses: actions/upload-artifact@v4
+        with:
+          name: p004-director-studio-windows
+          path: dist/p004-director-studio-windows.zip
+          retention-days: 14
+          if-no-files-found: error
