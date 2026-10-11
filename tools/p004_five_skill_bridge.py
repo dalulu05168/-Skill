@@ -25,6 +25,7 @@ from approve_scene import finalize
 DRAFT = ROOT / "characters" / "drafts" / "roster-v2.json"
 APPROVED = ROOT / "characters" / "approved-roster.json"
 ROLES = ("director", "writer", "professor", "assistant", "members")
+SKILL_FILES = {role: ROOT.parent / ("p004-" + role) / "SKILL.md" for role in ROLES}
 TOKEN = re.compile(r"^[A-Za-z0-9_-]{24,80}$")
 
 
@@ -117,6 +118,21 @@ def approve_character(request, data_dir):
     return {"id": cid, "status": "approved_after_individual_review",
             "approved_count": len(state["characters"])}
 
+def skill_registry():
+    """Describe actual first-class Skill files, not imaginary installed models."""
+    rows = []
+    for role, path in SKILL_FILES.items():
+        if not path.is_file():
+            raise ValueError("Missing first-class P004 Skill: " + role)
+        raw = path.read_text(encoding="utf-8")
+        if not raw.startswith("---\nname: p004-" + role + "\n"):
+            raise ValueError("Invalid P004 Skill metadata for " + role)
+        rows.append({"role": role, "skill_name": "p004-" + role,
+                     "file": str(path.relative_to(ROOT.parent.parent)).replace("\\", "/"),
+                     "defined": True, "installed_in_chatgpt": False})
+    return rows
+
+
 def status(data_dir):
     candidates = read_json(DRAFT)
     approved = read_json(approved_roster_path(data_dir))
@@ -126,8 +142,12 @@ def status(data_dir):
         raise ValueError("Story identifiers mismatch")
     return {
         "story_id": candidates["story_id"], "skills": list(ROLES),
+        "skill_definitions": skill_registry(),
+        "skill_only_mode": True,
         "candidate_count": len(candidates["people"]),
         "approved_count": len(approved["characters"]),
+        "writer_skill_defined": True,
+        "writer_skill_automatically_invoked": False,
         "autonomous_writer_connected": False,
         "use_existing_ai_chat": True,
         "live_financial_news_verified": False,
@@ -156,7 +176,12 @@ def plan(request, data_dir):
         "simulation_only": True,
         "source_status": "HYPOTHETICAL",
     }
-    prepared = prepare(read_json(DRAFT), requested)
+    history_db = Path(data_dir) / "p004-five-skills" / "adopted-history.sqlite3"
+    verified_roster = approved_roster_path(data_dir)
+    # Only an actual adopted local SQLite ledger can supply character memories.
+    history_args = ({"db_path": history_db, "approved_roster_path": verified_roster}
+                    if history_db.is_file() else {})
+    prepared = prepare(read_json(DRAFT), requested, **history_args)
     token = secrets.token_urlsafe(24)
     saved = {"prepared": prepared, "manuscript": None, "report": None, "adopted": False}
     save_json(location(data_dir, token), saved)
@@ -165,7 +190,8 @@ def plan(request, data_dir):
         "task": prepared["task"],
         "prompt": prepared["llm_prompt"],
         "cast_count": prepared["cast_count"],
-        "stage": "AWAITING_AI_SCREENWRITER",
+        "stage": "AWAITING_WRITER_SKILL",
+        "next_skill": "p004-writer",
         "model_invoked": False,
         "history_written": False,
     }
@@ -185,7 +211,11 @@ def check(request, data_dir):
     if saved.get("adopted"):
         raise ValueError("Adopted scenes cannot be overwritten")
     manuscript = request.get("manuscript")
-    result = review(saved["prepared"], manuscript)
+    history_db = Path(data_dir) / "p004-five-skills" / "adopted-history.sqlite3"
+    review_args = ({"db_path": history_db,
+                    "approved_roster_path": approved_roster_path(data_dir)}
+                   if history_db.is_file() else {})
+    result = review(saved["prepared"], manuscript, **review_args)
     saved["manuscript"] = manuscript if not result["blocking_issues"] else None
     saved["report"] = result
     save_json(path, saved)
