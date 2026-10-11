@@ -17,6 +17,8 @@ jobs:
       - run: node apps/bvb-news-assistant/tests/regression.test.cjs
       - shell: powershell
         run: ./apps/bvb-news-assistant/tests/server.test.ps1
+      - shell: powershell
+        run: ./apps/bvb-news-assistant/tests/server-smoke.ps1
   browser:
     runs-on: ubuntu-latest
     steps:
