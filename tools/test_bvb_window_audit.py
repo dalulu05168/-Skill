@@ -61,12 +61,14 @@ class BVBWindowTests(unittest.TestCase):
         self.assertEqual(unavailable["bet_direction"],"unknown")
         self.assertFalse(unavailable["numerical_claims_verified"])
         self.assertEqual(market_analysis({"state":"ok","value":"nan","change":4,"marketTime":"08:45"},[])["bet_direction"],"unknown")
-        delayed=market_analysis({"state":"ok","value":23000.2,"change":-0.72,"marketTime":"08:40",
-                                 "url":"https://ws.bvb.ro/"},[])
+        delayed=market_analysis({"state":"ok","value":23000.2,"change":-0.72,"marketTime":"2026-10-09T08:40:00+03:00",
+                                 "url":"https://ws.bvb.ro/"},[],observed_at=NOW)
         self.assertEqual(delayed["bet_direction"],"down")
         self.assertEqual(delayed["status"],"provisional_delayed_observation")
         self.assertFalse(delayed["numerical_claims_verified"])
         self.assertIn("delayed",delayed["quote_type"])
+        stale=market_analysis({"state":"ok","value":23444,"change":1.5,"marketTime":"2026-10-08T08:40:00+03:00"},[],observed_at=NOW)
+        self.assertEqual(stale["bet_direction"],"unknown")
 
     def test_market_report_keeps_feed_failures_and_pending_evidence(self):
         snapshot={"fetchedAt":NOW.isoformat(),
