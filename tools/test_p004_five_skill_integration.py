@@ -129,6 +129,45 @@ class FiveSkillIntegrationTests(unittest.TestCase):
         self.assertFalse((self.directory/"p004-five-skills"/"adopted-history.sqlite3").exists())
         self.assertFalse((self.directory/"chennan-writing-65.json").exists())
 
+    def test_real_one_by_one_character_approval_and_persistence(self):
+        with urlopen(self.base+"/api/p004/characters") as response:
+            data=json.loads(response.read())
+        self.assertEqual(data["candidate_count"],65)
+        self.assertEqual(data["approved_count"],0)
+        first=data["people"][0]
+        self.assertEqual(first["id"],"01")
+        self.assertFalse(first["approved"])
+        code,blocked=self.post("/api/p004/approve-character",{
+            "id":"01","confirmed_name":first["name"],"reviewed":False,
+            "confirmed":True})
+        self.assertEqual(code,400)
+        self.assertIn("individually",blocked["error"])
+        code,blocked=self.post("/api/p004/approve-character",{
+            "id":"01","confirmed_name":"wrong name",
+            "reviewed":True,"confirmed":True})
+        self.assertEqual(code,400)
+        self.assertIn("Confirm",blocked["error"])
+        code,done=self.post("/api/p004/approve-character",{
+            "id":"01","confirmed_name":first["name"],
+            "reviewed":True,"confirmed":True})
+        self.assertEqual(code,200)
+        self.assertEqual(done["approved_count"],1)
+        _,same=self.post("/api/p004/approve-character",{
+            "id":"01","confirmed_name":first["name"],
+            "reviewed":True,"confirmed":True})
+        self.assertEqual(same["status"],"already_approved")
+        approved_path=self.directory/"p004-five-skills"/"approved-roster.json"
+        self.assertTrue(approved_path.is_file())
+        self.assertEqual(len(json.loads(approved_path.read_text())["characters"]),1)
+        with urlopen(self.base+"/api/p004/status") as response:
+            current=json.loads(response.read())
+        self.assertEqual(current["approved_count"],1)
+        self.assertEqual(bridge.read_json(bridge.APPROVED)["characters"],[])
+        with urlopen(self.base+"/api/p004/characters") as response:
+            again=json.loads(response.read())
+        self.assertTrue(again["people"][0]["approved"])
+        self.assertFalse(again["people"][1]["approved"])
+
     def test_invalid_speaker_refused_and_no_memory(self):
         _,p=self.begin(scene="p004-unknown-speaker")
         draft=self.manuscript(p["task"])
