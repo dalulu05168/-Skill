@@ -122,8 +122,11 @@ SECTION = r'''
  <label>起始日期<input id="trade-export-start" type="date"></label>
  <label>结束日期<input id="trade-export-end" type="date"></label>
 </div>
-<div class="sim-record-actions"><button type="button" id="trade-export-csv">导出真实账本明细 CSV</button><small>没有符合条件的记录时仅导出表头；不填充演示成交。</small></div>
+<div class="sim-record-actions"><button type="button" id="trade-export-csv">导出已保存明细 CSV</button><small>没有符合条件的记录时仅导出表头；不填充演示成交。</small></div>
+<h3 style="margin-top:18px">已保存参与人员交易明细</h3>
+<div id="trade-record-list" class="sim-tablewrap" aria-live="polite"></div>
 </section>
+<details id="sim-legacy" class="sim-record"><summary style="cursor:pointer;font-weight:750">旧版模拟计划及买卖流程（保留已有数据，非当前主要职责）</summary>
 <div class="sim-grid">
  <section class="card"><h2>01 · 65人成员交易资料</h2><p class="muted">姓名、职业等来自同一份65人v4.1正式人物资料；模拟开户、资金与参与频率独立设置，不修改人物原档案。</p>
  <label for="sim-member">选择人物</label><select id="sim-member"></select>
@@ -152,6 +155,7 @@ SECTION = r'''
 <section class="card"><h2>05 · 买卖记录（仅人工确认后生成）</h2><div class="sim-tablewrap" id="sim-transactions"></div></section>
 </div>
 <section class="card"><h2>65人实际交易资格明细</h2><p class="muted">此处65名全量展示；不具备模拟开户/资金条件的成员仍保留人物资料，但不会冒充已成交。</p><input id="sim-people-search" type="search" placeholder="搜索人物编号、姓名、职业、城市"><div class="sim-tablewrap" id="sim-people-table" style="margin-top:12px"></div></section>
+</details>
 </div>
 '''
 
@@ -193,6 +197,24 @@ function updateRecordSelectors(){
  a.value=tradeData.people.some(x=>x.id===selected)?selected:'01';b.value=filtered;
  if(!byid('trade-record-date').value)byid('trade-record-date').value=tradeData.market_date;
 }
+function renderRecordList(){
+ const offers=new Map(tradeData.offers.map(x=>[x.id,x]));
+ const holds=new Map(tradeData.holdings.map(x=>[x.id,x]));
+ const entries=[...tradeData.transactions].reverse().map(t=>{
+   const h=holds.get(t.holding_id)||{},o=offers.get(t.offer_id)||{};
+   const day=t.trade_date||String(t.created_at||'').slice(0,10);
+   return '<tr><td>'+escapeHtml(t.id)+'</td><td>'+escapeHtml((person(t.person_id)?.name||t.person_id)+' · '+t.person_id)+'</td>'
+     +'<td>'+escapeHtml(t.type==='buy'?'买入':'卖出')+'</td>'
+     +'<td>'+escapeHtml(t.symbol||h.symbol||o.symbol||'未标注')+'</td>'
+     +'<td>'+escapeHtml(day)+'</td><td>'+escapeHtml(t.quantity)+'</td>'
+     +'<td>'+escapeHtml(money(t.unit_price,t.currency))+'</td>'
+     +'<td>'+escapeHtml(t.record_origin==='manual-entry'?'人工登记':'原模拟账本')+'</td>'
+     +'<td>'+escapeHtml(t.note||'')+'</td></tr>';
+ });
+ byid('trade-record-list').innerHTML=entries.length
+  ?rowTable(['记录ID','人员','买卖','代码','交易日期','数量','单价','来源','备注'],entries)
+  :empty('尚未登记任何参与人员交易记录');
+}
 function render(){if(!tradeData)return;
 const m=tradeData.metrics,curPerson=val('sim-member'),curOffer=val('sim-offer');
 byid('sim-stats').innerHTML=[['65人资料',m.people],['已配置模拟开户',m.opened],['当前持仓人数',m.holding_members],['已确认卖出记录',m.sold_records]].map(x=>'<div class="sim-counter"><strong>'+x[1]+'</strong><small>'+x[0]+'</small></div>').join('');
@@ -200,7 +222,7 @@ byid('sim-member').innerHTML=tradeData.people.map(p=>'<option value="'+p.id+'">'
 byid('sim-member').value=person(curPerson)?curPerson:'01';infoPerson();
 byid('sim-offer').innerHTML='<option value="">请选择股票计划</option>'+tradeData.offers.map(o=>'<option value="'+escapeHtml(o.id)+'">'+escapeHtml(o.symbol+' · '+o.name+' ('+o.currency+')')+'</option>').join('');
 byid('sim-offer').value=tradeData.offers.some(o=>o.id===curOffer)?curOffer:(tradeData.offers.at(-1)?.id||'');
-renderPeople();renderRecs();renderHoldings();renderTx();updateRecordSelectors();
+renderPeople();renderRecs();renderHoldings();renderTx();updateRecordSelectors();renderRecordList();
 }
 function currentRec(){return tradeData?.recommendations.find(r=>r.offer_id===val('sim-offer')&&r.date===val('sim-day'))}
 function renderRecs(){
