@@ -57,3 +57,11 @@ description: 65名独立角色的罗马尼亚财经教育虚构群聊小说总�
 已新增 `scripts/scene_memory.py` 作为**独立、新故事专属**的 SQLite 记忆基础，`tests/test_scene_memory.py` 检验必须确认、首日零历史、人物隔离、时间顺序、重复导入和错误回滚。正式角色名册 `characters/approved-roster.json` **仍为空**；等待新65人逐个确认，不会自动读取旧角色档案。Mem0 只是 `references/open-source-candidates.md` 的第二阶段备选，尚未安装。
 
 该模块现在不是自动调用AI的记忆代理，也未连通原 `/skill` 网页。记录正式采用的场次时，必须有明确用户确认和新故事的名单，并保留每条消息的真实编号引用。以后接入第2模块时只查其**实际模拟成交事实**，不能由编剧任意写入交易历史。
+
+## 65名新人物候选设计（待用户审阅）
+
+已编写 [65人候选档案](characters/drafts/roster-v1.json) 和 [65人审阅表](characters/drafts/roster-v1-review.md)。65人按追随/观望/反驳/提问/独立研究/情绪/幽默/少言分为8种主要倾向，性格标签只影响出场概率，不是每日固定扮演指令。每人均有不同姓名、职业、地区、动机、语气、兴趣与一句**纯试听、非历史**的角色对白。候选年龄暂为40至68岁，此为建议而非用户已经确认的新范围。
+
+人物导演必须读取 [按事件选角而非排队发言](references/member-director.md) 与 [首日群聊试听场景](examples/first-day-ensemble-audition.md)；前者定义从话题到发言动机、冲突与沉默的选择方法，后者是**未采用的沙盒样稿**，不能进入正式SQLite历史。新正式名册 `characters/approved-roster.json` 仍为空，禁止因为草案已经生成就自动核准65人。
+
+结构检查：`python skills/p004-fiction-director/scripts/validate_draft_roster.py skills/p004-fiction-director/characters/drafts/roster-v1.json`；回归测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`。脚本只做确定性数据规则检查，文学性及罗马尼亚语表达仍需专门审查。
