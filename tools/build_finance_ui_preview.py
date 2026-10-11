@@ -24,19 +24,29 @@ from four_module_gateway import render_gateway
 
 OUTPUT = ROOT / "build" / "finance-ui-readonly-preview"
 BANNER = (
-    '<section role="status" class="readonly-preview-banner">'
-    '<strong>界面验收预览 · 非正式业务后台</strong>'
-    '<span>本预览直接根据 P004 页面源码构建，仅展示布局及65位既有人物的非敏感摘要。'
-    '新闻审核、角色记忆保存、AI生成、交易记录与群消息操作未在此站点连接。'
-    '请勿输入账号、正文或私人资料。</span></section>'
+    '<div role="status" class="readonly-preview-banner">'
+    '<strong>UI 只读预览</strong><span>新闻审核与人物保存等后端功能未连接，请勿输入私人资料。</span>'
+    '</div>'
 )
 STYLE = """<style>
-.readonly-preview-banner { margin: 10px 0 18px; display: flex; gap: 12px;
- flex-wrap: wrap; background: #fff9eb; border: 1px solid #e8d5ae;
- color: #654913; padding: 13px 17px; border-radius: 12px;
- font: 13px/1.65 system-ui, sans-serif; }
-.readonly-preview-banner strong { white-space:nowrap; }
-.readonly-preview-banner span { flex:1; min-width:240px; }
+.readonly-preview-banner { display: flex;align-items:center;gap:9px;flex-wrap:wrap;
+ background:#f9fafb;border:1px solid #dce4ec;color:#4d5f73;
+ padding:5px 9px;border-radius:8px;font:11px/1.4 system-ui,sans-serif;
+ margin:4px 0 8px; }
+.readonly-preview-banner strong { white-space:nowrap;color:#385777; }
+.readonly-preview-banner span{min-width:0; }
+.gate-page>section { display:flex;flex-direction:column;min-height:0;flex:1; }
+.gate-page .readonly-preview-banner{position:absolute;right:18px;bottom:12px;max-width:440px;font-size:10px;z-index:2; }
+.gate-page{position:relative}
+.ws-frame{height:min(calc(100dvh - 18px),calc((100vw - 18px) * 9 / 16))!important;
+width:min(calc(100vw - 18px),calc((100dvh - 18px) * 16 / 9),1680px)!important;
+max-height:calc(100dvh - 18px);min-height:0!important;margin:0 auto!important;grid-template-rows:54px minmax(0,1fr)!important}
+.ws-frame>.app{min-height:0!important;overflow:auto!important;scrollbar-width:none;padding:12px 16px 20px!important}
+.ws-frame>.app::-webkit-scrollbar{display:none}
+html,body{height:100%;overflow:hidden!important}
+@media(max-width:700px){.ws-frame{width:100%!important;height:100dvh!important;max-height:none;margin:0!important;grid-template-columns:55px minmax(0,1fr)!important}
+.gate-page .readonly-preview-banner{display:none}
+}
 button[disabled], select[disabled], textarea[disabled], input[disabled] { opacity:.67; cursor: not-allowed; }
 .preview-member-card { border:1px solid #e5e9ef; border-radius:12px; padding:12px;
  background:white; margin:4px; font-size:13px; line-height:1.7; }
