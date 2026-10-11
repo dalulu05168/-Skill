@@ -56,6 +56,8 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_four_module_gateway.py' -v
       - name: Verify integrated five-Skill director, writer, professor, assistant and 65-person HTTP workflow
         run: python -m unittest discover -s tools -p 'test_p004_five_skill_integration.py' -v
+      - name: Validate P004 cross-day continuity memory, future-event isolation and persisted SQLite restart
+        run: python -m unittest discover -s tools -p 'test_p004_continuity_memory.py' -v
       - name: Test third-party trading platform navigation and isolation
         run: python -m unittest discover -s tools -p 'test_external_trade_module.py' -v
       - name: Verify Canva-approved finance dashboard UI and 65-person data contract
