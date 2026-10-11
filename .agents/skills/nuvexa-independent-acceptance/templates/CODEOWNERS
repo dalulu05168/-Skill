@@ -1,0 +1,3 @@
+# EXAMPLE ONLY. Replace @YOUR_TRUSTED_REVIEWER with a real GitHub owner/team.
+/.github/workflows/qa-acceptance.yml @YOUR_TRUSTED_REVIEWER
+/.quality/nuvexa-independent-qa/ @YOUR_TRUSTED_REVIEWER

@@ -1,0 +1,56 @@
+# EXAMPLE: copy to app repo .github/workflows/qa-acceptance.yml, after configuring actual scripts and QA policy.
+# To enforce: add this job as required status check in a GitHub branch ruleset and require non-author approval.
+name: independent-acceptance
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install app dependencies
+        run: npm ci
+      - name: Install browser testing dependency
+        run: |
+          python -m pip install 'playwright==1.55.0'
+          python -m playwright install --with-deps chromium
+      - name: Launch application in ephemeral test environment
+        run: |
+          npm run dev -- --host 127.0.0.1 > /tmp/nuvexa-qa-server.log 2>&1 &
+          echo $! > /tmp/nuvexa-qa-server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:5173/ >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/nuvexa-qa-server.log
+          exit 1
+      - name: Independent acceptance
+        env:
+          QA_USER: ${{ secrets.QA_USER }}
+          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+        run: |
+          python .quality/nuvexa-independent-qa/scripts/gate.py \
+            --policy .quality/nuvexa-independent-qa/config/acceptance.json \
+            --project-root . \
+            --base-url http://127.0.0.1:5173 \
+            --outdir qa-evidence
+      - name: Preserve acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-acceptance-evidence
+          path: |
+            qa-evidence/
+            /tmp/nuvexa-qa-server.log
+          retention-days: 14

@@ -1,0 +1,58 @@
+{
+  "project": "REPLACE_WITH_REAL_PROJECT_NAME",
+  "required_gates": ["build", "unit", "security", "functional", "ui", "auth", "data", "regression"],
+  "browser_timeout_s": 240,
+  "render_settle_ms": 600,
+  "commands": {
+    "build": ["npm", "run", "build"],
+    "unit": ["npm", "run", "test", "--", "--run"],
+    "security": ["npm", "audit", "--audit-level=high"]
+  },
+  "screens": [
+    {"name": "desktop_16_9", "width": 1440, "height": 810, "no_vertical_scroll": true},
+    {"name": "iphone", "width": 390, "height": 844, "no_vertical_scroll": false}
+  ],
+  "pages": [
+    {"path": "/", "expect_text": ["REPLACE_WITH_REAL_HEADING"], "selectors": ["main"]}
+  ],
+  "scenarios": [
+    {
+      "name": "real-navigation-button",
+      "kind": "functional",
+      "path": "/",
+      "click": "[data-testid='open-dashboard']",
+      "expect_selector": "[data-testid='dashboard']"
+    },
+    {
+      "name": "regression-original-bug",
+      "kind": "regression",
+      "path": "/",
+      "click": "[data-testid='original-bug-action']",
+      "expect_text": "REPLACE_WITH_VERIFIABLE_RESULT"
+    }
+  ],
+  "auth": [
+    {
+      "name": "client-role",
+      "login_path": "/login",
+      "protected_path": "/dashboard",
+      "protected_selector": "[data-testid='private-dashboard']",
+      "user_selector": "input[name='email']",
+      "pass_selector": "input[name='password']",
+      "submit_selector": "button[type='submit']",
+      "success_selector": "[data-testid='private-dashboard']",
+      "logout_selector": "[data-testid='logout']",
+      "username_env": "QA_USER",
+      "password_env": "QA_PASSWORD"
+    }
+  ],
+  "data_checks": [
+    {
+      "name": "account-count-ui-api-consistency",
+      "page_path": "/",
+      "selector": "[data-testid='real-account-count']",
+      "api_path": "/api/public/account-count",
+      "json_path": "count"
+    }
+  ]
+}
