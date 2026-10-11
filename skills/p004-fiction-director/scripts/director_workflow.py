@@ -65,8 +65,18 @@ def prepare(roster, request, *, db_path=None, approved_roster_path=None):
         from scene_memory import person_history
         for speaker in ["assistant", "professor"] + [c["speaker_id"] for c in cards]:
             if speaker in allowed:
-                for item in person_history(db_path, approved_roster_path, speaker, limit=6):
-                    task["approved_history"].append(item)
+                history = person_history(
+                    db_path, approved_roster_path, speaker, limit=6,
+                    before_story_date=session_date, before_slot=casting["daypart"],
+                    exclude_scene_id=scene_id)
+                task["approved_history"].extend(history)
+        # Grouping histories by speaker breaks the story timeline. Order globally
+        # by date, daypart and original scene position, with a bounded payload.
+        slot_order = {"morning": 0, "afternoon": 1, "evening": 2}
+        task["approved_history"].sort(
+            key=lambda m: (m["story_date"], slot_order.get(m["slot"], 99),
+                           m["scene_id"], m.get("ordinal", 0)))
+        task["approved_history"] = task["approved_history"][-50:]
     prompt = (
         "你是P004独立虚构财经教学小说的编剧，导演对故事排程有最高调度权。"
         "以下JSON是唯一身份、选角、题材及有效过去消息的依据。"
@@ -149,11 +159,18 @@ def review(prepared, manuscript, *, db_path=None, approved_roster_path=None):
             )
             if not valid:
                 issues.append(f"message {index}: invalid history_reference")
+            elif not any(
+                    h.get("scene_id") == ref["scene_id"]
+                    and h.get("message_id") == ref["message_id"]
+                    and h.get("speaker_id") == ref["speaker_id"]
+                    for h in task.get("approved_history", [])):
+                issues.append(f"message {index}: history_reference missing from this scene's approved snapshot")
             elif (db_path is None or approved_roster_path is None
                   or not scene_message_exists(db_path, approved_roster_path,
                       scene_id=ref["scene_id"], message_id=ref["message_id"],
-                      speaker_id=ref["speaker_id"])):
-                issues.append(f"message {index}: history_reference is not adopted in this story")
+                      speaker_id=ref["speaker_id"],
+                      before_story_date=task["story_date"], before_slot=task["daypart"])):
+                issues.append(f"message {index}: history_reference is not previously adopted in this story")
         seen.add(mid)
     if task["daypart"] == "evening" and task["lesson_type"] is not None:
         if not any(isinstance(m, dict) and m.get("speaker_id") == "professor" for m in messages):
