@@ -114,7 +114,8 @@ class UIContractTests(unittest.TestCase):
                             f"{i:02d}" for i in range(1,66)})
                     with urlopen(base+"/trade-platform") as r:
                         html=r.read().decode("utf-8")
-                        self.assertIn("https://brantone-veyor-trading.onrender.com/",html)
+                        self.assertIn("外部域名链接已取消",html)
+                         self.assertNotIn("brantone-veyor-trading.onrender.com",html)
                         self.assertIn("script-src 'none'",r.headers["Content-Security-Policy"])
                     self.assertEqual(list(data.iterdir()),[])
                 finally:
