@@ -28,6 +28,8 @@ jobs:
         run: |
           python -m unittest discover -s tools -p 'test_trading_65.py' -v
           python -m unittest discover -s tools -p 'test_trading_65_api.py' -v
+      - name: Verify manual participant trade records and filtered CSV export without execution
+        run: python -m unittest discover -s tools -p 'test_trade_records_export.py' -v
       - name: Test Trading Center 65-person writing and local API
         run: python -m unittest discover -s tools -p 'test_chennan_writing.py' -v
       - name: Guard canonical data sources and prevent premature legacy deletion
