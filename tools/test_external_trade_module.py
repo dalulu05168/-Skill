@@ -20,8 +20,8 @@ from external_trade_ui import EXTERNAL_TRADE_URL, PAGE
 
 class ExternalTradeModuleTests(unittest.TestCase):
     def test_external_site_is_fixed_and_solely_a_user_initiated_external_link(self):
-        self.assertEqual(EXTERNAL_TRADE_URL, "https://trade.sasakic.cc/")
-        self.assertIn('href="https://trade.sasakic.cc/"', PAGE)
+        self.assertEqual(EXTERNAL_TRADE_URL, "https://brantone-veyor-trading.onrender.com/")
+        self.assertIn('href="https://brantone-veyor-trading.onrender.com/"', PAGE)
         self.assertIn('target="_blank"', PAGE)
         self.assertIn('rel="noopener noreferrer"', PAGE)
         self.assertIn('referrerpolicy="no-referrer"', PAGE)
@@ -39,7 +39,7 @@ class ExternalTradeModuleTests(unittest.TestCase):
                 t.start()
                 base = f"http://127.0.0.1:{server.server_port}"
                 try:
-                    for route in ("/", "/trading", "/trade-platform"):
+                    for route in ("/", "/news", "/trading", "/skill", "/trade-platform"):
                         with self.subTest(route=route), urlopen(base+route) as response:
                             self.assertEqual(response.status, 200)
                             self.assertIn("text/html", response.headers.get("Content-Type"))
@@ -53,7 +53,7 @@ class ExternalTradeModuleTests(unittest.TestCase):
                         self.assertIn("script-src 'none'", policy)
                         self.assertIn("no-store", response.headers.get("Cache-Control", ""))
                         text=response.read().decode("utf-8")
-                        self.assertIn("网站内容、可访问性、登录状态及嵌入策略尚未验证", text)
+                        self.assertIn("实际交易功能及账户登录尚未端到端验收", text)
                     with urlopen(base + "/api/trading/people") as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     with urlopen(base + "/healthz") as response:
