@@ -58,8 +58,12 @@ class UnifiedGatewayTests(unittest.TestCase):
                         self.assertIn("fetchApi",html)
                     with urlopen(root+"/trade-platform") as res:
                         html=res.read().decode("utf-8")
-                        self.assertIn(EXTERNAL_TRADE_URL,html)
+                        self.assertEqual(EXTERNAL_TRADE_URL, "")
+                        self.assertIn("外部域名链接已取消",html)
                         self.assertNotIn("trade.sasakic.cc",html)
+                        self.assertNotIn("brantone-veyor-trading.onrender.com",html)
+                        self.assertNotIn("打开交易平台 ↗",html)
+                        self.assertNotIn('target="_blank"',html)
                         self.assertIn("script-src 'none'",res.headers["Content-Security-Policy"])
                     self.assertEqual(list(Path(folder).iterdir()),[])
                 finally:
