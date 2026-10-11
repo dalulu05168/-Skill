@@ -6,6 +6,8 @@ import binascii
 import hmac
 import json
 import os
+import secrets
+import time
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -25,6 +27,7 @@ from workspace_theme import apply_visual_system
 from image_editor_ui import PAGE as IMAGE_EDITOR_PAGE
 from workspace_layout import wrap_page
 from four_module_gateway import render_gateway
+from login_ui import render_login
 from workspace_overview import dashboard_summary, add_overview
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
@@ -195,9 +198,26 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
     trade_path = data_dir / "trading-65.json"
     run_lock = Lock()  # Avoid concurrent RSS/state writes from separate browser tabs.
     model_lock = Lock()  # Avoid concurrent requests consuming local-model memory.
+    auth_sessions = {}
+    auth_lock = Lock()
 
     class Handler(BaseHTTPRequestHandler):
+        def _session_token(self):
+            for part in self.headers.get("Cookie", "").split(";"):
+                name, sep, value = part.strip().partition("=")
+                if sep and name == "p004_session" and len(value) == 43:
+                    return value
+            return ""
+
         def _authorized(self):
+            token = self._session_token()
+            if token:
+                with auth_lock:
+                    expiry = auth_sessions.get(token)
+                    if expiry is not None:
+                        if expiry > time.monotonic():
+                            return True
+                        auth_sessions.pop(token, None)
             raw = self.headers.get("Authorization", "")
             if not raw.startswith("Basic "):
                 return False
@@ -207,6 +227,27 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 return False
             username, sep, password = decoded.partition(":")
             return bool(sep) and hmac.compare_digest(username, auth_username) and hmac.compare_digest(password, auth_password)
+
+        def _redirect(self, path, *, cookie=None):
+            self.send_response(303)
+            self.send_header("Location", path)
+            if cookie is not None:
+                self.send_header("Set-Cookie", cookie)
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def _login_page(self, invalid=False):
+            page = render_login(invalid=invalid).encode("utf-8")
+            self.send_response(401 if invalid else 200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Referrer-Policy", "no-referrer")
+            self.send_header("Content-Length", str(len(page)))
+            self.end_headers()
+            self.wfile.write(page)
 
         def _challenge(self):
             self.send_response(401)
@@ -228,10 +269,20 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             self.wfile.write(body)
 
         def do_GET(self):
-            if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
-                self._challenge()
+            route = urlsplit(self.path).path
+            if route == "/login":
+                if public_mode and self._authorized():
+                    self._redirect("/")
+                else:
+                    self._login_page(invalid="error=1" in urlsplit(self.path).query)
                 return
-            if urlsplit(self.path).path == "/":
+            if public_mode and route != "/healthz" and not self._authorized():
+                if route.startswith("/api/"):
+                    self._challenge()
+                else:
+                    self._redirect("/login")
+                return
+            if route == "/":
                 body = render_gateway().encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -366,6 +417,35 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.respond(404, {"error": "Not found"})
 
         def do_POST(self):
+            route = urlsplit(self.path).path
+            if public_mode and route == "/login":
+                length = self.headers.get("Content-Length", "")
+                if (not length.isdigit() or int(length) > 2048 or
+                    self.headers.get("Content-Type", "").split(";")[0].strip() != "application/x-www-form-urlencoded"):
+                    self._login_page(invalid=True)
+                    return
+                origin = self.headers.get("Origin")
+                host = self.headers.get("Host", "")
+                if origin and urlparse(origin).netloc != host:
+                    self.respond(403, {"error": "Cross-origin login rejected"})
+                    return
+                form = parse_qs(self.rfile.read(int(length)).decode("utf-8", errors="replace"), keep_blank_values=True)
+                username = form.get("username", [""])[0]
+                password = form.get("password", [""])[0]
+                if hmac.compare_digest(username, auth_username) and hmac.compare_digest(password, auth_password):
+                    token = secrets.token_urlsafe(32)
+                    with auth_lock:
+                        auth_sessions[token] = time.monotonic() + 12 * 3600
+                    self._redirect("/", cookie="p004_session=" + token + "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=43200")
+                else:
+                    self._login_page(invalid=True)
+                return
+            if public_mode and route == "/logout":
+                token = self._session_token()
+                with auth_lock:
+                    auth_sessions.pop(token, None)
+                self._redirect("/login", cookie="p004_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0")
+                return
             if public_mode and not self._authorized():
                 self._challenge()
                 return
