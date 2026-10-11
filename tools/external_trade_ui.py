@@ -3,11 +3,11 @@
 This module intentionally does not frame, proxy, authenticate, scrape, trade,
 or synchronize with an unverified external service.
 """
-EXTERNAL_TRADE_URL = "https://trade.sasakic.cc/"
+EXTERNAL_TRADE_URL = ""
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>外部交易平台 · NUVEXA FINANCE</title>
+<title>模块四 · NUVEXA FINANCE</title>
 <style>
 :root{font-family:Inter,"Microsoft YaHei",system-ui,sans-serif;color:#272b30;background:#f5f6f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(125deg,#fafafa,#f4f5f7 60%,#f3f8f6)}
@@ -36,32 +36,31 @@ p{color:#646a72;line-height:1.8;margin:0}
 @media(max-width:790px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.app{padding:17px 15px 38px}.panel{padding:19px}nav{width:100%}nav a{flex:1;text-align:center}}
 </style></head>
 <body><main class="app">
-<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">统一工作台 · 第三方交易平台入口</div></div>
+<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">四合一 · 模块四</div></div>
 <nav aria-label="工作台模块">
 <a href="/">📰 新闻推送</a>
 <a href="/trading">💹 交易中心</a>
-<a href="/trade-platform" class="active" aria-current="page">↗ 外部交易平台</a>
+<a href="/trade-platform" class="active" aria-current="page">模块四 · 交易平台</a>
 </nav></div>
-<h1>外部交易平台</h1>
-<p>已纳入统一工作台导航，独立访问第三方网站，不改变新闻推送、交易中心或65人人物数据。</p>
+<h1>模块四 · 交易平台</h1>
+<p>保留四合一的第四模块页面，已按要求取消外部交易网站域名链接，不改变其他模块或65人人物资料。</p>
 <div class="grid">
 <section class="panel" aria-labelledby="platform-heading">
-<h2 id="platform-heading">SASAKIC Trade · 网站入口</h2>
-<p>目标站点由第三方提供。此页面不代理登录，不保存密码，也不获取其持仓、资金或交易信息。</p>
-<div class="address">https://trade.sasakic.cc/</div>
+<h2 id="platform-heading">模块四入口状态</h2>
+<p>已取消模块四的外部域名跳转。此页面仅保留模块位置和站内返回导航，不代理第三方登录，也不读取真实资金或交易信息。</p>
+<div class="address">外部域名链接已取消</div>
 <div class="row">
-<a class="action" href="https://trade.sasakic.cc/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="新标签页打开外部交易平台">打开交易平台 ↗</a>
 <a class="action alt" href="/trading">返回交易中心</a>
 </div>
-<div class="notice">网站内容、可访问性、登录状态及嵌入策略尚未验证。为避免白屏、跨站限制和账号风险，当前不使用 iframe 强行嵌入，也不声称已完成数据或交易接口对接。</div>
+<div class="notice">本模块已取消任何外部交易平台域名链接。真实交易功能、账户登录与交易接口均未接入，页面不提供无法兑现的外站按钮。</div>
 </section>
 <aside class="panel" aria-labelledby="boundary-heading">
 <h2 id="boundary-heading">接入范围</h2>
-<div class="meta"><span>导航与入口</span><strong>已接入本工作台</strong></div>
-<div class="meta"><span>第三方网站运行</span><strong>由目标站点负责</strong></div>
+<div class="meta"><span>站内模块导航</span><strong>已保留</strong></div>
+<div class="meta"><span>外部站点跳转</span><strong>已取消</strong></div>
 <div class="meta"><span>第三方账户与交易</span><strong>不接入、不传输</strong></div>
 <div class="meta"><span>65人人物系统</span><strong>维持独立来源</strong></div>
 <div class="meta"><span>新闻核验/审核</span><strong>原有流程保留</strong></div>
-<p class="note">在外部网站的任何登录或交易行为都由用户直接在该站点完成；本地统一工作台无法代表它保证订单执行或账户安全。</p>
+<p class="note">原独立交易平台保持独立运行，本模块不链接、不代理、不嵌入外部网站。</p>
 </aside>
 </div></main></body></html>'''

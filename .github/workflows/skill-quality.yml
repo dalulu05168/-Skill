@@ -52,10 +52,20 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_storycraft_contract.py' -v
       - name: Test 65 distinct conversational members and professional assistant/professor roles
         run: python -m unittest discover -s tools -p 'test_role_voice.py' -v
+      - name: Test the four-module gateway and preserve each module URL
+        run: python -m unittest discover -s tools -p 'test_four_module_gateway.py' -v
       - name: Test third-party trading platform navigation and isolation
         run: python -m unittest discover -s tools -p 'test_external_trade_module.py' -v
       - name: Verify Canva-approved finance dashboard UI and 65-person data contract
         run: python -m unittest discover -s tools -p 'test_canva_dashboard_ui.py' -v
+      - name: Verify restored original BVB v3.3 source and 16-node workflow
+        run: python -m unittest discover -s tools -p 'test_bvb_restore_source.py' -v
+      - name: Check restored BVB v3.3 cloud news API contract
+        run: python -m unittest discover -s tools -p 'test_bvb_v33_api_cloud.py' -v
+      - name: Check strict Bucharest time windows, headline evidence and BET analysis gates
+        run: python -m unittest discover -s tools -p 'test_bvb_window_audit.py' -v
+      - name: Compile four-module preview with authentic BVB v3.3
+        run: python tools/build_finance_ui_preview.py
       - name: Validate 65 complete character identities
         run: python skills/romania-market-director/scripts/validate_persona_roster.py
       - name: Validate accuracy pack references and SKILL structure

@@ -68,7 +68,7 @@ class UIContractTests(unittest.TestCase):
     def test_shell_has_no_external_tracking_or_broken_navigation(self):
         rendered=wrap_page("<html><head><style></style></head><body><main class='app'>ok</main></body></html>","external")
         self.assertIn('href="/skill#tab-people"',rendered)
-        self.assertIn('href="/trade-platform"',rendered)
+        self.assertIn('href="/image-editor"',rendered)
         self.assertIn('name="member"',rendered)
         self.assertIn('aria-label="主模块"',rendered)
         for unsafe in ("https://fonts.googleapis.com","example.com/price","iframe","localStorage"):
@@ -81,19 +81,19 @@ class UIContractTests(unittest.TestCase):
                 t=threading.Thread(target=server.serve_forever,daemon=True);t.start()
                 base=f"http://127.0.0.1:{server.server_port}"
                 try:
-                    for route in ("/","/?member=01","/trading","/trade-platform"):
+                    for route in ("/news","/news?member=01","/trading","/skill"):
                         with self.subTest(route=route),urlopen(base+route) as r:
                             self.assertEqual(r.status,200)
                             html=r.read().decode("utf-8")
                             self.assertIn('class="ws-frame"',html)
                             self.assertIn('class="ws-rail"',html)
                             self.assertIn('class="ws-top"',html)
-                            self.assertIn('href="/trade-platform"',html)
+                            self.assertIn('href="/image-editor"',html)
                             self.assertIn('href="/trading"',html)
                             self.assertIn('href="/"',html)
                             self.assertIn("65人",html)
                             self.assertIn('href="/skill"',html)
-                    with urlopen(base+"/") as r:
+                    with urlopen(base+"/news") as r:
                         html=r.read().decode("utf-8")
                         self.assertIn('id="ws-members-body"',html)
                         self.assertIn("罗马尼亚财经 · 群聊导演工作台",html)
@@ -112,10 +112,12 @@ class UIContractTests(unittest.TestCase):
                         self.assertEqual(len(p["people"]),65)
                         self.assertEqual(set(x["character_id"] for x in p["people"]),{
                             f"{i:02d}" for i in range(1,66)})
-                    with urlopen(base+"/trade-platform") as r:
+                    with urlopen(base+"/image-editor") as r:
                         html=r.read().decode("utf-8")
-                        self.assertIn("https://trade.sasakic.cc/",html)
-                        self.assertIn("script-src 'none'",r.headers["Content-Security-Policy"])
+                        self.assertIn("图片编辑工作台",html)
+                        self.assertIn("导出 4K PNG",html)
+                        self.assertNotIn("brantone-veyor-trading.onrender.com",html)
+                        self.assertIn("script-src 'unsafe-inline'",r.headers["Content-Security-Policy"])
                     self.assertEqual(list(data.iterdir()),[])
                 finally:
                     server.shutdown();t.join(timeout=5)

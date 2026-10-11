@@ -34,16 +34,18 @@ class HostedModeTests(unittest.TestCase):
                     with urlopen(base + "/healthz") as response:
                         self.assertEqual(json.load(response)["mode"],
                                          "password_protected_hosted_review")
-                    for endpoint in ("/", "/trading", "/api/trading/people",
-                                     "/api/trading/state"):
+                    for endpoint in ("/", "/trading", "/image-editor"):
+                        with urlopen(base + endpoint) as denied:
+                            self.assertTrue(denied.geturl().endswith("/login"))
+                            self.assertIn('action="/login"', denied.read().decode("utf-8"))
+                    for endpoint in ("/api/trading/people", "/api/trading/state"):
                         with self.assertRaises(HTTPError) as denied:
                             urlopen(base + endpoint)
                         self.assertEqual(denied.exception.code, 401)
-                    with self.assertRaises(HTTPError) as wrong_password:
-                        urlopen(Request(base + "/", headers=auth(password="incorrect")))
-                    self.assertEqual(wrong_password.exception.code, 401)
+                    with urlopen(Request(base + "/", headers=auth(password="incorrect"))) as wrong_password:
+                        self.assertTrue(wrong_password.geturl().endswith("/login"))
                     with urlopen(Request(base + "/", headers=auth())) as response:
-                        self.assertIn("统一 SKILL 工作台", response.read().decode("utf-8"))
+                        self.assertIn("四合一管理工作台", response.read().decode("utf-8"))
                     with urlopen(Request(base + "/api/trading/people", headers=auth())) as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     body = json.dumps({"spec": {}, "fetch_rss": False, "node": "RO-08"}).encode()

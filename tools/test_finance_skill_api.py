@@ -23,7 +23,7 @@ class APIHarnessTests(unittest.TestCase):
                 thread.start()
                 base = f"http://127.0.0.1:{srv.server_port}"
                 try:
-                    with urlopen(base + "/") as r:
+                    with urlopen(base + "/news") as r:
                         html = r.read().decode("utf-8")
                         self.assertIn("统一 SKILL 工作台", html)
                         self.assertIn("使用现有 ChatGPT", html)
