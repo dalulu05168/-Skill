@@ -19,6 +19,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, quote, urlsplit
 from urllib.request import Request, urlopen, build_opener, HTTPRedirectHandler
 from xml.etree import ElementTree as ET
+from bvb_window_audit import build_brief
 
 FEEDS = (
  {"id":"bvb-market","name":"BVB 官方市场公告","tier":"official","urls":("https://www.bvb.ro/Rss/StiriBVB.ashx","https://bvb.ro/Rss/StiriBVB.ashx")},
@@ -205,7 +206,7 @@ class Handler(BaseHTTPRequestHandler):
         u=urlsplit(self.path)
         if u.path in ("/healthz","/api/status"):
             return self.send_json(200,{"ok":True,"version":"3.3","server":"PythonCloud","time":iso_now()})
-        if u.path not in ("/api/refresh","/api/article","/api/translate"):
+        if u.path not in ("/api/refresh","/api/window-brief","/api/article","/api/translate"):
             return self.send_json(404,{"error":"Unknown endpoint"})
         origin=self.headers.get("Origin")
         if origin and origin not in ALLOWED_ORIGINS:
@@ -213,6 +214,11 @@ class Handler(BaseHTTPRequestHandler):
         args=parse_qs(u.query)
         try:
             if u.path=="/api/refresh":return self.send_json(200,refresh_news())
+            if u.path=="/api/window-brief":
+                node=args.get("node",[None])[0]
+                if node is not None and (len(node)>8 or not re.fullmatch(r"RO-(0[1-9]|1[0-6])",node)):
+                    return self.send_json(400,{"error":"无效的16节点ID"})
+                return self.send_json(200,build_brief(refresh_news(),node_id=node))
             if u.path=="/api/article":return self.send_json(200,fetch_article(args.get("url",[""])[0]))
             lang=args.get("lang",[""])[0];title=args.get("text",[""])[0]
             try:return self.send_json(200,translate_headline(lang,title))
