@@ -23,6 +23,8 @@ jobs:
           python-version: '3.11'
       - name: Verify independent gate policy (negative cases included)
         run: python -m unittest discover -s delivery_gate/tests -v
+      - name: Check browser smoke script syntax (no preview credentials used)
+        run: node --check delivery_gate/browser_check.mjs
       - name: Publish policy test result
         if: always()
         run: |
