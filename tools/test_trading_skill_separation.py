@@ -30,11 +30,16 @@ class TradingSkillUiSeparation(unittest.TestCase):
                     with urlopen(base + "/writing") as response:
                         old_alias = response.read().decode("utf-8")
                     with urlopen(base + "/") as response:
-                        home = response.read().decode("utf-8")
-                    for page in (trading, skill, old_alias, home):
+                        gateway = response.read().decode("utf-8")
+                    with urlopen(base + "/news") as response:
+                        news = response.read().decode("utf-8")
+                    for page in (trading, skill, old_alias, news):
                         self.assertIn("class=\"ws-frame\"", page)
                         self.assertIn('href="/skill"', page)
                         self.assertIn('href="/trading"', page)
+                    self.assertIn("四合一管理工作台", gateway)
+                    for route in ("/news", "/trading", "/skill", "/trade-platform"):
+                        self.assertIn('href="'+route+'"', gateway)
                     self.assertIn('id="sim-people-table"', trading)
                     self.assertIn('async function api(path,payload)', trading,
                                   'Trading browser controls require their own API helper')
