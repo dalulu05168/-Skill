@@ -16,7 +16,7 @@ from finance_skill_api import PAGE
 from chennan_writing import summaries, load_profiles
 from chennan_writing_ui import PAGE as WRITING_PAGE
 from trading_center_ui import PAGE as TRADING_PAGE
-from external_trade_ui import PAGE as TRADE_PAGE
+from image_editor_ui import PAGE as IMAGE_PAGE
 from workspace_overview import add_overview
 from workspace_theme import apply_visual_system
 from workspace_layout import wrap_page
@@ -122,22 +122,25 @@ def build():
       "news": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),
       "skill": wrap_page(apply_visual_system(_compose_skill()), "skill"),
       "trading": wrap_page(apply_visual_system(TRADING_PAGE), "trading"),
-      "trade-platform": wrap_page(apply_visual_system(TRADE_PAGE), "external"),
+      "image-editor": IMAGE_PAGE,
+      "trade-platform": IMAGE_PAGE,  # compatibility alias
     }
     for route, page in pages.items():
         # Remove all original API-backed JS. Its actions have no corresponding
         # server in a static preview and must not pretend to work.
-        page = re.sub(r"<script\b[^>]*>.*?</script>", "", page,
-                      flags=re.IGNORECASE|re.DOTALL)
+        if route not in ("image-editor", "trade-platform"):
+            page = re.sub(r"<script\b[^>]*>.*?</script>", "", page,
+                          flags=re.IGNORECASE|re.DOTALL)
         page=page.replace("</head>", STYLE+"</head>", 1)
         # Disable unsafe/nonworking original action controls but keep
         # navigational links, tabs and person search in the static preview.
-        page = re.sub(r"<button(?![^>]*\bdisabled\b)([^>]*)>",
-                      r"<button disabled\1>", page, flags=re.IGNORECASE)
-        page = re.sub(r'<textarea\b(?![^>]*\bdisabled\b)([^>]*)>',
-                      r'<textarea disabled\1>',page,flags=re.IGNORECASE)
-        page = re.sub(r'<select\b(?![^>]*\bdisabled\b)([^>]*)>',
-                      r'<select disabled\1>',page,flags=re.IGNORECASE)
+        if route not in ("image-editor", "trade-platform"):
+            page = re.sub(r"<button(?![^>]*\bdisabled\b)([^>]*)>",
+                          r"<button disabled\1>", page, flags=re.IGNORECASE)
+            page = re.sub(r'<textarea\b(?![^>]*\bdisabled\b)([^>]*)>',
+                          r'<textarea disabled\1>',page,flags=re.IGNORECASE)
+            page = re.sub(r'<select\b(?![^>]*\bdisabled\b)([^>]*)>',
+                          r'<select disabled\1>',page,flags=re.IGNORECASE)
         page = page.replace('<main class="app">', '<main class="app">'+BANNER, 1)
         if route=="":
             page = page.replace('<header class="gate-header">',
@@ -168,10 +171,12 @@ def build():
         page = page.replace('href="/news"', 'href="/news/"')
         page = page.replace('href="/skill"', 'href="/skill/"')
         page = page.replace('href="/trading"', 'href="/trading/"')
-        page = page.replace('href="/trade-platform"', 'href="/trade-platform/"')
+        page = page.replace('href="/image-editor"', 'href="/image-editor/"')
+        page = page.replace('href="/trade-platform"', 'href="/image-editor/"')
         page = page.replace('href="/skill#tab-people"', 'href="/skill/#tab-people"')
         page = page.replace('href="/trading#tc-profile"', 'href="/trading/#tc-profile"')
-        page = page.replace("</body>", SCRIPT+"</body>",1)
+        if route not in ("image-editor", "trade-platform"):
+            page = page.replace("</body>", SCRIPT+"</body>",1)
         destination = OUTPUT / route / "index.html" if route else OUTPUT / "index.html"
         destination.parent.mkdir(parents=True,exist_ok=True)
         destination.write_text(page,encoding="utf-8")
