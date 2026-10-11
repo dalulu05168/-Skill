@@ -1,0 +1,189 @@
+{
+  "story_id": "p004-fiction-director-independent",
+  "version": "audition-v2",
+  "simulation_only": true,
+  "approved_by_user": false,
+  "not_official_memory": true,
+  "story_date": "2026-10-14",
+  "weekday": "Wednesday",
+  "fact_status": "HYPOTHETICAL_EDUCATIONAL_SCENARIO",
+  "headline": "虚构话题：价格上涨时，到底该如何理解成交量？",
+  "disclosure": "小说/教学排演，所有情节和群成员均为虚构；没有实际行情、真实客户或成交事实。没有写入人物正式记忆。",
+  "scenes": [
+    {
+      "slot": "morning",
+      "window": "08:00–11:00",
+      "focus": "话题触发、质疑、生活类比和暂时未解决的问题",
+      "messages": [
+        {
+          "message_id": "M01",
+          "speaker_id": "assistant",
+          "text": "Bună dimineața! Un exemplu, nu o știre de azi: o acțiune urcă, dar tranzacțiile sunt puține. Voi ce ați verifica înainte să trageți o concluzie?"
+        },
+        {
+          "message_id": "M02",
+          "speaker_id": "04",
+          "text": "Bun, dar câte tranzacții au fost? Altfel discutăm în gol.",
+          "reply_to": "M01"
+        },
+        {
+          "message_id": "M03",
+          "speaker_id": "08",
+          "text": "Volumul?",
+          "reply_to": "M01"
+        },
+        {
+          "message_id": "M04",
+          "speaker_id": "03",
+          "text": "Pot întreba ceva simplu? Volum înseamnă câte acțiuni s-au tranzacționat?",
+          "reply_to": "M03"
+        },
+        {
+          "message_id": "M05",
+          "speaker_id": "07",
+          "text": "La nunți, sala poate fi plină și tot nu știi ce rămâne după facturi. 😄 Și aici e o diferență?",
+          "reply_to": "M04"
+        },
+        {
+          "message_id": "M06",
+          "speaker_id": "05",
+          "text": "Sunt două întrebări diferite: cât s-a tranzacționat și de ce s-a mișcat prețul.",
+          "reply_to": "M02"
+        },
+        {
+          "message_id": "M07",
+          "speaker_id": "02",
+          "text": "Eu aș pune și data lângă cifră. Față de ce zi comparăm?",
+          "reply_to": "M06"
+        },
+        {
+          "message_id": "M08",
+          "speaker_id": "assistant",
+          "text": "Da, întâi lămurim ce măsurăm. Volumul poate arăta cât de activă a fost tranzacționarea, dar singur nu ne spune dacă prețul va continua să urce. Păstrăm întrebarea pentru diseară.",
+          "reply_to": "M07"
+        },
+        {
+          "message_id": "M09",
+          "speaker_id": "14",
+          "text": "Bine, dar la pompă s-a schimbat prețul iar. Pe mine asta mă doare azi.",
+          "reply_to": "M08"
+        },
+        {
+          "message_id": "M10",
+          "speaker_id": "assistant",
+          "text": "Te înțeleg, Laurențiu. Întrebarea despre combustibil merită o discuție separată; acum terminăm ideea cu volumul și revenim fără să amestecăm subiectele.",
+          "reply_to": "M09"
+        }
+      ]
+    },
+    {
+      "slot": "afternoon",
+      "window": "12:30–16:30",
+      "focus": "晚回复、不同成员接上午话题、延伸至交易流动性",
+      "messages": [
+        {
+          "message_id": "A01",
+          "speaker_id": "33",
+          "text": "Am citit mai târziu întrebarea despre volum. Încă nu-mi e clar ce înseamnă «puține tranzacții».",
+          "reply_to": "M04"
+        },
+        {
+          "message_id": "A02",
+          "speaker_id": "21",
+          "text": "Înainte de procent, vreau perioada. Comparăm aceeași oră sau toată ședința?",
+          "reply_to": "A01"
+        },
+        {
+          "message_id": "A03",
+          "speaker_id": "45",
+          "text": "La brutărie, dacă intră mai mulți oameni, nu înseamnă că au cumpărat mai mult. Așa mă gândesc și aici.",
+          "reply_to": "A02"
+        },
+        {
+          "message_id": "A04",
+          "speaker_id": "48",
+          "text": "Și comisioanele? Dacă tot vorbim despre cât se tranzacționează, costul unde intră?",
+          "reply_to": "A03"
+        },
+        {
+          "message_id": "A05",
+          "speaker_id": "65",
+          "text": "Și dacă vreau să vând, găsesc repede cumpărător?",
+          "reply_to": "A04"
+        },
+        {
+          "message_id": "A06",
+          "speaker_id": "16",
+          "text": "Transportul cât costă? Adică... scuze, am prins doar sfârșitul și vorbeam de marfă, nu de acțiuni.",
+          "reply_to": "A05"
+        },
+        {
+          "message_id": "A07",
+          "speaker_id": "assistant",
+          "text": "Nicio problemă, Gheorghe. Aici e vorba despre cât de ușor se întâlnesc cumpărătorii și vânzătorii unei acțiuni. E altceva decât simplul număr de tranzacții.",
+          "reply_to": "A06"
+        },
+        {
+          "message_id": "A08",
+          "speaker_id": "04",
+          "text": "Exact. Deci prețul singur nu spune povestea. Dar nici volumul, dacă nu știm contextul.",
+          "reply_to": "A07"
+        },
+        {
+          "message_id": "A09",
+          "speaker_id": "assistant",
+          "text": "Mi-am notat trei întrebări pentru lecția de seară: volumul, comparația corectă și lichiditatea. Nu le transformăm în răspunsuri certe fără date.",
+          "reply_to": "A08"
+        }
+      ]
+    },
+    {
+      "slot": "evening",
+      "window": "18:00–21:30",
+      "focus": "周三晚技术课程、具体作业及与家庭生活目标关联",
+      "messages": [
+        {
+          "message_id": "E01",
+          "speaker_id": "assistant",
+          "text": "Bună seara! Din discuțiile de azi alegem o singură idee pentru lecție: ce ne spune, și ce nu ne spune, volumul."
+        },
+        {
+          "message_id": "E02",
+          "speaker_id": "professor",
+          "text": "Bună seara. Azi au apărut trei întrebări bune, dar pornim de la una: ce reprezintă volumul? Simplu spus, este numărul de acțiuni tranzacționate într-un interval. Nu este un vot sigur pentru creșterea de mâine.",
+          "reply_to": "E01"
+        },
+        {
+          "message_id": "E03",
+          "speaker_id": "professor",
+          "text": "Gândiți-vă la o piață: multă lume intră și iese, dar asta nu vă spune singur dacă marfa e bună sau dacă prețul e corect. La bursă, comparați volumul cu o perioadă relevantă și priviți împreună prețul, contextul și lichiditatea.",
+          "reply_to": "E02"
+        },
+        {
+          "message_id": "E04",
+          "speaker_id": "41",
+          "text": "Un exemplu: două zile cu același volum pot însemna lucruri diferite dacă prețurile s-au mișcat altfel?",
+          "reply_to": "E03"
+        },
+        {
+          "message_id": "E05",
+          "speaker_id": "professor",
+          "text": "Exact. Același volum, dar alt context. Niciun indicator nu ține loc de judecată. Iar dacă nu aveți date suficiente, concluzia corectă este uneori «nu știu încă».",
+          "reply_to": "E04"
+        },
+        {
+          "message_id": "E06",
+          "speaker_id": "07",
+          "text": "Deci și în bursă, și la nunți, să nu mă uit doar câți intră pe ușă? 😄",
+          "reply_to": "E05"
+        },
+        {
+          "message_id": "E07",
+          "speaker_id": "professor",
+          "text": "Bine spus. Tema pentru mâine: alegeți o companie și notați prețul, volumul și intervalul de comparație, doar din surse pe care le puteți verifica. Învățăm ca să știm să luăm decizii mai bune pentru noi și pentru familiile noastre; nu pentru a alerga după fiecare zvon. Participați, întrebați și încercați exercițiul. Noapte bună!",
+          "reply_to": "E06"
+        }
+      ]
+    }
+  ]
+}
