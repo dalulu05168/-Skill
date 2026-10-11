@@ -166,7 +166,8 @@ def adopt_scene(db_path, roster_path, scene, *, operator_confirmed=False):
             "messages": len(clean["messages"]), "content_sha256": digest}
 
 
-def person_history(db_path, roster_path, speaker_id, *, limit=100, keyword=None):
+def person_history(db_path, roster_path, speaker_id, *, limit=100, keyword=None,
+                   before_story_date=None, before_slot=None, exclude_scene_id=None):
     """Return only verified-scope adopted messages, oldest-to-newest."""
     if speaker_id not in approved_speakers(roster_path):
         raise ValueError("unapproved speaker ID")
@@ -174,34 +175,71 @@ def person_history(db_path, roster_path, speaker_id, *, limit=100, keyword=None)
         raise ValueError("limit must be between 1 and 1000")
     if keyword is not None and (not isinstance(keyword, str) or len(keyword) > 160):
         raise ValueError("invalid keyword")
+    # Memories must be visible as of the start of the requested scene.
+    # A later scene (even if already adopted) cannot leak into a backdated script.
+    if (before_story_date is None) != (before_slot is None):
+        raise ValueError("before_story_date and before_slot must be provided together")
+    if before_story_date is not None:
+        _valid_date(before_story_date)
+        if before_slot not in ("morning", "afternoon", "evening"):
+            raise ValueError("before_slot must be morning/afternoon/evening")
+    if exclude_scene_id is not None:
+        _required_id(exclude_scene_id, "exclude_scene_id")
     initialize(db_path)
-    sql = ("SELECT s.scene_id,s.story_date,s.slot,m.message_id,m.speaker_id,m.body "
+    order = ("CASE s.slot WHEN 'morning' THEN 1 WHEN 'afternoon' "
+             "THEN 2 WHEN 'evening' THEN 3 ELSE 99 END")
+    sql = ("SELECT s.scene_id,s.story_date,s.slot,m.message_id,m.speaker_id,m.body,m.ordinal "
            "FROM messages m JOIN scenes s ON s.scene_id = m.scene_id "
            "WHERE s.story_id = ? AND m.speaker_id = ?")
     args = [STORY_ID, speaker_id]
     if keyword:
         sql += " AND instr(m.body, ?) > 0"
         args.append(keyword)
-    sql += " ORDER BY s.story_date DESC,s.adopted_at DESC,m.ordinal DESC LIMIT ?"
+    if before_story_date is not None:
+        # Same-slot ordering is deliberately excluded: without precise timestamps,
+        # another scene in the same slot cannot be proven to have occurred before.
+        sql += (f" AND (s.story_date < ? OR (s.story_date = ? AND {order} < ?)) "
+                "AND s.slot IN ('morning','afternoon','evening')")
+        args.extend([before_story_date, before_story_date,
+                     {"morning": 1, "afternoon": 2, "evening": 3}[before_slot]])
+    if exclude_scene_id is not None:
+        sql += " AND s.scene_id != ?"
+        args.append(exclude_scene_id)
+    sql += f" ORDER BY s.story_date DESC,{order} DESC,s.adopted_at DESC,m.ordinal DESC LIMIT ?"
     args.append(limit)
     with _connect(db_path) as db:
         rows = db.execute(sql, args).fetchall()
     return [{"scene_id": row[0], "story_date": row[1], "slot": row[2],
              "message_id": row[3], "speaker_id": row[4], "text": row[5],
-             "simulation_only": True} for row in reversed(rows)]
+             "ordinal": row[6], "simulation_only": True} for row in reversed(rows)]
 
 
-def scene_message_exists(db_path, roster_path, *, scene_id, message_id, speaker_id):
+def scene_message_exists(db_path, roster_path, *, scene_id, message_id, speaker_id,
+                         before_story_date=None, before_slot=None):
     """For exact continuity_ref checks: unapproved people and unknown refs fail."""
     _required_id(scene_id, "scene_id")
     _required_id(message_id, "message_id")
     if speaker_id not in approved_speakers(roster_path):
         return False
+    if (before_story_date is None) != (before_slot is None):
+        raise ValueError("before_story_date and before_slot must be provided together")
+    if before_story_date is not None:
+        _valid_date(before_story_date)
+        if before_slot not in ("morning", "afternoon", "evening"):
+            raise ValueError("before_slot must be morning/afternoon/evening")
     initialize(db_path)
+    order = ("CASE s.slot WHEN 'morning' THEN 1 WHEN 'afternoon' "
+             "THEN 2 WHEN 'evening' THEN 3 ELSE 99 END")
+    sql = ("SELECT 1 FROM scenes s JOIN messages m ON s.scene_id=m.scene_id "
+           "WHERE s.story_id=? AND s.scene_id=? AND m.message_id=? AND m.speaker_id=?")
+    args = [STORY_ID, scene_id, message_id, speaker_id]
+    if before_story_date is not None:
+        sql += (f" AND (s.story_date < ? OR (s.story_date = ? AND {order} < ?)) "
+                "AND s.slot IN ('morning','afternoon','evening')")
+        args.extend([before_story_date, before_story_date,
+                     {"morning": 1, "afternoon": 2, "evening": 3}[before_slot]])
     with _connect(db_path) as db:
-        row = db.execute("SELECT 1 FROM scenes s JOIN messages m ON s.scene_id=m.scene_id "
-                         "WHERE s.story_id=? AND s.scene_id=? AND m.message_id=? AND m.speaker_id=?",
-                         (STORY_ID, scene_id, message_id, speaker_id)).fetchone()
+        row = db.execute(sql, args).fetchone()
     return row is not None
 
 
