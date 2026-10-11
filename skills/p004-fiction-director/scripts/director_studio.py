@@ -286,7 +286,7 @@ class StudioHandler(BaseHTTPRequestHandler):
         state = self.server.load(token)
         if state.get("adopted"):
             raise ValueError("场次已采用，请勿重复提交")
-        if state.get("qa", {}).get("status") != "EDITORIAL_REVIEW_REQUIRED" or not state.get("draft"):
+        if (state.get("qa") or {}).get("status") != "EDITORIAL_REVIEW_REQUIRED" or not state.get("draft"):
             raise ValueError("先通过剧本审稿，不能采用未校验的草稿")
         if (data.get("operator_confirmed") is not True or
                 data.get("editorial_confirmed") is not True):
