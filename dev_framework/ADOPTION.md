@@ -40,3 +40,18 @@ news/content gate 和 Web 登录界面的必需证据不同，`content` 必须�
 - 不合并 `main`、不部署、不改 DNS、不产生费用。
 - 任何开发者或 AI 编写的静态 `acceptance-report.json`，都不等于真实证据。
 - 不用中央框架测试替代各项目真实登录、实际 UI 页面操作和数据库回读。
+
+
+## 第三阶段：PR 交付候选复核（只读）
+
+新增 `dev_framework/release_readiness.py`，在可信 CI 使用**当前 GitHub API**获得 PR、提交检查、独立审核、main 分支保护四份 JSON，再复核：
+
+- 目标 PR 必须已退出 Draft，head.sha 是当前真实 SHA，代码属于预期仓库。
+- 受保护的 main 必须强制预期名称的 CI 检查；每个检查对应相同 head.sha 且状态为成功。
+- 最新审核必须由 PR 作者之外的真实 GitHub 用户作出 APPROVED，且审核绑定当前 head.sha；旧审核、机器审核和作者自评不算独立通过。
+- 任一条件不符返回 `BLOCK`；全部满足也只会显示 `READY_FOR_HUMAN_AUTHORIZATION`，**不能自动合并、部署或替代用户授权**。
+- 本程序的 JSON 输入若由开发者伪造则没有权威性；只能由受信任的 GitHub Actions 作业实时读取，并在合并前确认没有可绕过的权限。
+
+实战试点：`growth-story-workspace#20` 添加 `nuvexa-pr-readiness-audit`。试点 PR 仍是 Draft，且 main 不受保护，因此**应当 BLOCK**。不能为了得到绿灯关闭阻断检查。此改动只涉及草稿分支 CI，不触发网站发布。
+
+目前完整业务验收所需的真实登录、2FA、授权访问、数据库持久化、桌面手机页面实测和独立审稿并未由此步骤替代。合并后自动发布的旧工作流也未改动。
