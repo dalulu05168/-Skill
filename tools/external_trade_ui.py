@@ -3,7 +3,7 @@
 This module intentionally does not frame, proxy, authenticate, scrape, trade,
 or synchronize with an unverified external service.
 """
-EXTERNAL_TRADE_URL = "https://trade.sasakic.cc/"
+EXTERNAL_TRADE_URL = "https://brantone-veyor-trading.onrender.com/"
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -36,7 +36,7 @@ p{color:#646a72;line-height:1.8;margin:0}
 @media(max-width:790px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.app{padding:17px 15px 38px}.panel{padding:19px}nav{width:100%}nav a{flex:1;text-align:center}}
 </style></head>
 <body><main class="app">
-<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">统一工作台 · 第三方交易平台入口</div></div>
+<div class="top"><div><div class="logo">NUVEXA <span>FINANCE</span></div><div class="tag">四合一 · 模块四</div></div>
 <nav aria-label="工作台模块">
 <a href="/">📰 新闻推送</a>
 <a href="/trading">💹 交易中心</a>
@@ -46,14 +46,14 @@ p{color:#646a72;line-height:1.8;margin:0}
 <p>已纳入统一工作台导航，独立访问第三方网站，不改变新闻推送、交易中心或65人人物数据。</p>
 <div class="grid">
 <section class="panel" aria-labelledby="platform-heading">
-<h2 id="platform-heading">SASAKIC Trade · 网站入口</h2>
-<p>目标站点由第三方提供。此页面不代理登录，不保存密码，也不获取其持仓、资金或交易信息。</p>
-<div class="address">https://trade.sasakic.cc/</div>
+<h2 id="platform-heading">独立交易服务 · Render 托管入口</h2>
+<p>模块四不再拥有独立业务域名。为避免原域名迁为四合一首页后出现循环跳转，这里使用现有独立交易服务的 Render 默认地址；此工作台不代理登录，也不读取真实资金或交易信息。</p>
+<div class="address">https://brantone-veyor-trading.onrender.com/</div>
 <div class="row">
-<a class="action" href="https://trade.sasakic.cc/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="新标签页打开外部交易平台">打开交易平台 ↗</a>
+<a class="action" href="https://brantone-veyor-trading.onrender.com/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="新标签页打开外部交易平台">打开交易平台 ↗</a>
 <a class="action alt" href="/trading">返回交易中心</a>
 </div>
-<div class="notice">网站内容、可访问性、登录状态及嵌入策略尚未验证。为避免白屏、跨站限制和账号风险，当前不使用 iframe 强行嵌入，也不声称已完成数据或交易接口对接。</div>
+<div class="notice">Render 默认域名与原交易域名不同，原域名的登录状态和Cookie不能假定可以沿用；实际交易功能及账户登录尚未端到端验收。为避免白屏、跨站限制和账号风险，当前不使用 iframe 强行嵌入，也不声称已完成数据或交易接口对接。</div>
 </section>
 <aside class="panel" aria-labelledby="boundary-heading">
 <h2 id="boundary-heading">接入范围</h2>
