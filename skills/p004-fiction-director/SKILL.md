@@ -71,3 +71,8 @@ description: 65名独立角色的罗马尼亚财经教育虚构群聊小说总�
 本版**以 `characters/drafts/roster-v2.json` 为优先审阅稿**，`characters/drafts/REVIEW-65-v2.md` 将65人分为五批查看；旧`roster-v1.json`仍留存供比对。v2修复退休人物工作语境、区分标点和表情，增加每人一条罗马尼亚语试听句、出场节奏及受质疑反应；**全部仍是用户未批准的候选**，新故事尚无正式历史。
 
 独立多场试听：`examples/65-person-multiscene-audition-v2.json`（周三、上午→下午→晚间，纯虚构26条，未正式采用）。测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`；独立CI：`.github/workflows/p004-independent-director-qa.yml`。结构通过并不代表人物真实感、罗语母语质量或交易引用已由AI完工验收。
+
+## 已实现的轻量导演选角原型（非完整AI编剧）
+`scripts/director_cast.py` 在**明确虚构、仅用于排演**时，按照本目录v2候选人物的兴趣、职业、时间适配及近期出场降权生成候选名单；允许多人观点不同，也允许角色沉默，不为凑消息填充无关成员。它输出`draft_only=true`、`publishable=false`和透明选角理由，**不是**已经集成新闻研究、小说创作、自动对话或模块二成交记忆的整套引擎。
+
+运行输入模板：`examples/cast-request-energy.json`；测试：`tests/test_director_cast.py`；独立GitHub Actions会与已有结构/记忆测试一起执行。正式人物库仍为空，**严禁把候选名单当作正式人物或将试写场景当作真实记忆**。
