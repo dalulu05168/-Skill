@@ -29,6 +29,8 @@ from workspace_layout import wrap_page
 from four_module_gateway import render_gateway
 from login_ui import render_login
 from workspace_overview import dashboard_summary, add_overview
+from p004_five_skill_bridge import dispatch as p004_dispatch
+from p004_five_skill_ui import embed as embed_p004_five_skills
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -331,7 +333,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     .replace('data-tab="people">65人人物库', 'data-tab="people">65人完整档案')
                     .replace('href="/trading" aria-current="page"',
                              'href="/skill" aria-current="page"'))
-                body = wrap_page(apply_visual_system(editorial), "skill").encode("utf-8")
+                body = wrap_page(apply_visual_system(embed_p004_five_skills(editorial)), "skill").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -351,6 +353,16 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path == "/api/p004/characters":
+                try:
+                    self.respond(200, p004_dispatch("characters", {}, data_dir))
+                except (ValueError, OSError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
+            elif self.path == "/api/p004/status":
+                try:
+                    self.respond(200, p004_dispatch("status", {}, data_dir))
+                except (ValueError, OSError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
             elif self.path == "/api/content/categories":
                 try:
                     self.respond(200, routing_snapshot())
@@ -454,7 +466,10 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                                  "/api/trading/adopt", "/api/trading/docs",
                                  "/api/trading/sim/action",
                                  "/api/writing/prompt", "/api/writing/validate",
-                                 "/api/writing/adopt", "/api/writing/docs"):
+                                 "/api/writing/adopt", "/api/writing/docs",
+                                 "/api/p004/plan", "/api/p004/review",
+                                 "/api/p004/restore", "/api/p004/adopt",
+                                 "/api/p004/approve-character"):
                 self.respond(404, {"error": "Not found"})
                 return
             origin = self.headers.get("Origin")
@@ -478,6 +493,12 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 request = json.loads(self.rfile.read(int(length)))
                 if not isinstance(request, dict):
                     raise ValueError("Request must be an object")
+                if self.path.startswith("/api/p004/"):
+                    action = self.path.removeprefix("/api/p004/")
+                    with run_lock:
+                        output = p004_dispatch(action, request, data_dir)
+                    self.respond(200, output)
+                    return
                 if self.path == "/api/generate":
                     with model_lock:
                         draft = generate_draft(
