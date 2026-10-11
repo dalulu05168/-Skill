@@ -6,6 +6,7 @@ model call, no old character import, no trade execution, no WhatsApp posting.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -51,9 +52,74 @@ def location(data_dir, token):
     return Path(data_dir) / "p004-five-skills" / "sessions" / (token + ".json")
 
 
-def status():
+
+
+def fingerprint(person):
+    return hashlib.sha256(json.dumps(person, ensure_ascii=False,
+         sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def approved_roster_path(data_dir):
+    """Store approvals independently of git, in the same persistent workspace."""
+    dest = Path(data_dir) / "p004-five-skills" / "approved-roster.json"
+    if not dest.exists():
+        save_json(dest, read_json(APPROVED))
+    original = read_json(dest)
+    candidates = {person["id"]: person for person in read_json(DRAFT)["people"]}
+    if original.get("story_id") != "p004-fiction-director-independent":
+        raise ValueError("Invalid independent approved roster")
+    for item in original.get("characters", []):
+        cid = item.get("id")
+        if cid not in candidates or item.get("approved_by_user") is not True:
+            raise ValueError("Invalid character approval entry")
+        if item.get("profile_fingerprint") != fingerprint(candidates[cid]):
+            raise ValueError("Approved candidate profile changed: review and reconcile manually")
+    return dest
+
+
+def characters(data_dir):
+    roster = read_json(DRAFT)["people"]
+    approved = read_json(approved_roster_path(data_dir))["characters"]
+    ids = {p["id"] for p in approved}
+    return {"people": [
+        {"id": p["id"], "name": p["name"], "age": p["age"],
+         "gender": p["gender"], "region": p["region"],
+         "occupation": p["occupation"], "family_motivation": p["family_motivation"],
+         "main_behavior": p["main_behavior"], "secondary_behavior": p["secondary_behavior"],
+         "voice": p["voice"], "availability_note": p["availability_note"],
+         "approved": p["id"] in ids}
+        for p in roster
+    ], "approved_count": len(ids), "candidate_count": 65,
+        "fictional_only": True}
+
+
+def approve_character(request, data_dir):
+    """One real on-screen user review action for one persona; no bulk approval."""
+    cid = request.get("id")
+    if not isinstance(cid, str) or not re.fullmatch(r"(?:0[1-9]|[1-5][0-9]|6[0-5])", cid):
+        raise ValueError("Choose one new persona 01-65")
+    if request.get("reviewed") is not True or request.get("confirmed") is not True:
+        raise ValueError("This person's biography and language must be individually reviewed and confirmed")
+    candidates = {p["id"]: p for p in read_json(DRAFT)["people"]}
+    person = candidates[cid]
+    if request.get("confirmed_name") != person["name"]:
+        raise ValueError("Confirm the displayed candidate name, not only a number")
+    path = approved_roster_path(data_dir)
+    state = read_json(path)
+    if any(x["id"] == cid for x in state["characters"]):
+        return {"id": cid, "status": "already_approved",
+                "approved_count": len(state["characters"])}
+    state["characters"].append({
+        "id": cid, "name": person["name"], "approved_by_user": True,
+        "profile_fingerprint": fingerprint(person)})
+    state["characters"].sort(key=lambda x: x["id"])
+    save_json(path, state)
+    return {"id": cid, "status": "approved_after_individual_review",
+            "approved_count": len(state["characters"])}
+
+def status(data_dir):
     candidates = read_json(DRAFT)
-    approved = read_json(APPROVED)
+    approved = read_json(approved_roster_path(data_dir))
     if candidates.get("status") != "DRAFT_NOT_APPROVED":
         raise ValueError("Expected isolated new-story draft roster")
     if approved.get("story_id") != candidates.get("story_id"):
@@ -136,12 +202,14 @@ def adopt(request, data_dir):
         raise ValueError("Already adopted; history cannot be overwritten")
     if (saved.get("report") or {}).get("status") != "EDITORIAL_REVIEW_REQUIRED" or not saved.get("manuscript"):
         raise ValueError("Only a structurally reviewed manuscript may be adopted")
-    if len(read_json(APPROVED)["characters"]) != 65:
-        raise ValueError("New 65-person roster is not formally approved (currently 0/65)")
+    roster = approved_roster_path(data_dir)
+    approved_count = len(read_json(roster)["characters"])
+    if approved_count != 65:
+        raise ValueError(f"New 65-person roster is not formally approved ({approved_count}/65)")
     db = Path(data_dir) / "p004-five-skills" / "adopted-history.sqlite3"
     approved_result = finalize(
         saved["prepared"], saved["manuscript"],
-        db_path=db, approved_roster_path=APPROVED,
+        db_path=db, approved_roster_path=roster,
         operator_confirmed=True, editorial_confirmed=True)
     saved["adopted"] = True
     save_json(path, saved)
@@ -150,7 +218,11 @@ def adopt(request, data_dir):
 
 def dispatch(action, request, data_dir):
     if action == "status":
-        return status()
+        return status(data_dir)
+    if action == "characters":
+        return characters(data_dir)
+    if action == "approve-character":
+        return approve_character(request, data_dir)
     if action == "plan":
         return plan(request, data_dir)
     if action == "restore":
