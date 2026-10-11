@@ -71,7 +71,7 @@ def window_for(now: datetime, node_id: str | None = None):
     if node_id is None:
         chosen = eligible[-1]
     else:
-        candidates = [r for r in eligible if r["run"]["id"] == node_id]
+        candidates = [r for r in eligible if r["run"]["id"] == node_id and r["day"] == local.date()]
         if not candidates:
             raise ValueError("Requested node has not reached preparation time")
         chosen = candidates[-1]
