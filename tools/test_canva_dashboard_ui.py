@@ -81,7 +81,7 @@ class UIContractTests(unittest.TestCase):
                 t=threading.Thread(target=server.serve_forever,daemon=True);t.start()
                 base=f"http://127.0.0.1:{server.server_port}"
                 try:
-                    for route in ("/","/?member=01","/trading","/trade-platform"):
+                    for route in ("/news","/news?member=01","/trading","/skill","/trade-platform"):
                         with self.subTest(route=route),urlopen(base+route) as r:
                             self.assertEqual(r.status,200)
                             html=r.read().decode("utf-8")
@@ -93,7 +93,7 @@ class UIContractTests(unittest.TestCase):
                             self.assertIn('href="/"',html)
                             self.assertIn("65人",html)
                             self.assertIn('href="/skill"',html)
-                    with urlopen(base+"/") as r:
+                    with urlopen(base+"/news") as r:
                         html=r.read().decode("utf-8")
                         self.assertIn('id="ws-members-body"',html)
                         self.assertIn("罗马尼亚财经 · 群聊导演工作台",html)
@@ -114,7 +114,7 @@ class UIContractTests(unittest.TestCase):
                             f"{i:02d}" for i in range(1,66)})
                     with urlopen(base+"/trade-platform") as r:
                         html=r.read().decode("utf-8")
-                        self.assertIn("https://trade.sasakic.cc/",html)
+                        self.assertIn("https://brantone-veyor-trading.onrender.com/",html)
                         self.assertIn("script-src 'none'",r.headers["Content-Security-Policy"])
                     self.assertEqual(list(data.iterdir()),[])
                 finally:
