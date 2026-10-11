@@ -56,3 +56,12 @@
 - **GitHub Actions独立QA**：`.github/workflows/p004-independent-director-qa.yml`，只监控新目录变更，运行Python 3.11标准库测试；不会执行/导入旧人物Skill源码。该workflow是唯一新增在隔离目录外的文件，属于CI配置，旧程序及人设均未改动。
 
 任何机器通过均不表示罗马尼亚语地道程度或小说真实感已经合格。正式名册`characters/approved-roster.json`继续为空。还需用户逐批定人设后，才可正式导演多日剧情和映射模块二模拟成交。
+
+## 第四阶段：初版导演自动选角（沙盒功能）
+`scripts/director_cast.py` 是**已实现的、无需付费模型API**的确定性选角程序。它读取本目录待确认`roster-v2.json`，接受假设话题、场次、日期、成员上场情况，依据兴趣、职业和时段给候选角色打分，并尽量避免只有一种主行为类型出场。每张候选卡保留角色ID、选角原因、语言习惯和“可以沉默”状态；仅返回选角计划，**不会自动编写真实对白、查询新闻、读模块二交易、写剧情记忆或发布群消息**。
+
+示例输入：`examples/cast-request-energy.json`。试运行（需Python 3.11）：
+```bash
+python skills/p004-fiction-director/scripts/director_cast.py --request skills/p004-fiction-director/examples/cast-request-energy.json
+```
+编辑`topic_keywords`、`story_date`、`daypart`、`recent_member_ids`即可尝试其他假设场景。人物全部未正式批准，结果标记`draft_only=true,publishable=false`，不能拿来冒充真实群成员讨论。测试位于`tests/test_director_cast.py`，CI只覆盖可以机械确定的逻辑，不意味着编剧输出的文学性已被验收。
