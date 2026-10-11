@@ -38,7 +38,7 @@ class TradingSkillUiSeparation(unittest.TestCase):
                         self.assertIn('href="/skill"', page)
                         self.assertIn('href="/trading"', page)
                     self.assertIn("四合一管理工作台", gateway)
-                    for route in ("/news", "/trading", "/skill", "/trade-platform"):
+                    for route in ("/news", "/trading", "/skill", "/image-editor"):
                         self.assertIn('href="'+route+'"', gateway)
                     self.assertIn('id="sim-people-table"', trading)
                     self.assertIn('async function api(path,payload)', trading,
