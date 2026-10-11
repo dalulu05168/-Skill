@@ -124,11 +124,11 @@ python skills/romania-market-director/scripts/validate_persona_roster.py
 API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`GET /api/trading/state`、`POST /api/trading/prompt`、`POST /api/trading/validate`、`POST /api/trading/adopt`、`POST /api/trading/docs`；本地监听仍限定 `127.0.0.1`，不公开公网部署。
 
 
-## 模块四：交易平台保留页面（取消外部域名跳转）
+## 模块四：浏览器本地图片编辑器
 
-- 工作台页面：`http://127.0.0.1:8765/trade-platform`；与 `/news` 新闻审核、`/trading` 模拟交易中心、`/skill` 财经 Skill 一起构成四合一门户。
-- 应用户要求，模块四已移除外部交易网站域名及“打开交易平台”按钮；只保留站内页面和站内返回导航，不进行外站代理、登录或资金/交易接口调用。
-- 原项目四独立交易平台保持独立，不因四合一的外部跳转取消而被删除或改动。模块四当前未提供真实交易能力，也没有嵌入外部站点。
+- 工作台页面：`http://127.0.0.1:8765/image-editor`；旧 `/trade-platform` 兼容打开同一个站内图片编辑器，不再关联交易网站。
+- 图片编辑器可本地上传图片、编辑文字与字号、拖动标题、更改亮度和画面适配，下载 3840×2160 PNG。素材不发送到服务器，也不内置虚构金融指标。
+- 项目四独立交易平台保持独立，不因图片编辑器更新而改动；本站图片编辑器不提供交易下单能力。
 - 统一65人 v4.1 人物仍由本仓库单一权威资料决定，外部平台没有人物关联或自动同步；原新闻审核、Ollama本地可选草稿及交易中心已确认记忆独立。
 - 若未来希望把真正的交易平台操作嵌入当前域名，需先提供可使用的正式API文档/源代码、必要授权和测试环境，并单独设计身份、隔离、审计及访问控制；不能仅凭网站URL实现实际交易数据合并。
-- 测试：`python -m unittest discover -s tools -p 'test_external_trade_module.py' -v`。验证站内四模块导航、无外域链接、无iframe以及65人/新闻流程未被修改，不会触发站外交易。
+- 测试：`python -m unittest discover -s tools -p 'test_external_trade_module.py' -v`，验证真实 canvas 与 PNG 导出逻辑标记，以及无外部域名/iframe、旧业务路由保持。
