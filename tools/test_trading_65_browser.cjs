@@ -135,6 +135,8 @@ async function main(){
   }));
   assert.ok(measure.documentWidth<=measure.viewport+4,
     'Mobile horizontal overflow: '+JSON.stringify(measure));
+  await page.evaluate(()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;});
+  await pause(250);
   await page.screenshot({path:path.join(artifacts,'06-mobile-overview-390x844.png'),fullPage:false});
   await page.locator('#sim-holdings').screenshot({path:path.join(artifacts,'07-mobile-holdings-readable.png')});
   assert.deepEqual(errors,[],'No browser JavaScript errors');
