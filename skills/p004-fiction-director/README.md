@@ -45,3 +45,14 @@
 所有65人现在还是 `approved_by_user=false`，与真正确认的 `characters/approved-roster.json` 分开。不能把候选人物的样例台词当成历史，也不能把候选姓名编号自动映射到模块二的交易账户。
 
 已进行逐字段、人数、独特口癖与专业领域等JS数据结构验证；新增Python自动化测试尚需在可执行环境运行，不能把GitHub中出现测试文件当成测试已通过。
+
+## 第三阶段成果：65人 v2 口吻修订与自动验收
+
+- **优先审阅**：`characters/drafts/REVIEW-65-v2.md`（五批次中文索引，含65人罗马尼亚语试听句）。
+- **新版候选**：`characters/drafts/roster-v2.json`（独立主次倾向、职业、兴趣、口癖、主动出场/被反驳反应、零历史）。原`roster-v1.json`留作差异对比，未删除。
+- **确定性检查记录**：`characters/drafts/QA-v2.json`，结构检查并非文学审稿；不存在任何已批准新角色。
+- **三时段虚构排演**：`examples/65-person-multiscene-audition-v2.json`，共26条，包含成员互答、下午接上午话题、周三晚课；没有实际BVB行情数值或交易事实，未采用为正式剧情。
+- **Python检查**：`scripts/validate_draft_roster.py`、`tests/test_draft_roster.py`、`tests/test_multiscene_audition.py` 和已有记忆测试。
+- **GitHub Actions独立QA**：`.github/workflows/p004-independent-director-qa.yml`，只监控新目录变更，运行Python 3.11标准库测试；不会执行/导入旧人物Skill源码。该workflow是唯一新增在隔离目录外的文件，属于CI配置，旧程序及人设均未改动。
+
+任何机器通过均不表示罗马尼亚语地道程度或小说真实感已经合格。正式名册`characters/approved-roster.json`继续为空。还需用户逐批定人设后，才可正式导演多日剧情和映射模块二模拟成交。
