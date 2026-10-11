@@ -302,6 +302,11 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif self.path == "/api/p004/characters":
+                try:
+                    self.respond(200, p004_dispatch("characters", {}, data_dir))
+                except (ValueError, OSError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(503, {"error": str(exc)})
             elif self.path == "/api/p004/status":
                 try:
                     self.respond(200, p004_dispatch("status", {}, data_dir))
@@ -383,7 +388,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                                  "/api/writing/prompt", "/api/writing/validate",
                                  "/api/writing/adopt", "/api/writing/docs",
                                  "/api/p004/plan", "/api/p004/review",
-                                 "/api/p004/restore", "/api/p004/adopt"):
+                                 "/api/p004/restore", "/api/p004/adopt",
+                                 "/api/p004/approve-character"):
                 self.respond(404, {"error": "Not found"})
                 return
             origin = self.headers.get("Origin")
