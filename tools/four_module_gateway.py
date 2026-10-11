@@ -10,8 +10,8 @@ MODULES=(
      "进入65人模拟交易与持仓工作台。模拟账本不等于真实证券交易。"),
     ("03","财经 Skill","EDITORIAL STUDIO","/skill",
      "课程、群聊教育脚本、正式会话与人物记忆统一管理。"),
-    ("04","外部交易平台","EXTERNAL PLATFORM","/trade-platform",
-     "进入独立的第四模块页面；原独占域名不再充当四合一首页。"),
+    ("04","交易平台","MODULE FOUR","/trade-platform",
+     "第四模块保留站内页面，已取消外部交易网站的域名跳转。"),
 )
 def render_gateway():
     cards="".join(
