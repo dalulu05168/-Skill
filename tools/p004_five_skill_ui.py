@@ -48,11 +48,11 @@ PANEL = r"""
   </label>
   <div class="p004-line"><button type="button" class="p004-primary" id="p004-plan">导演真实选角 → 编剧任务</button><button type="button" id="p004-copy" disabled>复制完整编剧任务</button></div>
   <p id="p004-cast">本场尚未选择人物。</p>
-  <textarea id="p004-prompt" readonly placeholder="完成选角后，这里会有可复制给现有ChatGPT的完整人物口吻和背景任务。"></textarea>
+  <textarea id="p004-prompt" readonly placeholder="完成选角后，这里会产生交给编剧 Skill 的完整人物口吻、角色边界和剧情任务。"></textarea>
   <hr>
-  <div class="p004-title"><h2>剧情审稿与人物记忆</h2><small style="color:#65788a">不要求本机安装模型／不产生伪AI结果</small></div>
-  <p>把现有 ChatGPT 实际生成的罗马尼亚语对白 JSON 粘贴到这里；点击校验会真正检查身份、时间、历史引用和风险内容。</p>
-  <textarea id="p004-json" spellcheck="false" placeholder="粘贴AI生成的完整剧本 JSON"></textarea>
+  <div class="p004-title"><h2>剧情审稿与人物记忆</h2><small style="color:#65788a">Skill 原生协作 · 不新建 AI 程序</small></div>
+  <p>由编剧 Skill 按导演任务写出罗马尼亚语对白 JSON，再粘贴这里审稿；程序只处理任务、结构和记忆，不另建生成模型。</p>
+  <textarea id="p004-json" spellcheck="false" placeholder="粘贴编剧 Skill 写出的完整剧本 JSON"></textarea>
   <div class="p004-line"><button type="button" class="p004-primary" id="p004-review" disabled>实际审核剧本</button><button type="button" id="p004-copy-json">复制当前剧本</button></div>
   <div id="p004-feedback" role="status" aria-live="polite">未生成剧本，也未通过审稿。</div>
   <div id="p004-preview"></div>
@@ -87,7 +87,7 @@ async function getStatus(){
  const r=await fetch("/api/p004/status",{credentials:"same-origin"});const data=await r.json();
  if(!r.ok)throw Error(data.error||"状态读取失败");
  approved=data.approved_count;
- $("p004-actual-state").textContent="新人物候选："+data.candidate_count+"人；正式批准："+approved+"人；自动AI编剧："+(data.autonomous_writer_connected?"已接通":"未接通（复用现有ChatGPT手动交接）")+"；模拟交易联动："+(data.module_two_transaction_linked?"已接通":"未接通");
+ $("p004-actual-state").textContent="新人物候选："+data.candidate_count+"人；正式批准："+approved+"人；编剧 Skill："+(data.writer_skill_defined?(data.writer_skill_automatically_invoked?"自动调用已接通":"已定义，尚需在当前会话调用"):"Skill文件缺失")+"；模拟交易联动："+(data.module_two_transaction_linked?"已接通":"未接通");
  $("p004-adopt").disabled=!valid||approved!==65;
  stage(approved===65?"角色已批准":"人物待批准");
 }
@@ -113,10 +113,10 @@ $("p004-plan").onclick=async()=>{
   $("p004-prompt").value=result.prompt;$("p004-json").value="";$("p004-preview").replaceChildren();
   $("p004-cast").textContent="本场导演选中 "+result.cast_count+" 名候选人物："+result.task.cast.map(x=>x.speaker_id+" "+x.name).join("、")+"。允许沉默，不强制所有人发言。";
   stage("选角完成 · 等待编剧");
-  feedback("选角程序真实运行成功；尚未调用AI，尚无对白，正式历史未改变。");
+  feedback("总导演 Skill 已完成选角；等待编剧 Skill 创作台词，正式历史未改变。");
  }catch(e){stage("选角失败");feedback(e.message)}
 };
-$("p004-copy").onclick=async()=>{try{await navigator.clipboard.writeText($("p004-prompt").value);feedback("完整编剧任务已复制；可交给现有ChatGPT生成JSON。")}
+$("p004-copy").onclick=async()=>{try{await navigator.clipboard.writeText($("p004-prompt").value);feedback("完整编剧任务已复制；交给编剧 Skill 执行并返回 JSON。")}
 catch(e){feedback("复制失败，请手动选中提示词复制："+e.message)}};
 $("p004-copy-json").onclick=async()=>{try{await navigator.clipboard.writeText($("p004-json").value);feedback("已复制当前剧本JSON")}
 catch(e){feedback("复制失败："+e.message)}};
