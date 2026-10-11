@@ -40,6 +40,9 @@ class TradingSkillUiSeparation(unittest.TestCase):
                     self.assertIn("四合一管理工作台", gateway)
                     for route in ("/news", "/trading", "/skill", "/trade-platform"):
                         self.assertIn('href="'+route+'"', gateway)
+                    self.assertIn("四合一管理工作台", home)
+                    self.assertIn('href="/news"', home)
+                    self.assertIn('href="/trade-platform"', home)
                     self.assertIn('id="sim-people-table"', trading)
                     self.assertIn('async function api(path,payload)', trading,
                                   'Trading browser controls require their own API helper')
