@@ -65,3 +65,9 @@ description: 65名独立角色的罗马尼亚财经教育虚构群聊小说总�
 人物导演必须读取 [按事件选角而非排队发言](references/member-director.md) 与 [首日群聊试听场景](examples/first-day-ensemble-audition.md)；前者定义从话题到发言动机、冲突与沉默的选择方法，后者是**未采用的沙盒样稿**，不能进入正式SQLite历史。新正式名册 `characters/approved-roster.json` 仍为空，禁止因为草案已经生成就自动核准65人。
 
 结构检查：`python skills/p004-fiction-director/scripts/validate_draft_roster.py skills/p004-fiction-director/characters/drafts/roster-v1.json`；回归测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`。脚本只做确定性数据规则检查，文学性及罗马尼亚语表达仍需专门审查。
+
+## 最新候选与实测入口（2026-10-11）
+
+本版**以 `characters/drafts/roster-v2.json` 为优先审阅稿**，`characters/drafts/REVIEW-65-v2.md` 将65人分为五批查看；旧`roster-v1.json`仍留存供比对。v2修复退休人物工作语境、区分标点和表情，增加每人一条罗马尼亚语试听句、出场节奏及受质疑反应；**全部仍是用户未批准的候选**，新故事尚无正式历史。
+
+独立多场试听：`examples/65-person-multiscene-audition-v2.json`（周三、上午→下午→晚间，纯虚构26条，未正式采用）。测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`；独立CI：`.github/workflows/p004-independent-director-qa.yml`。结构通过并不代表人物真实感、罗语母语质量或交易引用已由AI完工验收。
