@@ -24,7 +24,7 @@ OVERVIEW = r'''
   </div>
   <nav class="ws-tabs" aria-label="业务模块标签">
     <a class="active" href="#ws-overview" aria-current="page">概览</a>
-    <a href="#news-process">新闻推送</a>
+    <a href="/news#news-process">新闻推送</a>
     <a href="/skill">群聊编剧与长期记忆</a>
     <a href="/skill#tab-people">65人人物档案</a>
     <a href="/trading">交易账本</a>
