@@ -1,0 +1,214 @@
+{
+  "executed_at": "2026-10-11T22:44:29.530704+00:00",
+  "runtime": "PowerShell 7.6.6 Linux",
+  "results": [
+    {
+      "route": "/api/status",
+      "status": 200,
+      "bytes": 92
+    },
+    {
+      "route": "/collection-core.js",
+      "status": 200,
+      "bytes": 9284
+    },
+    {
+      "route": "/api/market?key=TTF",
+      "status": 200,
+      "bytes": 863
+    },
+    {
+      "route": "/api/market?key=US10Y",
+      "status": 200,
+      "bytes": 937,
+      "yield_metric": {
+        "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=1d&range=10d",
+        "change_pct": 0.2485194712002525,
+        "asset": "US10Y",
+        "verification_note": "",
+        "contract_note": "Provider continuous/nearby reference; contract month not guaranteed",
+        "previous_session_at": "2026-10-08T12:20:00.0000000+00:00",
+        "name": "US10Y reference yield index",
+        "currency": "USD",
+        "value": 5.244,
+        "provider_symbol": "^TNX",
+        "verification_status": "UNVERIFIED",
+        "period": "PROVIDER_QUOTE",
+        "previous_session_close": 5.230999946594238,
+        "baseline": 5.230999946594238,
+        "change_basis_points": 1.3000053405761491,
+        "baseline_kind": "PRIOR_DAILY_BAR_OR_PROVIDER_PREVIOUS_CLOSE",
+        "observed_at": "2026-10-09T18:59:55.0000000+00:00",
+        "exchange_timezone": "America/Chicago",
+        "collected_at": "2026-10-11T22:44:13.3912688+00:00",
+        "id": "auto-US10Y",
+        "warning": "Public provider reference, may be delayed; not official exchange confirmation",
+        "group": "international",
+        "unit": "percent"
+      }
+    },
+    {
+      "route": "/api/market?key=WRONG",
+      "status": 200,
+      "bytes": 100
+    },
+    {
+      "route": "/api/article?url=https%3A%2F%2F127.0.0.1%2Fsecret",
+      "status": 400,
+      "expected_rejection": true
+    },
+    {
+      "route": "/not-exist",
+      "status": 404,
+      "expected_rejection": true
+    },
+    {
+      "route": "/api/refresh",
+      "status": 200,
+      "bytes": 68863,
+      "sources": [
+        {
+          "count": 1,
+          "message": "本次成功1条；使用：https://www.bursa.ro/_rss/?t=pcaps",
+          "name": "BURSA 资本市场资讯",
+          "attemptedAt": "2026-10-11T22:44:15.1495304+00:00",
+          "url": "https://www.bursa.ro/_rss/?t=pcaps",
+          "attempts": 1,
+          "state": "ok",
+          "id": "bursa"
+        },
+        {
+          "count": 10,
+          "message": "本次成功10条；使用：https://www.economica.net/feed",
+          "name": "Economica",
+          "attemptedAt": "2026-10-11T22:44:16.4164167+00:00",
+          "url": "https://www.economica.net/feed",
+          "attempts": 1,
+          "state": "ok",
+          "id": "economica"
+        },
+        {
+          "count": 7,
+          "message": "仅公开栏目标题，发布时间未知，非全文核验",
+          "name": "Profit 指定栏目（仅经济事实候审）",
+          "attemptedAt": "2026-10-11T22:44:16.8624714+00:00",
+          "url": "https://www.profit.ro/stiri/politic/",
+          "attempts": 1,
+          "state": "ok",
+          "id": "profit-politic"
+        },
+        {
+          "count": 10,
+          "message": "本次成功10条；使用：https://www.profit.ro/rss",
+          "name": "Profit 新闻RSS（政治栏目需经济事实筛选）",
+          "attemptedAt": "2026-10-11T22:44:17.2927318+00:00",
+          "url": "https://www.profit.ro/rss",
+          "attempts": 1,
+          "state": "ok",
+          "id": "profit"
+        },
+        {
+          "count": 30,
+          "message": "本次成功30条；使用：https://www.romania-insider.com/business/feed.xml",
+          "name": "Romania Insider Business",
+          "attemptedAt": "2026-10-11T22:44:17.7844817+00:00",
+          "url": "https://www.romania-insider.com/business/feed.xml",
+          "attempts": 1,
+          "state": "ok",
+          "id": "romania-insider"
+        },
+        {
+          "count": 0,
+          "message": "https://www.bloomberg.com/asia: HTTP 403 Forbidden，The remote server returned an error: (403) Forbidden.",
+          "name": "Bloomberg Asia",
+          "attemptedAt": "2026-10-11T22:44:18.2323633+00:00",
+          "url": "https://www.bloomberg.com/asia",
+          "attempts": 1,
+          "state": "failed",
+          "id": "bloomberg"
+        },
+        {
+          "count": 0,
+          "message": "https://www.reuters.com/: HTTP 401 Unauthorized，The remote server returned an error: (401) Unauthorized.",
+          "name": "Reuters",
+          "attemptedAt": "2026-10-11T22:44:18.6981895+00:00",
+          "url": "https://www.reuters.com/",
+          "attempts": 1,
+          "state": "failed",
+          "id": "reuters"
+        },
+        {
+          "count": 0,
+          "message": "https://cn.wsj.com/: 连接失败：The proxy tunnel request to proxy 'http://proxy:8080/' failed with status code '403'.\"",
+          "name": "华尔街日报中文网",
+          "attemptedAt": "2026-10-11T22:44:18.7050730+00:00",
+          "url": "https://cn.wsj.com/",
+          "attempts": 1,
+          "state": "failed",
+          "id": "wsj-cn"
+        },
+        {
+          "count": 0,
+          "message": "https://www.bvb.ro/Rss/StiriBVB.ashx: HTTP 500 Internal Server Error，The remote server returned an error: (500) Internal Server Error. | https://bvb.ro/Rss/StiriBVB.ashx: HTTP 500 Internal Server Error，The remote server returned an error: (500) Internal Server Error.",
+          "name": "BVB 官方市场公告",
+          "attemptedAt": "2026-10-11T22:44:20.9624624+00:00",
+          "url": "https://www.bvb.ro/Rss/StiriBVB.ashx",
+          "attempts": 2,
+          "state": "failed",
+          "id": "bvb-market"
+        },
+        {
+          "count": 0,
+          "message": "https://www.bvb.ro/Rss2/LastFinancialData.ashx?lang=ro: HTTP 500 Internal Server Error，The remote server returned an error: (500) Internal Server Error. | https://www.bvb.ro/Rss2/LastFinancialData.ashx: HTTP 500 Internal Server Error，The remote server returned an error: (500) Internal Server Error.",
+          "name": "BVB 公司财务披露",
+          "attemptedAt": "2026-10-11T22:44:23.5289075+00:00",
+          "url": "https://www.bvb.ro/Rss2/LastFinancialData.ashx?lang=ro",
+          "attempts": 2,
+          "state": "failed",
+          "id": "bvb-issuer"
+        },
+        {
+          "count": 0,
+          "message": "https://www.bvb.ro/Rss/OperatiuniSiComunicateBVB.ashx: HTTP 500 Internal Server Error，The remote server returned an error: (500) Internal Server Error. | https://bvb.ro/Rss/OperatiuniSiComunicateBVB.ashx: HTTP 503 Service Unavailable，The remote server returned an error: (503) Service Unavailable.",
+          "name": "BVB 交易所公告",
+          "attemptedAt": "2026-10-11T22:44:25.2731318+00:00",
+          "url": "https://www.bvb.ro/Rss/OperatiuniSiComunicateBVB.ashx",
+          "attempts": 2,
+          "state": "failed",
+          "id": "bvb-operation"
+        },
+        {
+          "count": 20,
+          "message": "本次成功20条；使用：https://www.federalreserve.gov/feeds/press_all.xml",
+          "name": "美联储新闻公告",
+          "attemptedAt": "2026-10-11T22:44:25.4885292+00:00",
+          "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+          "attempts": 1,
+          "state": "ok",
+          "id": "fed"
+        },
+        {
+          "count": 1,
+          "message": "本次成功1条；使用：https://www.bls.gov/feed/bls_latest.rss",
+          "name": "美国劳工统计局发布",
+          "attemptedAt": "2026-10-11T22:44:26.1473452+00:00",
+          "url": "https://www.bls.gov/feed/bls_latest.rss",
+          "attempts": 1,
+          "state": "ok",
+          "id": "bls"
+        },
+        {
+          "count": 15,
+          "message": "本次成功15条；使用：https://www.ecb.europa.eu/rss/press.html",
+          "name": "欧洲央行公告",
+          "attemptedAt": "2026-10-11T22:44:27.8304777+00:00",
+          "url": "https://www.ecb.europa.eu/rss/press.html",
+          "attempts": 1,
+          "state": "ok",
+          "id": "ecb"
+        }
+      ],
+      "articles_count": 94
+    }
+  ]
+}

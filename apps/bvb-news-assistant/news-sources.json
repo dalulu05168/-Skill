@@ -1,0 +1,56 @@
+{
+  "version": "5.0",
+  "selection_policy": "优先检查用户指定媒体中与BVB、欧洲、油气、利率相关的报道；官方原文核验优先。优先级不代表热度或真实性。",
+  "politics_policy": "政治栏目不整体放行，只保留可核验经济事实，排除政治立场与动机推测。",
+  "sources": [
+    {
+      "id": "bursa",
+      "name": "BURSA",
+      "url": "https://www.bursa.ro/",
+      "priority": 1,
+      "connection_status": "RSS_LIVE_TESTED"
+    },
+    {
+      "id": "economica",
+      "name": "Economica",
+      "url": "https://www.economica.net/",
+      "priority": 2,
+      "connection_status": "RSS_LIVE_TESTED"
+    },
+    {
+      "id": "profit",
+      "name": "Profit 政治栏目：仅提取经济事实",
+      "url": "https://www.profit.ro/stiri/politic/",
+      "priority": 3,
+      "connection_status": "GENERAL_RSS_LIVE_TESTED_POLITICS_FILTER_REQUIRED"
+    },
+    {
+      "id": "romania_insider",
+      "name": "Romania Insider Business",
+      "url": "https://www.romania-insider.com/business",
+      "priority": 4,
+      "connection_status": "BUSINESS_RSS_LIVE_TESTED"
+    },
+    {
+      "id": "bloomberg",
+      "name": "Bloomberg Asia",
+      "url": "https://www.bloomberg.com/asia",
+      "priority": 5,
+      "connection_status": "HTTP403_ON_LIVE_TEST"
+    },
+    {
+      "id": "reuters",
+      "name": "Reuters",
+      "url": "https://www.reuters.com/",
+      "priority": 6,
+      "connection_status": "HTTP401_ON_LIVE_TEST"
+    },
+    {
+      "id": "wsj_cn",
+      "name": "华尔街日报中文网",
+      "url": "https://cn.wsj.com/",
+      "priority": 7,
+      "connection_status": "ACCESS_BLOCKED_ON_LIVE_TEST"
+    }
+  ]
+}
