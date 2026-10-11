@@ -22,6 +22,7 @@ from workspace_theme import apply_visual_system
 from workspace_layout import wrap_page
 from four_module_gateway import render_gateway
 from login_ui import render_login
+from bvb_v33_restore import restore_news_v33
 
 OUTPUT = ROOT / "build" / "finance-ui-readonly-preview"
 BANNER = (
@@ -158,7 +159,8 @@ def build():
     pages = {
       "": render_login(preview=True),
       "workspace": render_gateway(),
-      "news": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),
+      "news": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),  # overwritten by authentic restored v3.3
+      "news-legacy": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),
       "skill": wrap_page(apply_visual_system(_compose_skill()), "skill"),
       "trading": wrap_page(apply_visual_system(TRADING_PAGE), "trading"),
       "image-editor": IMAGE_PAGE,
@@ -221,14 +223,21 @@ def build():
         destination = OUTPUT / route / "index.html" if route else OUTPUT / "index.html"
         destination.parent.mkdir(parents=True,exist_ok=True)
         destination.write_text(page,encoding="utf-8")
+    restored_hashes = restore_news_v33(OUTPUT / "news")
     (OUTPUT/"preview-manifest.json").write_text(
       json.dumps({"project":"P004","kind":"UI-READONLY-PREVIEW",
                   "source":"canonical -Skill frontend templates",
                   "persona_count":65,"backend_connected":False,
+                   "module_one":{"name":"BVB News Desk 中文 v3.3",
+                       "status":"original_frontend_restored",
+                       "source_hashes":restored_hashes,
+                       "local_editor_enabled":True,
+                       "cloud_collectors_connected":False},
                   "news_verified":False,"persistent_memory":False,
                   "publication_enabled":False},ensure_ascii=False,indent=2),
       encoding="utf-8")
-    print(f"Built {len(pages)} safe read-only pages from current P004 source, {len(people)} personas")
+    print(f"Built {len(pages)} pages; restored authentic BVB v3.3 at /news/; " 
+          f"cloud collectors OFF; {len(people)} personas")
 
 if __name__ == "__main__":
     build()
