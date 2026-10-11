@@ -17,7 +17,7 @@ import threading
 import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, quote, urlsplit
-from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen, build_opener, HTTPRedirectHandler
 from xml.etree import ElementTree as ET
 
 FEEDS = (
@@ -46,9 +46,15 @@ def iso_now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def get_url(url, timeout=7, max_bytes=1_500_000, method="GET", data=None, headers=None):
+class NoRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError("文章来源发生重定向，请到原始网页人工核验")
+
+
+def get_url(url, timeout=7, max_bytes=1_500_000, method="GET", data=None, headers=None, allow_redirect=True):
     req = Request(url, data=data, method=method, headers={"User-Agent":USER_AGENT,"Accept":"application/rss+xml, application/xml, text/xml, text/html;q=0.8",**(headers or {})})
-    with urlopen(req, timeout=timeout) as res:
+    opener = urlopen if allow_redirect else build_opener(NoRedirect()).open
+    with opener(req, timeout=timeout) as res:
         payload = res.read(max_bytes+1)
         if len(payload)>max_bytes:
             raise ValueError("上游响应体超过大小限制")
@@ -153,7 +159,7 @@ def fetch_article(link):
     u=urlsplit(link)
     if u.scheme!="https" or u.hostname not in ALLOWED_ARTICLE_HOSTS or u.port not in (None,443) or u.username:
         raise ValueError("只允许公开 BVB、BURSA 和 ECB 来源的 HTTPS 文章")
-    content=get_url(link,timeout=9,max_bytes=700_000)
+    content=get_url(link,timeout=9,max_bytes=700_000,allow_redirect=False)
     content=re.sub(r"(?is)<(script|style|nav|header|footer|noscript|svg|form|aside)\b[^>]*>.*?</\1>"," ",content)
     content=re.sub(r"(?is)<(p|h1|h2|h3|li|br|div|section)\b[^>]*>","\n",content)
     text=unescape(re.sub(r"(?s)<[^>]*>"," ",content))
