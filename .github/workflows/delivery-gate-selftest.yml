@@ -1,0 +1,29 @@
+name: Delivery Gate Policy Tests
+on:
+  pull_request:
+    paths:
+      - 'delivery_gate/**'
+      - '.github/workflows/delivery-gate-selftest.yml'
+      - '.github/workflows/reusable-delivery-gate.yml'
+      - 'docs/INDEPENDENT-DELIVERY-GATE.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate-policy-tests:
+    name: gate-policy-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify independent gate policy (negative cases included)
+        run: python -m unittest discover -s delivery_gate/tests -v
+      - name: Publish policy test result
+        if: always()
+        run: |
+          echo "This job tests the validator. It does NOT certify any customer application." >> "$GITHUB_STEP_SUMMARY"
