@@ -20,6 +20,7 @@ from external_trade_ui import PAGE as TRADE_PAGE
 from workspace_overview import add_overview
 from workspace_theme import apply_visual_system
 from workspace_layout import wrap_page
+from four_module_gateway import render_gateway
 
 OUTPUT = ROOT / "build" / "finance-ui-readonly-preview"
 BANNER = (
@@ -117,7 +118,8 @@ def build():
         raise RuntimeError("Authoritative roster must contain exactly 65 people")
 
     pages = {
-      "": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),
+      "": render_gateway(),
+      "news": wrap_page(apply_visual_system(add_overview(PAGE)), "news"),
       "skill": wrap_page(apply_visual_system(_compose_skill()), "skill"),
       "trading": wrap_page(apply_visual_system(TRADING_PAGE), "trading"),
       "trade-platform": wrap_page(apply_visual_system(TRADE_PAGE), "external"),
@@ -137,8 +139,13 @@ def build():
         page = re.sub(r'<select\b(?![^>]*\bdisabled\b)([^>]*)>',
                       r'<select disabled\1>',page,flags=re.IGNORECASE)
         page = page.replace('<main class="app">', '<main class="app">'+BANNER, 1)
-        page = page.replace('<div class="app">', '<div class="app">'+BANNER, 1)
         if route=="":
+            page = page.replace('<header class="gate-header">',
+                                '<header class="gate-header">', 1)
+            page = page.replace('<section aria-labelledby="gateway-title">',
+                                BANNER+'<section aria-labelledby="gateway-title">', 1)
+        page = page.replace('<div class="app">', '<div class="app">'+BANNER, 1)
+        if route=="news":
             page=re.sub(r'<tbody id="ws-members-body">.*?</tbody>',
                         '<tbody id="ws-members-body">'+_roster_rows(people)+'</tbody>',
                         page, flags=re.DOTALL)
@@ -158,6 +165,7 @@ def build():
                               'id="roster" class="layout">'+cards+'</div>',1)
             page=page.replace('id="history-list"></div>',
                               'id="history-list"><p>只读界面预览没有云端正式会话；不会伪造历史记录。</p></div>',1)
+        page = page.replace('href="/news"', 'href="/news/"')
         page = page.replace('href="/skill"', 'href="/skill/"')
         page = page.replace('href="/trading"', 'href="/trading/"')
         page = page.replace('href="/trade-platform"', 'href="/trade-platform/"')
