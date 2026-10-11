@@ -52,10 +52,36 @@
     with:
       profile: web
       evidence_artifact: customer-acceptance-evidence
+      approved_base_url: ${{ vars.QA_APPROVED_PREVIEW_URL }}
+      allowed_host: ${{ vars.QA_APPROVED_PREVIEW_HOST }}
+    secrets:
+      GATE_TEST_USERNAME: ${{ secrets.QA_TEST_USERNAME }}
+      GATE_TEST_PASSWORD: ${{ secrets.QA_TEST_PASSWORD }}
+      GATE_TEST_OTP: ${{ secrets.QA_TEST_OTP }}
     permissions:
       contents: read
       actions: read
 ```
+
+同一 evidence artifact 中还需要一份经审查的 `browser-spec.json`，例如：
+
+```json
+{
+  "login": {
+    "path": "/login",
+    "username_selector": "input[name=email]",
+    "password_selector": "input[name=password]",
+    "submit_selector": "button[type=submit]",
+    "success_selector": "[data-testid=dashboard]"
+  },
+  "routes": [
+    {"path": "/dashboard", "ready_selector": "main", "expected_text": "仪表盘"},
+    {"path": "/settings", "ready_selector": "h1"}
+  ]
+}
+```
+
+上例的CSS选择器只是演示，不一定适用于你的系统，须按真实源码维护。测试会在1920×1080、1366×768、390×844分别执行登录和必需路由，真实截图临时留在浏览器作业中，上传报告摘要而不是完整私人信息；配置未列出的页面仍然是覆盖缺口。需要2FA时，测试账号提供当前 `QA_TEST_OTP`（只通过GitHub Secrets）；缺失则阻断。必须使用隔离的合成测试用户，绝不能用客户账户；预发布地址与允许域名由受保护的工作流/变量指定，不允许使用 PR 内任意站点盗取测试密码。
 
 如果之前测试失败，缺少 artifact，则该作业也会失败（默认拒绝），不会默默跳过。项目应把验收作业设置为 GitHub **required status check**，且有独立代码审核人。建议 pin 可审计的中央仓库 commit，防止未经审批更改门禁；例子用 `@main`，待门禁合并后才可用。
 
