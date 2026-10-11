@@ -60,6 +60,8 @@ jobs:
         run: python -m unittest discover -s tools -p 'test_canva_dashboard_ui.py' -v
       - name: Verify restored original BVB v3.3 source and 16-node workflow
         run: python -m unittest discover -s tools -p 'test_bvb_restore_source.py' -v
+      - name: Check restored BVB v3.3 cloud news API contract
+        run: python -m unittest discover -s tools -p 'test_bvb_v33_api_cloud.py' -v
       - name: Compile four-module preview with authentic BVB v3.3
         run: python tools/build_finance_ui_preview.py
       - name: Validate 65 complete character identities
