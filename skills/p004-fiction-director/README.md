@@ -33,3 +33,15 @@
 - 该数据库**不导入模块二交易记录**；待新角色编号经确认后再开发模块二已成交交易的只读适配器。
 - `memory/state.json` 是历史的**空白启动标记**，不是 SQLite 已采用记录的同步副本。后续一旦启用 SQLite，正式剧情记录以该数据库为准，不把两套状态自动双向同步。数据库文件默认在运行机器本地，已用 .gitignore 防止误提交；正式部署仍需持久卷/备份，容器临时盘不能保证持久。
 - 当前尚未与 `/skill` 页面、自动AI导演或正式发布操作联通。记忆引擎通过模块函数调用，不能据此声称已自动学习整天剧本。
+
+## 第二阶段成果：65人候选档案（草案）
+
+- 完整数据：`characters/drafts/roster-v1.json`；
+- 手机上便于逐人浏览：`characters/drafts/roster-v1-review.md`；
+- 创作机制：`references/member-director.md`；
+- 初始一天的角色互动样例：`examples/first-day-ensemble-audition.md`；
+- 结构化角色检测：`scripts/validate_draft_roster.py` 与 `tests/test_draft_roster.py`。
+
+所有65人现在还是 `approved_by_user=false`，与真正确认的 `characters/approved-roster.json` 分开。不能把候选人物的样例台词当成历史，也不能把候选姓名编号自动映射到模块二的交易账户。
+
+已进行逐字段、人数、独特口癖与专业领域等JS数据结构验证；新增Python自动化测试尚需在可执行环境运行，不能把GitHub中出现测试文件当成测试已通过。
