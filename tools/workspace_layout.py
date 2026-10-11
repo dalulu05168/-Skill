@@ -234,7 +234,7 @@ def wrap_page(page, active):
         ("overview", "/", "总入口", False),
         ("review", "/skill", "群聊编剧", active=="skill"),
         ("people", "/skill#tab-people", "65人", False),
-        ("news", "/news#news-process", "资讯审核", active=="news),
+        ("news", "/news#news-process", "资讯审核", active=="news"),
         ("trading", "/trading", "账本", active=="trading"),
         ("external", "/trade-platform", "外站", active=="external"),
     ]
