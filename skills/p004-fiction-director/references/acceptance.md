@@ -27,3 +27,10 @@
 运行：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`。
 
 首批覆盖：零历史、双重采用确认、按人隔离检索、重复场次幂等/改稿拒绝、非法人物与重复消息阻断、故事隔离、跨日时间序、助理/教授分开检索、SQL注入字面量。它们检验数据完整性，不宣称对65人文学口吻、自动新闻核验或真实部署作出验收。
+
+## 2026-10-11 v2 逐人和跨场试听检查
+
+- 新候选：`characters/drafts/roster-v2.json`，可读索引`characters/drafts/REVIEW-65-v2.md`，结构审查记录`characters/drafts/QA-v2.json`。
+- 修复退休人物被安排旧工作职责的16处错误；每人一条不同的罗马尼亚语试听句与自己的出场、受质疑反应习惯；未做罗马尼亚母语人工终审。
+- 演示：`examples/65-person-multiscene-audition-v2.json`，26条三时段虚构教学排演；必须保证回复只指向已经出现的消息，教授白天禁出场，角色编号须在v2候选范围内，上午/下午衔接不能指向不存在的历史。
+- 独立CI `.github/workflows/p004-independent-director-qa.yml`专门运行此目录的Python标准库测试；只保证结构与引用，不保证真实市场资料、文学质量或已正式部署。
