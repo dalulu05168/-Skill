@@ -231,10 +231,10 @@ def wrap_page(page, active):
     if "<body>" not in page or "</body>" not in page or "</style>" not in page:
         raise ValueError("Unexpected standalone page format")
     menu = [
-        ("overview", "/", "概览", active=="news"),
+        ("overview", "/", "总入口", False),
         ("review", "/skill", "群聊编剧", active=="skill"),
         ("people", "/skill#tab-people", "65人", False),
-        ("news", "/#news-process", "资讯审核", False),
+        ("news", "/news#news-process", "资讯审核", active=="news),
         ("trading", "/trading", "账本", active=="trading"),
         ("external", "/trade-platform", "外站", active=="external"),
     ]
@@ -250,7 +250,7 @@ def wrap_page(page, active):
         <nav class="ws-rail-links" aria-label="主模块">'''+links+'''</nav>
       </aside>
       <header class="ws-top">
-        <form class="ws-top-search" action="/" method="get" role="search">
+        <form class="ws-top-search" action="/news" method="get" role="search">
           '''+icon("overview")+'''<input aria-label="搜索65人人物" type="search" name="member" maxlength="80" placeholder="搜索65人成员编号、姓名、城市或职业…">
           <button type="submit" aria-label="搜索人物">↵</button>
         </form>
