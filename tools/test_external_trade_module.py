@@ -1,7 +1,6 @@
-"""Smoke tests for unverified third-party trade portal integration.
+"""Smoke tests for internal module-four route with no outbound domain link.
 
-No requests are sent to the external website. Existing authenticated
-and 65-person data flows are not altered.
+The independent trading service and 65-person data flows are not altered.
 """
 import json
 import sys
@@ -19,12 +18,13 @@ from external_trade_ui import EXTERNAL_TRADE_URL, PAGE
 
 
 class ExternalTradeModuleTests(unittest.TestCase):
-    def test_external_site_is_fixed_and_solely_a_user_initiated_external_link(self):
-        self.assertEqual(EXTERNAL_TRADE_URL, "https://brantone-veyor-trading.onrender.com/")
-        self.assertIn('href="https://brantone-veyor-trading.onrender.com/"', PAGE)
-        self.assertIn('target="_blank"', PAGE)
-        self.assertIn('rel="noopener noreferrer"', PAGE)
-        self.assertIn('referrerpolicy="no-referrer"', PAGE)
+    def test_module_four_has_no_outbound_domain_or_clickthrough(self):
+        self.assertEqual(EXTERNAL_TRADE_URL, "")
+        self.assertIn("外部域名链接已取消", PAGE)
+        self.assertNotIn("brantone-veyor-trading.onrender.com", PAGE)
+        self.assertNotIn("trade.sasakic.cc", PAGE)
+        self.assertNotIn('target="_blank"', PAGE)
+        self.assertNotIn("打开交易平台 ↗", PAGE)
         self.assertIn('href="/trading"', PAGE)
         self.assertIn('href="/"', PAGE)
         for unsafe in ("<iframe", "<form", "localStorage", "document.cookie",
@@ -59,7 +59,8 @@ class ExternalTradeModuleTests(unittest.TestCase):
                         self.assertIn("script-src 'none'", policy)
                         self.assertIn("no-store", response.headers.get("Cache-Control", ""))
                         text=response.read().decode("utf-8")
-                        self.assertIn("实际交易功能及账户登录尚未端到端验收", text)
+                        self.assertIn("外部域名链接已取消", text)
+                        self.assertNotIn("brantone-veyor-trading.onrender.com", text)
                     with urlopen(base + "/api/trading/people") as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     with urlopen(base + "/healthz") as response:
