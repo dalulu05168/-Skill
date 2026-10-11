@@ -15,8 +15,8 @@ from director_storyflow import STORY, STATUS, prepare, writer_prompt
 OK = "STRUCTURE_PASS_EDITORIAL_REVIEW_REQUIRED"
 PAST_WORDS = re.compile(r"\b(?:ieri|alaltăieri|data trecută|săptămâna trecută|yesterday)\b|昨天|上次", re.I)
 ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
-UNVERIFIED_TRADE = re.compile(r"\\b(?:am cumpărat|am vândut|am făcut profit|am câștigat sigur|profit garantat)\\b", re.I)
-UNVERIFIED_TICKER_FIGURE = re.compile(r"(?:\\b(?:BET|BVB|TLV|SNP|BRD)\\b.{0,70}\\d+(?:[.,]\\d+)?\\s*%|\\d+(?:[.,]\\d+)?\\s*%.{0,70}\\b(?:BET|BVB|TLV|SNP|BRD)\\b)", re.I)
+UNVERIFIED_TRADE = re.compile(r"\b(?:am cumpărat|am vândut|am făcut profit|am câștigat sigur|profit garantat)\b", re.I)
+UNVERIFIED_TICKER_FIGURE = re.compile(r"(?:\b(?:BET|BVB|TLV|SNP|BRD)\b.{0,70}\d+(?:[.,]\d+)?\s*%|\d+(?:[.,]\d+)?\s*%.{0,70}\b(?:BET|BVB|TLV|SNP|BRD)\b)", re.I)
 
 
 def review(draft, plan):
