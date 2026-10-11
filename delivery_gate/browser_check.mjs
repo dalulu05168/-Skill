@@ -22,7 +22,7 @@ if (!Array.isArray(spec.routes) || !spec.routes.length ||
 let approvedUrl;
 try {
   approvedUrl = new URL(approvedBase);
-  if (approvedUrl.hostname !== approvedHost || !['https:', 'http:'].includes(approvedUrl.protocol)) throw Error();
+  if (approvedUrl.hostname !== approvedHost || approvedUrl.protocol !== 'https:' || approvedUrl.username || approvedUrl.password) throw Error();
 } catch { console.error('BLOCK: non-approved preview host'); process.exit(2); }
 function inside(path) {
   const url = new URL(path, approvedUrl);
@@ -42,7 +42,15 @@ try {
       if (new URL(page.url()).origin !== approvedUrl.origin) throw new Error('login redirected outside approved host');
       await page.locator(spec.login.username_selector).fill(username);
       await page.locator(spec.login.password_selector).fill(password);
-      await page.locator(spec.login.submit_selector).click();
+      const submit = page.locator(spec.login.submit_selector);
+      await submit.evaluate(button => {
+        const form = button.closest('form') ||
+          (button.getAttribute('form') ? document.getElementById(button.getAttribute('form')) : null);
+        if (form && form.action && new URL(form.action, window.location.href).origin !== window.location.origin) {
+          throw new Error('form action targets another origin');
+        }
+      });
+      await submit.click();
       if (spec.login.otp_selector) {
         if (!process.env.GATE_TEST_OTP) throw new Error('OTP required; no test OTP supplied');
         await page.locator(spec.login.otp_selector).fill(process.env.GATE_TEST_OTP);
