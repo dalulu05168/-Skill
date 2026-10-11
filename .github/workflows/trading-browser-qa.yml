@@ -26,6 +26,11 @@ jobs:
           node-version: '22'
       - name: Install isolated browser QA dependency
         run: npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Install readable Chinese screenshot fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          fc-match 'Noto Sans CJK SC' | grep -i 'NotoSansCJK'
       - name: Execute real Chromium buy/hold/sell browser flow
         run: node tools/test_trading_65_browser.cjs
       - name: Upload browser evidence, including on failure

@@ -53,7 +53,9 @@ async function main(){
   let s=await state(page);
   assert.equal(s.people.length,65);assert.equal(s.transactions.length,0);assert.equal(s.holdings.length,0);
   assert.equal(fs.existsSync(path.join(dir,'trading-65.json')),false,'Reads must not fabricate transactions');
-  await page.screenshot({path:path.join(artifacts,'desktop-empty.png'),fullPage:true});
+  // A viewport-size screenshot is readable; never shrink a 3000+ pixel page into one preview.
+  await page.screenshot({path:path.join(artifacts,'01-desktop-overview-1440x810.png'),fullPage:false});
+  await page.locator('#sim-people-table').screenshot({path:path.join(artifacts,'02-desktop-members-readable.png')});
   for(const pid of ['01','02']){
    await page.locator('#sim-member').selectOption(pid);
    await page.locator('#sim-opened').selectOption('1');
@@ -97,7 +99,9 @@ async function main(){
   assert.equal(s.stock_groups.length,1);
   assert.equal(s.stock_groups[0].holding_members,2);
   assert.equal(await page.locator('#sim-stock-chart .sim-stock-bar').count(),1);
-  await page.screenshot({path:path.join(artifacts,'desktop-holdings.png'),fullPage:true});
+  await page.locator('#sim-holdings').screenshot({path:path.join(artifacts,'03-desktop-holdings-readable.png')});
+  await page.locator('#sim-stock-chart').screenshot({path:path.join(artifacts,'04-desktop-stocks-readable.png')});
+  await page.screenshot({path:path.join(artifacts,'05-desktop-workspace-1440x810.png'),fullPage:false});
   const selected=page.locator('#sim-holdings [data-batch-holding]');
   assert.equal(await selected.count(),2);
   await selected.nth(0).check();await selected.nth(1).check();
@@ -131,7 +135,8 @@ async function main(){
   }));
   assert.ok(measure.documentWidth<=measure.viewport+4,
     'Mobile horizontal overflow: '+JSON.stringify(measure));
-  await page.screenshot({path:path.join(artifacts,'mobile-trading.png'),fullPage:true});
+  await page.screenshot({path:path.join(artifacts,'06-mobile-overview-390x844.png'),fullPage:false});
+  await page.locator('#sim-holdings').screenshot({path:path.join(artifacts,'07-mobile-holdings-readable.png')});
   assert.deepEqual(errors,[],'No browser JavaScript errors');
   console.log('BROWSER_QA_PASS',{
    member_count:s.people.length,offers:s.offers.length,
