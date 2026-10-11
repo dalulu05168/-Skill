@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "kind": "SIMULATED_API",
+  "checks": [
+    "12 node collections",
+    "internal no external fetch",
+    "snapshot isolation",
+    "context persistence",
+    "desktop mobile no overflow",
+    "no page errors"
+  ],
+  "fetches": 12
+}

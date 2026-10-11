@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>罗马尼亚BVB金融资讯台 · 节点采集版 v5.0</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<div class="shell">
+<header class="topbar">
+ <div class="identity"><div class="logo">B<span>V</span>B</div><div><h1>罗马尼亚 <em>BVB资讯台</em> <small>采集版 4.0</small></h1><p>罗马尼亚证券市场 · 定时资料包 × 突发资讯双轨系统</p></div></div>
+ <div class="top-actions"><span class="liveflag" id="connPill"><i></i>正在检查本地服务</span><button class="btn light" id="notifyBtn">◉ 开启重大资讯提醒</button><button class="btn gold" id="refreshBtn">↻ 立即采集</button></div>
+</header>
+<div class="timecards">
+ <div class="metric dark"><div class="metatitle">罗马尼亚 · 布加勒斯特</div><div class="metricbig" id="roTime">--:--:--</div><div class="metricfoot" id="roDate">读取电脑系统时间中</div></div>
+ <div class="metric"><div class="metatitle">马来西亚 · Kuala Lumpur</div><div class="metricbig" id="localTime">--:--:--</div><div class="metricfoot" id="localDate">--</div></div>
+ <div class="metric"><div class="metatitle">下一时段 · 采集 / 内容节点</div><div class="metricname" id="nextSlot">读取日程中</div><div class="metricfoot"><span id="nextAt">--</span><b id="nextCountdown">--:--:--</b></div></div>
+ <div class="metric"><div class="metatitle">BET指数 · 官方行情（需核验）</div><div class="metricbig" id="betValue">未获取</div><div class="metricfoot" id="betInfo">不能把占位数字当成行情</div></div>
+</div>
+<div class="infobar"><div><b>方案 B</b>　12节点 · 提前15分钟采集 <span class="sep">＋</span> 重大新闻提醒 <span class="sep">＋</span> 人工审核放行</div><span id="lastSync">尚未采集 · 按节点采集（网页保持打开）；晚间内部整理</span></div>
+<main class="workspace">
+ <aside class="pane timeline-pane">
+  <div class="panehead"><div><div class="mini">资料日程</div><h2>资料时间轴 <span id="nodeCount">12</span></h2></div><label class="smallcheck"><input type="checkbox" id="autoNode" checked> 自动跟随</label></div>
+  <div class="filters"><button class="filter active" data-nodes="today">今日</button><button class="filter" data-nodes="all">全部12个节点</button></div>
+  <div id="timeline" class="scroll timeline"></div>
+  <div class="panefooter"><span>所有时间按罗马尼亚当地时间，自动处理夏令时</span></div>
+ </aside>
+ <section class="pane news-pane">
+  <div class="panehead newshead"><div><div class="mini">实时新闻源</div><h2>资讯监控 <span id="newsCount">0</span></h2></div><span id="urgentCount" class="urgent">0 条待关注</span></div>
+  <div class="news-controls"><input id="newsSearch" placeholder="按标题 / 股票代码 / 来源搜索…" aria-label="搜索新闻"><select id="newsFilter"><option value="all">所有资讯</option><option value="priority">重大优先</option><option value="pending">待人工核验</option><option value="approved">已核验</option><option value="selected">已加入资料包</option></select></div>
+  <div class="news-secondary-controls"><label><input type="checkbox" id="autoTranslate" checked> 自动中文翻译（第三方机翻，仅供阅读）</label><button type="button" id="translateVisible" class="actionbtn">补译最多14条新闻</button><label><input type="checkbox" id="onlyFresh"> 只看本次采集</label></div><div id="freshStatus" class="fresh-status" aria-live="polite">新闻可能包含上次缓存；本次联网采集后会明确标记。</div><div class="source-strip" id="sourceStrip">等待采集来源…</div><p id="sourceDetails" class="source-details" hidden>点击任一来源状态查看原因。RSS原始XML不是给用户阅读的新闻页面。</p><div class="evidence-hint">自动评级仅用于候审排队。新闻标题和摘要不等于原文核验；人工核验需要留存依据。</div>
+  <div class="newslist scroll" id="newsList"><div class="empty"><div class="emptyicon">⌁</div><b>尚未同步网络资讯</b><p>点击「立即采集」。未连接服务器时可继续编辑资料模板，但无法自动获取新闻。</p></div></div>
+  <div class="panefooter"><span id="feedNote">自动中文翻译会将公开新闻标题发送至MyMemory；保留原文，机翻不等于事实核验</span><button id="exportNews" class="linkbtn">导出资讯台账 ↗</button></div>
+ </section>
+ <section class="pane editor-pane">
+  <div class="panehead"><div><div class="mini">资料包编辑</div><h2>资讯资料与核验</h2></div><span class="draftflag" id="draftFlag">待核验</span></div>
+  <div class="editor-scroll scroll">
+   <div class="hero"><div class="tag" id="slotTag">NODE</div><h3 id="slotTitle">--</h3><p id="slotInfo">备料 --　 ·　 发布 --</p></div>
+   <div class="collection-panel"><label class="smallcheck"><input type="checkbox" id="scheduledCollect" checked> 节点采集与补采（页面打开期间）</label><p id="collectionStatus" aria-live="polite">尚未执行本节点采集</p><p>全面保留普通与重要新闻，交导演筛选。油气、盘口、分时等未接通时明确列为缺失。</p><div class="editor-actions"><button class="btn light" id="collectNode">采集当前节点</button><button class="btn light" id="importMetrics">导入指标JSON</button><button class="btn light" id="metricTemplate">下载指标模板</button><button class="btn light" id="exportCollections">导出当天采集记录</button></div><input type="file" id="metricFile" accept="application/json,.json" hidden><label for="contextInput">手动补充已采用对白／课纲／问题池（没有自动聊天读取）</label><textarea id="contextInput" rows="4" placeholder="保留消息ID与来源；不要填写未经确认的持仓或盈亏"></textarea><p id="metricStatus">尚未导入结构化指标</p></div>
+   <div class="boxlabel">本节点需要核实的资料</div><div id="slotChecks" class="checklist"></div>
+   <div class="editor-actions"><button class="btn light" id="assembleBtn">✦ 引用已核验资讯</button><button class="btn light" id="quoteBtn">＋ 引用BET报价</button><a class="btn light" href="https://www.bvb.ro/TradingAndStatistics/Trading/MarketsToday" target="_blank" rel="noopener noreferrer">↗ 查看BVB官方行情</a></div><div class="review-findings" id="reviewFindings" aria-live="polite"></div>
+   <details class="fieldedit" id="fieldDetails"><summary>填写 / 修改核实字段 <span id="fieldsProgress">0 / 0</span></summary><div class="fieldgrid" id="fields"></div></details>
+   <div class="editor-header"><div class="boxlabel">导演资料包预览（非对白）</div><div class="tiny" id="draftHint">尚未审核</div></div>
+   <pre id="draft" class="drafttext" aria-live="polite"></pre>
+   <div class="approval"><label><input type="checkbox" id="reviewBox"> 我已核实原文证据、时间、数字、风险表述，并同意由本人负责发布前最终复核</label><div id="approvalHint">未完成审核；复制为草稿</div></div>
+  </div>
+  <div class="editor-bottom"><button class="btn gold" id="copyBtn">复制完整素材</button><button class="btn light" id="exportTxt">TXT</button><button class="btn light" id="exportJson">JSON</button><button class="btn light" id="markPublished">标记已发布</button></div>
+ </section>
+</main>
+<footer class="bottom"><div>⚠️ 实际市场数据必须以带时间戳的可靠来源为准；资讯只会提醒，不会直接推送 WhatsApp，也不会自动下单。</div><div>新闻浏览器打开时定期采集 · 人工审核记录本机浏览器保存 · 不自动群发</div></footer>
+</div>
+<dialog id="verifyDialog" class="verify-dialog">
+ <form method="dialog" id="verifyForm" class="verify-form">
+ <div class="dialog-head"><div><div class="mini">原文核对 · 人工记录</div><h3>新闻证据审核</h3></div><button type="button" class="closex" id="closeVerify" aria-label="关闭">×</button></div>
+ <p class="dialog-title" id="verifyTitle"></p><div id="verifyMeta" class="dialog-meta"></div>
+ <div class="verify-links"><button type="button" class="btn light" id="fetchOriginal">查看正文摘录</button><a class="btn light" id="openOriginal" href="#" target="_blank" rel="noopener noreferrer">↗ 打开原始网页</a></div>
+ <div class="original-preview" id="originalPreview">尚未抓取正文。请优先打开来源原始页面，对比完整内容。</div>
+ <p class="review-warning">自动摘录仅供查阅，可能遗漏表格、脚注或PDF内容；点击原文仍需要人工核对。</p>
+ <label class="review-check"><input id="checkSource" type="checkbox"> 我已核对原始来源、标题、文章发布日期</label>
+ <label class="review-check"><input id="checkFacts" type="checkbox"> 我已核对关键事实、金额、股票代码、单位及出处</label>
+ <label class="review-check"><input id="checkChange" type="checkbox"> 我已检查是否为重复报道或有新修订</label>
+ <label class="review-label" for="verifyNote">审核备注（必须说明核对的事实和来源，至少8个字）</label>
+ <textarea id="verifyNote" rows="3" placeholder="例如：已对照BVB公告正文，第X段确认事件主体和公告时间；尚不解释股价方向。"></textarea>
+ <div class="dialog-actions"><button type="button" id="revokeVerified" class="btn light">撤销核验</button><button type="button" id="saveVerified" class="btn gold">保存人工核验记录</button></div>
+ </form>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="collection-core.js"></script><script src="materials-data.js"></script><script src="app.js"></script>
+</body></html>
