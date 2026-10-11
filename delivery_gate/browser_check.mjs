@@ -39,6 +39,7 @@ try {
     page.on('pageerror', e => errors.push(`${size.name}: Javascript error ${e.name}`));
     try {
       await page.goto(inside(spec.login.path ?? '/login'), {waitUntil:'domcontentloaded',timeout:20000});
+      if (new URL(page.url()).origin !== approvedUrl.origin) throw new Error('login redirected outside approved host');
       await page.locator(spec.login.username_selector).fill(username);
       await page.locator(spec.login.password_selector).fill(password);
       await page.locator(spec.login.submit_selector).click();
@@ -51,6 +52,7 @@ try {
       for (const entry of spec.routes) {
         if (!entry.path || !entry.ready_selector) throw new Error('incomplete required route config');
         await page.goto(inside(entry.path), {waitUntil:'domcontentloaded',timeout:20000});
+        if (new URL(page.url()).origin !== approvedUrl.origin) throw new Error('route redirected outside approved host');
         const target = page.locator(entry.ready_selector);
         await target.waitFor({state:'visible',timeout:15000});
         if (entry.expected_text) {
