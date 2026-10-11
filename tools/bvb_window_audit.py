@@ -79,7 +79,7 @@ def window_for(now: datetime, node_id: str | None = None):
     previous = rows[at_index-1] if at_index > 0 else None
     start = (previous["prep"] if previous else chosen["prep"] - timedelta(hours=24))
     # Explicit historical node: finish at that node's publication time.
-    end = min(local, _local(chosen["day"], chosen["run"]["publication"]))
+    end = local if node_id is None else min(local, _local(chosen["day"], chosen["run"]["publication"]))
     if end < start:
         raise ValueError("Invalid node time window")
     return {
@@ -164,7 +164,7 @@ def audit_news(articles, window, *, checked_at=None):
             ],
         })
     rank = {"P0": 0, "P1": 1, "P2": 2}
-    rows.sort(key=lambda v: (rank.get(v["priority_candidate"], 2), v["published_at"]), reverse=False)
+    rows.sort(key=lambda v: (rank.get(v["priority_candidate"], 2), -_published(v["published_at"]).timestamp()))
     return rows, held
 
 def market_analysis(quote, hotspots):
