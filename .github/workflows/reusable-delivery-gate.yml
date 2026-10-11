@@ -1,0 +1,103 @@
+name: Reusable Independent Delivery Gate
+on:
+  workflow_call:
+    inputs:
+      profile:
+        description: "Acceptance profile: web, service, or content; set in trusted caller workflow"
+        type: string
+        required: true
+      evidence_artifact:
+        description: "Artifact uploaded by real tests earlier in this SAME workflow run"
+        type: string
+        default: customer-acceptance-evidence
+        required: false
+      approved_base_url:
+        description: "Trusted preproduction URL (web profile only)"
+        type: string
+        default: ""
+        required: false
+      allowed_host:
+        description: "Approved preview hostname, matched exactly"
+        type: string
+        default: ""
+        required: false
+    secrets:
+      GATE_TEST_USERNAME:
+        required: false
+      GATE_TEST_PASSWORD:
+        required: false
+      GATE_TEST_OTP:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    name: independent-delivery-acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Fetch trusted gate code (never use candidate PR source as gate code)
+        uses: actions/checkout@v4
+        with:
+          repository: dalulu05168/-Skill
+          ref: main
+          path: gate-source
+      - name: Download evidence from preceding test jobs
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.evidence_artifact }}
+          path: acceptance-evidence
+      - uses: actions/setup-node@v4
+        if: ${{ inputs.profile == 'web' }}
+        with:
+          node-version: '22'
+      - name: Install isolated browser and Chromium
+        if: ${{ inputs.profile == 'web' }}
+        run: |
+          npm install --prefix gate-source/delivery_gate --no-save playwright@1.56.0
+          npx --prefix gate-source/delivery_gate playwright install --with-deps chromium
+      - name: Independently test real login, routes and desktop/mobile render
+        if: ${{ inputs.profile == 'web' }}
+        env:
+          GATE_APPROVED_BASE_URL: ${{ inputs.approved_base_url }}
+          GATE_ALLOWED_HOST: ${{ inputs.allowed_host }}
+          GATE_BROWSER_SPEC: acceptance-evidence/browser-spec.json
+          GATE_TEST_USERNAME: ${{ secrets.GATE_TEST_USERNAME }}
+          GATE_TEST_PASSWORD: ${{ secrets.GATE_TEST_PASSWORD }}
+          GATE_TEST_OTP: ${{ secrets.GATE_TEST_OTP }}
+        run: node gate-source/delivery_gate/browser_check.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reject missing, fake, stale or failed acceptance evidence
+        env:
+          GATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          GATE_PROFILE: ${{ inputs.profile }}
+        run: |
+          python gate-source/delivery_gate/validator.py \
+            --report acceptance-evidence/acceptance-report.json \
+            --root acceptance-evidence \
+            --expected-sha "$GATE_SHA" \
+            --profile "$GATE_PROFILE" \
+            --out gate-decision.json
+      - name: Preserve browser smoke summary (only synthetic test accounts)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-browser-smoke-summary
+          path: browser-evidence/browser-result.json
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Preserve decision for investigation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-acceptance-decision
+          path: gate-decision.json
+          if-no-files-found: warn
+          retention-days: 14
