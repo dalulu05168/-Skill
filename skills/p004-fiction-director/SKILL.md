@@ -6,6 +6,18 @@ description: 65名独立角色的罗马尼亚财经教育虚构群聊小说总�
 
 > **独立新版本，不是** `skills/romania-market-director/` 的子技能、升级路径或自动迁移。此目录不读取旧65人v4.1档案，不复制旧记忆，不引用旧角色 ID 的身份对应关系。旧项目始终保持原样。
 
+## 现行五个独立 Skill（原生技能，不是五套AI程序）
+
+此工作区是共享角色档案和独立正式历史的资料目录。**实际可分别加载的 Skill** 位于仓库顶层，每个有独立 YAML 元数据、职责、输入和输出边界：
+
+1. [总导演 Skill](../p004-director/SKILL.md) — 决定时段、主题、选角、剧情节奏以及临时插播；
+2. [编剧 Skill](../p004-writer/SKILL.md) — 接收总导演任务，使用其他角色约束创作罗马尼亚语对白；
+3. [教授 Skill](../p004-professor/SKILL.md) — 负责工作日晚间课程和稳定讲课口吻；
+4. [助理 Skill](../p004-assistant/SKILL.md) — 白天新闻教学、问答主持与晚课衔接；
+5. [65人成员 Skill](../p004-members/SKILL.md) — 65名独立新人设的差异化表达、互动和沉默。
+
+**技能交接：** 总导演 → 编剧（阅读教授/助理/65人成员 Skill）→ 审核 → 人工确认 → 本故事正式记忆。独立技能的 Markdown 文件并不意味着已自动安装进某个 ChatGPT 会话，也不代表自动跨会话运行。现有四合一 `/skill` 仅显示/保存任务及审查结果，不能宣称已自动运行编剧。这里**不开发另一个AI程序、也不强制连接模型/API**。
+
 ## 当前优先工作：教授与助理的角色试听（等待定稿）
 
 在首次创作正式65人对话之前，优先读取：
@@ -72,7 +84,7 @@ description: 65名独立角色的罗马尼亚财经教育虚构群聊小说总�
 
 独立多场试听：`examples/65-person-multiscene-audition-v2.json`（周三、上午→下午→晚间，纯虚构26条，未正式采用）。测试：`python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v`；独立CI：`.github/workflows/p004-independent-director-qa.yml`。结构通过并不代表人物真实感、罗语母语质量或交易引用已由AI完工验收。
 
-## 已实现的轻量导演选角原型（非完整AI编剧）
+## 已实现的轻量导演选角原型（尚非完整编剧 Skill 联动）
 `scripts/director_cast.py` 在**明确虚构、仅用于排演**时，按照本目录v2候选人物的兴趣、职业、时间适配及近期出场降权生成候选名单；允许多人观点不同，也允许角色沉默，不为凑消息填充无关成员。它输出`draft_only=true`、`publishable=false`和透明选角理由，**不是**已经集成新闻研究、小说创作、自动对话或模块二成交记忆的整套引擎。
 
 运行输入模板：`examples/cast-request-energy.json`；测试：`tests/test_director_cast.py`；独立GitHub Actions会与已有结构/记忆测试一起执行。正式人物库仍为空，**严禁把候选名单当作正式人物或将试写场景当作真实记忆**。
