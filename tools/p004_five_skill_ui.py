@@ -61,6 +61,17 @@ PANEL = r"""
   <label class="p004-confirm"><input id="p004-editor" type="checkbox">编辑已经人工审阅罗马尼亚语口吻、事实与剧情</label>
   <label class="p004-confirm"><input id="p004-operator" type="checkbox">操作者确认将这一场纳入小说正式历史</label>
   <div class="p004-line"><button type="button" id="p004-adopt" disabled>确认采用并写入独立记忆</button></div>
+  <hr>
+  <div class="p004-title"><h2>新65人人设逐人审核</h2><span class="p004-status" id="p004-approved-count">0 / 65 正式批准</span></div>
+  <p>独立新角色与旧版本无关。选定人物后查看职业、地区、性格及罗马尼亚语样句，确认后才纳入正式名册；不提供一键假批准。</p>
+  <label style="font-size:12px;font-weight:700;display:block">选择待审核人物
+    <select id="p004-person-select"><option value="">读取服务器真实候选…</option></select>
+  </label>
+  <pre id="p004-profile" style="max-height:210px;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#f6f8fa;padding:12px;border-radius:9px;font:12px/1.65 'Microsoft YaHei',monospace"></pre>
+  <label class="p004-confirm"><input id="p004-person-reviewed" type="checkbox">我已核对该人物的人设、地区及罗马尼亚语表达</label>
+  <label class="p004-confirm"><input id="p004-person-confirmed" type="checkbox">我确认采用当前显示的这一个人物为新故事正式角色</label>
+  <div class="p004-line"><button type="button" id="p004-approve-person" disabled>批准所选人物（仅这1人）</button></div>
+
 </section>
 """
 SCRIPT = r"""
@@ -134,6 +145,52 @@ $("p004-adopt").onclick=async()=>{
   valid=false;$("p004-adopt").disabled=true;
  }catch(e){feedback("正式采用被阻止："+e.message)}
 };
+
+let reviewedPeople=[];
+function showPerson(){
+ const id=$("p004-person-select").value;
+ const p=reviewedPeople.find(x=>x.id===id);
+ $("p004-person-reviewed").checked=false;
+ $("p004-person-confirmed").checked=false;
+ $("p004-approve-person").disabled=!p||p.approved;
+ if(!p){$("p004-profile").textContent="请选择人物查看完整审阅字段。";return;}
+ $("p004-profile").textContent=JSON.stringify({
+  编号:p.id,姓名:p.name,性别:p.gender,年龄:p.age,地区:p.region,职业:p.occupation,
+  家庭动机:p.family_motivation,主性格:p.main_behavior,次性格:p.secondary_behavior,
+  语言风格:p.voice,出场习惯:p.availability_note,
+  状态:p.approved?"已人工批准":"新候选，未批准"
+ },null,2);
+}
+async function loadPeople(){
+ const r=await fetch("/api/p004/characters",{credentials:"same-origin"});
+ const data=await r.json();if(!r.ok)throw Error(data.error||"候选人物读取失败");
+ reviewedPeople=data.people;
+ const select=$("p004-person-select"),old=select.value;
+ select.replaceChildren();
+ for(const p of data.people){
+  const opt=document.createElement("option");opt.value=p.id;
+  opt.textContent=p.id+" · "+p.name+(p.approved?" [已批准]":" [待审核]");
+  select.append(opt);
+ }
+ if(data.people.some(x=>x.id===old))select.value=old;
+ $("p004-approved-count").textContent=data.approved_count+" / 65 正式批准";
+ showPerson();
+}
+$("p004-person-select").addEventListener("change",showPerson);
+$("p004-approve-person").onclick=async()=>{
+ const p=reviewedPeople.find(x=>x.id===$("p004-person-select").value);
+ if(!p)return;
+ try{
+  const result=await call("approve-character",{
+   id:p.id,confirmed_name:p.name,
+   reviewed:$("p004-person-reviewed").checked,
+   confirmed:$("p004-person-confirmed").checked});
+  feedback("已真正批准新人物 "+p.id+" "+p.name+"。正式人数："+result.approved_count+"/65；无自动群发。");
+  await loadPeople();await getStatus();
+ }catch(e){feedback("批准失败："+e.message)}
+};
+loadPeople().catch(e=>feedback("人物清单无法读取："+e.message));
+
 getStatus().catch(e=>{stage("数据异常");feedback(e.message)});
 const remembered=sessionStorage.getItem("p004_five_skill_token");
 if(remembered){
