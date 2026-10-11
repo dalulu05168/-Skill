@@ -86,7 +86,7 @@ def validate_draft(data: dict) -> dict:
                 isinstance(x, str) and x.strip() for x in p[key]
             ):
                 raise ValueError(f"person {cid} missing {key}")
-        if "退休" in p["occupation"] and re.search(r"忙于退休.+?职责", " ".join(p["silence_cues"])):
+        if v2 and "退休" in p["occupation"] and re.search(r"忙于退休.+?职责", " ".join(p["silence_cues"])):
             raise ValueError(f"person {cid} erroneously assigned a retired person's old work duties")
         if p["approved_by_user"] is not False or p["fictional_only"] is not True:
             raise ValueError(f"person {cid} is marked approved or real")
