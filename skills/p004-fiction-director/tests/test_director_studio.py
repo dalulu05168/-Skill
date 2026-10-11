@@ -157,6 +157,46 @@ class DirectorStudioTests(unittest.TestCase):
         self.assertEqual(result["manuscript"], manuscript)
         self.assertFalse(self.server.history_db.exists())
 
+    def test_explicit_approval_writes_actual_sqlite_and_refuses_duplicate(self):
+        # Synthetic approved roster exists ONLY inside this isolated test temp dir.
+        # It does not approve the real 65 candidates or change the repository file.
+        draft_roster = studio._read_json(studio.DRAFT_ROSTER)
+        official = pathlib.Path(self.temp.name) / "synthetic-approved.json"
+        official.write_text(json.dumps({
+            "story_id": "p004-fiction-director-independent",
+            "characters": [
+                {"id": person["id"], "approved_by_user": True}
+                for person in draft_roster["people"]
+            ]}, ensure_ascii=False), encoding="utf-8")
+        with patch.object(studio, "APPROVED_ROSTER", official):
+            _, out = self.prepared(scene="scene-adopt-positive")
+            manuscript = self.valid_draft(out["prepared"])
+            _, reviewed = self.req("/api/review", {
+                "token": out["token"], "manuscript": manuscript})
+            self.assertEqual(reviewed["qa"]["status"], "EDITORIAL_REVIEW_REQUIRED")
+            code, refused = self.req("/api/adopt", {
+                "token": out["token"],
+                "operator_confirmed": True, "editorial_confirmed": False})
+            self.assertEqual(code, 400)
+            self.assertIn("分别", refused["error"])
+            self.assertFalse(self.server.history_db.exists())
+            code, success = self.req("/api/adopt", {
+                "token": out["token"],
+                "operator_confirmed": True, "editorial_confirmed": True})
+            self.assertEqual(code, 200)
+            self.assertTrue(success["result"]["official_story_memory_written"])
+            self.assertFalse(success["result"]["published_to_whatsapp"])
+            self.assertTrue(self.server.history_db.exists())
+            from scene_memory import person_history
+            rows = person_history(self.server.history_db, official, "assistant")
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["scene_id"], "scene-adopt-positive")
+            code, refused = self.req("/api/adopt", {
+                "token": out["token"],
+                "operator_confirmed": True, "editorial_confirmed": True})
+            self.assertEqual(code, 400)
+            self.assertIn("已采用", refused["error"])
+
     def test_persisted_scene_survives_server_restart(self):
         _, out = self.prepared(scene="scene-restored")
         token = out["token"]
