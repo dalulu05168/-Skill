@@ -43,7 +43,7 @@ class HostedModeTests(unittest.TestCase):
                         urlopen(Request(base + "/", headers=auth(password="incorrect")))
                     self.assertEqual(wrong_password.exception.code, 401)
                     with urlopen(Request(base + "/", headers=auth())) as response:
-                        self.assertIn("统一 SKILL 工作台", response.read().decode("utf-8"))
+                        self.assertIn("四合一管理工作台", response.read().decode("utf-8"))
                     with urlopen(Request(base + "/api/trading/people", headers=auth())) as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     body = json.dumps({"spec": {}, "fetch_rss": False, "node": "RO-08"}).encode()
