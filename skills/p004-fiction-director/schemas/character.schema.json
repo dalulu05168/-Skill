@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P004 Fiction Character (new roster, no legacy import)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "gender",
+    "age",
+    "region",
+    "occupation",
+    "main_behavior",
+    "secondary_behavior",
+    "voice",
+    "interest_triggers",
+    "approved_by_user"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(0[1-9]|[1-5][0-9]|6[0-5])$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gender": {
+      "type": "string",
+      "minLength": 1
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 18
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occupation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "main_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secondary_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sentence_length",
+        "register",
+        "catchphrases",
+        "emoji_style",
+        "coarse_language_style"
+      ],
+      "properties": {
+        "sentence_length": {
+          "type": "string"
+        },
+        "register": {
+          "type": "string"
+        },
+        "catchphrases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emoji_style": {
+          "type": "string"
+        },
+        "coarse_language_style": {
+          "type": "string"
+        }
+      }
+    },
+    "interest_triggers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approved_by_user": {
+      "const": true
+    }
+  }
+}
