@@ -211,7 +211,7 @@ class FiveSkillIntegrationTests(unittest.TestCase):
             "token":first["token"],"editorial_confirmed":True,"operator_confirmed":True})
         self.assertEqual(code,200)
         self.assertTrue(adopted["adoption"]["official_story_memory_written"])
-        code,next_scene=self.begin(scene="second-synthetic-scene")
+        code,next_scene=self.begin(scene="second-synthetic-scene",daypart="evening")
         self.assertEqual(code,200)
         previous=next_scene["task"]["approved_history"]
         self.assertGreater(len(previous),0)
