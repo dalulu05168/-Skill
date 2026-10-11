@@ -1,0 +1,326 @@
+{
+  "story_id": "p004-fiction-director-independent",
+  "simulation_only": true,
+  "status": "SANDBOX_REHEARSAL_NOT_ADOPTED",
+  "fictional_case_only": true,
+  "content_warning": "This is an explicitly fictional teaching/storyline rehearsal. No real BVB quotes, news, investor testimonies, trades or activity happened. Do not send as real group participants.",
+  "language": "Romanian",
+  "first_day": "2026-10-12",
+  "last_day": "2026-10-14",
+  "scenes": [
+    {
+      "scene_id": "rehearsal-20261012-am",
+      "date": "2026-10-12",
+      "daypart": "morning",
+      "lesson_type": null,
+      "topic": "一家假设公司的营业额与净利润",
+      "messages": [
+        {
+          "message_id": "m01",
+          "speaker_id": "assistant",
+          "text": "Bună dimineața! Să luăm un exemplu imaginar: un magazin vinde mai mult anul acesta. Înseamnă automat că îi merge mai bine?",
+          "director_note": "启发假设问题"
+        },
+        {
+          "message_id": "m02",
+          "speaker_id": "03",
+          "text": "Stai puțin... vinde mai mult, dar cât îi rămâne după cheltuieli?",
+          "director_note": "入门者主动追问",
+          "reply_to": "m01"
+        },
+        {
+          "message_id": "m03",
+          "speaker_id": "04",
+          "text": "Exact. La tipografie pot avea comenzi peste comenzi și tot să mă chinui cu încasările.",
+          "director_note": "印刷厂老板用熟悉经历质疑",
+          "reply_to": "m02"
+        },
+        {
+          "message_id": "m04",
+          "speaker_id": "07",
+          "text": "Și la nunți e la fel: sală plină, flori peste tot, dar facturile nu dansează. 😄",
+          "director_note": "幽默者生活类比",
+          "reply_to": "m03"
+        },
+        {
+          "message_id": "m05",
+          "speaker_id": "28",
+          "text": "Da, dar nici exemplul tău nu dovedește că toate firmele au aceeași problemă.",
+          "director_note": "反驳者指出以偏概全",
+          "reply_to": "m04"
+        },
+        {
+          "message_id": "m06",
+          "speaker_id": "assistant",
+          "text": "Corect, nu tragem o concluzie pentru toate companiile. Azi separăm trei lucruri: venituri, cheltuieli și profit. Fără cifre reale, rămânem la exemplu.",
+          "director_note": "主持平衡观点",
+          "reply_to": "m05"
+        },
+        {
+          "message_id": "m07",
+          "speaker_id": "33",
+          "text": "Eu las întrebarea deschisă. Mai întâi vreau să văd un raport, nu doar o poveste.",
+          "director_note": "观望者保留意见",
+          "reply_to": "m06"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261012-pm",
+      "date": "2026-10-12",
+      "daypart": "evening",
+      "lesson_type": "technical",
+      "topic": "量价、收入与真实经营并非同一种信号",
+      "messages": [
+        {
+          "message_id": "m08",
+          "speaker_id": "professor",
+          "text": "Bună seara! Dimineață ați făcut o distincție utilă: vânzările nu sunt același lucru cu profitul. Diseară adăugăm încă una: mișcarea prețului nu este dovada că afacerea s-a îmbunătățit.",
+          "director_note": "呼应同日演练"
+        },
+        {
+          "message_id": "m09",
+          "speaker_id": "41",
+          "text": "Puteți da un exemplu cu prețul și volumul? Când mă uit pe grafic mă încurc.",
+          "director_note": "引出技术课提问",
+          "reply_to": "m08"
+        },
+        {
+          "message_id": "m10",
+          "speaker_id": "professor",
+          "text": "Imaginați-vă o piață unde prețul urcă și se schimbă multe acțiuni. Volumul ne arată cât de activă este tranzacționarea, nu cine are dreptate și nici profitul firmei. Trebuie să verificăm contextul și perioada.",
+          "director_note": "定义与边界",
+          "reply_to": "m09"
+        },
+        {
+          "message_id": "m11",
+          "speaker_id": "04",
+          "text": "Bine. Deci nici volumul mare nu-mi spune dacă firma își încasează facturile.",
+          "director_note": "把旧问题和新概念连接",
+          "reply_to": "m10"
+        },
+        {
+          "message_id": "m12",
+          "speaker_id": "professor",
+          "text": "Exact. Tema pentru mâine: alegeți un grafic de exemplu și spuneți ce s-a schimbat în preț și volum, fără să ghiciți rezultatul viitor. Învățăm să observăm, ca să luăm decizii mai bune pentru noi și familiile noastre. Vă aștept cu întrebări. Noapte bună!",
+          "director_note": "具体作业与家庭目标",
+          "reply_to": "m11"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261013-am",
+      "date": "2026-10-13",
+      "daypart": "morning",
+      "lesson_type": null,
+      "topic": "周一作业的不同反馈",
+      "messages": [
+        {
+          "message_id": "m13",
+          "speaker_id": "assistant",
+          "text": "Bună dimineața! Cine a apucat să încerce exercițiul de aseară? Nu trebuie să aveți un răspuns perfect.",
+          "director_note": "接昨日作业"
+        },
+        {
+          "message_id": "m14",
+          "speaker_id": "39",
+          "text": "Am văzut un grafic, dar nu știu dacă pot trage o concluzie doar din volum.",
+          "director_note": "追随者认真尝试，仍有疑虑",
+          "reply_to": "m13"
+        },
+        {
+          "message_id": "m15",
+          "speaker_id": "21",
+          "text": "Și perioada? Un volum mare față de ieri sau față de o lună?",
+          "director_note": "退休统计教师核对比较口径",
+          "reply_to": "m14"
+        },
+        {
+          "message_id": "m16",
+          "speaker_id": "assistant",
+          "text": "Bună observație. Dacă schimbăm perioada de comparație, putem spune lucruri diferite. Notăm întrebarea pentru următoarea lecție tehnică.",
+          "director_note": "保留待解问题",
+          "reply_to": "m15"
+        },
+        {
+          "message_id": "m17",
+          "speaker_id": "08",
+          "text": "Sursa graficului?",
+          "director_note": "少言成员只关注数据来源",
+          "reply_to": "m16"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261013-pm",
+      "date": "2026-10-13",
+      "daypart": "afternoon",
+      "lesson_type": null,
+      "topic": "群成员根据各自工作理解不确定性",
+      "messages": [
+        {
+          "message_id": "m18",
+          "speaker_id": "18",
+          "text": "La pensiune, o săptămână aglomerată nu înseamnă că tot sezonul va fi la fel. Cam asta mă face să fiu prudentă.",
+          "director_note": "民宿老板引入经验"
+        },
+        {
+          "message_id": "m19",
+          "speaker_id": "14",
+          "text": "La naiba, când crește combustibilul, prudența nu-mi plătește motorina. Mă enervează când toți zic doar «așteaptă».",
+          "director_note": "出租车司机情绪化质疑",
+          "reply_to": "m18"
+        },
+        {
+          "message_id": "m20",
+          "speaker_id": "28",
+          "text": "N-a spus nimeni că grijile tale nu contează. Dar nici nu putem transforma frustrarea într-o prognoză sigură.",
+          "director_note": "反驳者就事论事回应",
+          "reply_to": "m19"
+        },
+        {
+          "message_id": "m21",
+          "speaker_id": "14",
+          "text": "Bine, poate m-am aprins. Tot vreau un răspuns practic, nu încă o frază frumoasă.",
+          "director_note": "情绪角色可局部认错但不完全改变立场",
+          "reply_to": "m20"
+        },
+        {
+          "message_id": "m22",
+          "speaker_id": "assistant",
+          "text": "Aveți amândoi un punct real: costurile se simt imediat, iar deciziile au nevoie de date. Diseară profesorul poate porni de aici: ce putem controla când viitorul nu e clar?",
+          "director_note": "助理维持秩序并送入晚课",
+          "reply_to": "m21"
+        },
+        {
+          "message_id": "m23",
+          "speaker_id": "07",
+          "text": "Eu una pot controla câte flori comand. Vremea și invitații... niciodată complet!",
+          "director_note": "生活型自然轻松收尾",
+          "reply_to": "m22"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261013-eve",
+      "date": "2026-10-13",
+      "daypart": "evening",
+      "lesson_type": "philosophy",
+      "topic": "家庭目标与能控制的投资行为",
+      "messages": [
+        {
+          "message_id": "m24",
+          "speaker_id": "professor",
+          "text": "Bună seara. După-amiază am auzit o întrebare sinceră: ce facem când cheltuielile cresc, dar viitorul rămâne neclar? Astăzi nu discutăm un «pont». Discutăm controlul asupra propriilor alegeri.",
+          "director_note": "复盘下午问题"
+        },
+        {
+          "message_id": "m25",
+          "speaker_id": "01",
+          "text": "Am ieșit din tură. Eu pot începe cu bugetul pentru școala fetei mele, nu cu un grafic complicat.",
+          "director_note": "护士关心家庭教育",
+          "reply_to": "m24"
+        },
+        {
+          "message_id": "m26",
+          "speaker_id": "professor",
+          "text": "Exact acesta e începutul. Imaginați-vă o familie care pune deoparte întâi banii necesari, apoi decide cât își permite să expună riscului. Nu e o poveste despre profit garantat; e despre libertatea de a alege fără să sacrifici siguranța de acasă.",
+          "director_note": "假设案例而非假造成功"
+        },
+        {
+          "message_id": "m27",
+          "speaker_id": "48",
+          "text": "Dar costurile? Dacă investești des, comisioanele chiar pot mânca din rezultat.",
+          "director_note": "反驳者提出遗漏条件",
+          "reply_to": "m26"
+        },
+        {
+          "message_id": "m28",
+          "speaker_id": "professor",
+          "text": "Corect. Mâine vă rog să notați un obiectiv concret pentru familie și trei costuri pe care le-ați verifica înainte de orice decizie. A învăța are rost când aplicăm, întrebăm și ne corectăm. Participați, nu rămâneți spectatori. O seară liniștită!",
+          "director_note": "有力鼓励、作业与家庭联系",
+          "reply_to": "m27"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261014-am",
+      "date": "2026-10-14",
+      "daypart": "morning",
+      "lesson_type": null,
+      "topic": "成员隔天接续前日问题",
+      "messages": [
+        {
+          "message_id": "m29",
+          "speaker_id": "assistant",
+          "text": "Bună dimineața! Azi revenim la o întrebare rămasă de luni: când crește activitatea pe un grafic, ce știm sigur și ce doar presupunem?",
+          "director_note": "回调周一研究问题"
+        },
+        {
+          "message_id": "m30",
+          "speaker_id": "41",
+          "text": "Eu încă nu știu când compar volumele. Azi cu ieri sau cu media ultimelor săptămâni?",
+          "director_note": "讲师继续追问之前的问题",
+          "reply_to": "m09"
+        },
+        {
+          "message_id": "m31",
+          "speaker_id": "21",
+          "text": "Înainte să comparați, folosiți aceeași unitate și aceeași perioadă. Altfel amestecați mere cu pere.",
+          "director_note": "统计教师回答比较基础",
+          "reply_to": "m30"
+        },
+        {
+          "message_id": "m32",
+          "speaker_id": "04",
+          "text": "Iar eu tot nu confund asta cu banii încasați de o firmă. Bun, am învățat măcar diferența asta.",
+          "director_note": "坚持自身现金流观点",
+          "reply_to": "m11"
+        },
+        {
+          "message_id": "m33",
+          "speaker_id": "assistant",
+          "text": "Exact. Le lăsăm pe amândouă la vedere: ce descrie graficul și ce descrie afacerea. În lecția de seară profesorul poate arăta un exemplu numeric doar dacă avem date verificate.",
+          "director_note": "衔接后续教学而不编造数字",
+          "reply_to": "m32"
+        }
+      ]
+    },
+    {
+      "scene_id": "rehearsal-20261014-eve",
+      "date": "2026-10-14",
+      "daypart": "evening",
+      "lesson_type": "technical",
+      "topic": "如何选择正确比较基准",
+      "messages": [
+        {
+          "message_id": "m34",
+          "speaker_id": "professor",
+          "text": "Bună seara! Luca a pus dimineață întrebarea potrivită: față de ce comparăm volumul? Un număr singur, fără perioadă, nu ne spune povestea întreagă.",
+          "director_note": "具体引用先前问题",
+          "reply_to": "m30"
+        },
+        {
+          "message_id": "m35",
+          "speaker_id": "professor",
+          "text": "Dacă vreți să știți cât de aglomerată e o gară, comparați aceeași oră și zile asemănătoare. Și pe piață, volumul are sens doar dacă definim intervalul și ce intră în calcul. Dar comparația corectă nu prezice singură următoarea mișcare.",
+          "director_note": "用交通生活场景解释技术边界"
+        },
+        {
+          "message_id": "m36",
+          "speaker_id": "10",
+          "text": "Bine, dar ce zi e baza? Asta e prima întrebare, nu ultima.",
+          "director_note": "观望者具体追问",
+          "reply_to": "m35"
+        },
+        {
+          "message_id": "m37",
+          "speaker_id": "professor",
+          "text": "Tema voastră: scrieți sursa, perioada și unitatea unui grafic pe care îl studiați. Nu e o cursă pentru cel mai rapid răspuns. Fiecare exercițiu înțeles bine ne ajută să alegem cu mai multă grijă pentru viitorul familiei. Mâine continuăm, noapte bună!",
+          "director_note": "积极参与而非急切交易",
+          "reply_to": "m36"
+        }
+      ]
+    }
+  ]
+}
