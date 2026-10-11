@@ -44,6 +44,10 @@ width:min(calc(100vw - 18px),calc((100dvh - 18px) * 16 / 9),1680px)!important;
 max-height:calc(100dvh - 18px);min-height:0!important;margin:0 auto!important;grid-template-rows:54px minmax(0,1fr)!important}
 .ws-frame>.app{min-height:0!important;overflow:auto!important;scrollbar-width:none;padding:12px 16px 20px!important}
 .ws-frame>.app::-webkit-scrollbar{display:none}
+.ws-screen-controls{display:flex;gap:5px}
+.ws-screen-controls button{border:1px solid #dce3eb;border-radius:8px;background:#fff;color:#37536d;font-size:11px;font-weight:700;padding:7px 10px;white-space:nowrap}
+.ws-screen-controls button:disabled{opacity:.35;cursor:not-allowed}
+.ws-screen-controls button:not(:disabled):hover{background:#eff5fa}
 html,body{height:100%;overflow:hidden!important}
 @media(max-width:700px){.ws-frame{width:100%!important;height:100dvh!important;max-height:none;margin:0!important;grid-template-columns:55px minmax(0,1fr)!important}
 .gate-page .readonly-preview-banner{display:none}
@@ -91,6 +95,29 @@ SCRIPT = """<script>
       (!!search?.value && !row.dataset.search.includes(search.value.trim().toLocaleLowerCase()));
    }
   });
+ }
+ // Desktop is a fixed 16:9 viewport: move through overflow content only via
+ // explicit screen navigation, never by making the whole page scroll.
+ const content=document.querySelector('.ws-frame > .app');
+ const topRight=document.querySelector('.ws-top-right');
+ if(content && topRight){
+   const controls=document.createElement('div');controls.className='ws-screen-controls';
+   const previous=document.createElement('button');
+   previous.type='button';previous.textContent='上一屏';previous.setAttribute('aria-label','查看上一屏');
+   const next=document.createElement('button');
+   next.type='button';next.textContent='下一屏';next.setAttribute('aria-label','查看下一屏');
+   controls.append(previous,next);topRight.prepend(controls);
+   const move=delta=>content.scrollBy({top:delta*content.clientHeight*.84,behavior:'smooth'});
+   previous.addEventListener('click',()=>move(-1));
+   next.addEventListener('click',()=>move(1));
+   const refresh=()=>{
+      previous.disabled=content.scrollTop<8;
+      next.disabled=content.scrollTop+content.clientHeight>=content.scrollHeight-8;
+   };
+   content.addEventListener('scroll',refresh);
+   window.addEventListener('resize',refresh);
+   content.addEventListener('wheel',e=>e.preventDefault(),{passive:false});
+   refresh();
  }
 })();
 </script>"""
