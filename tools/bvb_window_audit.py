@@ -167,7 +167,7 @@ def audit_news(articles, window, *, checked_at=None):
     rows.sort(key=lambda v: (rank.get(v["priority_candidate"], 2), -_published(v["published_at"]).timestamp()))
     return rows, held
 
-def market_analysis(quote, hotspots):
+def market_analysis(quote, hotspots, *, observed_at=None):
     """Direction and hypotheses ONLY when a delayed quote has usable fields."""
     if not isinstance(quote, dict) or quote.get("state") != "ok":
         return {"status": "insufficient_market_data", "bet_direction": "unknown",
@@ -180,8 +180,15 @@ def market_analysis(quote, hotspots):
     except (TypeError, ValueError, KeyError):
         return market_analysis({"state": "unavailable"}, hotspots)
     stamp = quote.get("marketTime")
-    if not math.isfinite(value) or not math.isfinite(pct) or value <= 0 or abs(pct) >= 90 or not stamp:
-        return market_analysis({"state": "unavailable"}, hotspots)
+    observed_at = observed_at or datetime.now(timezone.utc)
+    quoted_at = _published(stamp)
+    if (not math.isfinite(value) or not math.isfinite(pct) or value <= 0
+            or abs(pct) >= 90 or quoted_at is None
+            or not timedelta(minutes=-1) <= observed_at.astimezone(timezone.utc) - quoted_at <= timedelta(minutes=60)):
+        return {"status": "insufficient_market_data", "bet_direction": "unknown",
+                "reason": "BET 报价时间戳缺失、没有时区或已超过60分钟，拒绝按实时行情分析",
+                "market_time": stamp, "numerical_claims_verified": False,
+                "drivers": "只保留候审新闻，不确定实际涨跌原因"}
     direction = "up" if pct > 0 else "down" if pct < 0 else "flat"
     return {"status": "provisional_delayed_observation", "bet_direction": direction,
             "bet_value": value, "bet_percent_change": pct,
@@ -217,7 +224,7 @@ def build_brief(snapshot, *, at=None, node_id=None):
             "fact_verification_status": "pending_original_and_independent_fact_check",
             "autofactcheck_success": False,
         },
-        "market": market_analysis(snapshot.get("quote"), rows),
+        "market": market_analysis(snapshot.get("quote"), rows, observed_at=now),
         "notices": [
             "此报告只选取指定节点时间范围内的资讯，不代表实时数据供给。",
             "RSS 源验证仅能确认采集位置和元数据，不能证实文章内容。",
