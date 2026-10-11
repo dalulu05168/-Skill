@@ -65,3 +65,27 @@
 python skills/p004-fiction-director/scripts/director_cast.py --request skills/p004-fiction-director/examples/cast-request-energy.json
 ```
 编辑`topic_keywords`、`story_date`、`daypart`、`recent_member_ids`即可尝试其他假设场景。人物全部未正式批准，结果标记`draft_only=true,publishable=false`，不能拿来冒充真实群成员讨论。测试位于`tests/test_director_cast.py`，CI只覆盖可以机械确定的逻辑，不意味着编剧输出的文学性已被验收。
+
+
+## 导演→编剧→审稿→连续记忆：独立联动接口（2026-10-11）
+
+本阶段新增**可执行的免费编排骨架**，仅使用Python标准库，不会自动调用模型、不使用付费API、不联网、不群发、不生成图片、不翻译，也不改旧版65人。
+
+- `scripts/director_storyflow.py`：读取新版65人候选档案，按话题和时段选角，形成包含角色口吻、兴趣和有限历史的JSON导演包；`writer_prompt()` 生成可供当前ChatGPT或其他有权限的模型使用的完整编剧提示。
+- `scripts/director_storygate.py`：校验编剧返回的JSON（人物是否在本场选角、教授时段、回复顺序、历史引用、重复对白、模拟标识和交易/数值等明显不当断言）。`execute(model_fn=...)` 允许宿主**显式**接入模型，并针对硬性错误最多重试三轮；默认`model_fn=None`只返回提示词，**不触发任何模型调用**。
+- `scripts/director_session.py`：同一次沙盒排演中，把已过结构检查的台词暂存给后续场景引用；不会写入正式SQLite历史。另有`approved_sqlite_history()`只读适配器，**只在新的角色名册由用户批准、实际场次已采用时**读取原 `scene_memory.py` 的已采用记忆。不得拿未批准角色或草稿伪装正式历史。
+- `tests/test_storyflow_pipeline.py`、`tests/test_director_session.py`、`tests/test_65_day_stress.py`：分别检验退稿/返工、跨天记忆和65人三日沙盒压力测试。模型回调使用测试替身，不代表真实大模型已接好。
+
+运行（需将仓库切至独立开发分支并在根目录）：
+
+```bash
+python skills/p004-fiction-director/scripts/director_storyflow.py coverage
+python skills/p004-fiction-director/scripts/director_storyflow.py plan --request skills/p004-fiction-director/examples/cast-request-energy.json
+python -m unittest discover -s skills/p004-fiction-director/tests -p 'test_*.py' -v
+```
+
+**注意：** 旧示例 `cast-request-energy.json` 缺少新版编剧流程要求的 `scene_id`、`topic`。请用 `examples/director-scene-request.json` 完整范例运行 `plan`。只有后者是本阶段新的完整入口。
+
+所有输出均为 `publishable=false`；通过的最高状态为 `EDITORIAL_REVIEW_REQUIRED`。没有执行真正的罗马尼亚母语文学审稿、自动核实当天BVB新闻、配置模型服务、用户逐人确认角色或生产级部署。现阶段不应该将这些认定为已完成。
+
+**下一步接口：** 一旦用户审定65个人设，再把已采用历史与模块二经确认的模拟成交只读数据并入导演上下文，并在可用模型服务配置就绪后启用真正的AI自动编剧循环。
