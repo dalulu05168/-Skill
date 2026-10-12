@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 
 from finance_skill_api import make_handler
 from trading_65_storage import check_connection, is_durable
+from trading_login import browser_login
 
 ALLOWED_GET = {
     "/healthz", "/trading", "/api/trading/sim/state",
@@ -49,7 +50,7 @@ def trading_handler(data_dir, *, username, password):
                 return
             return super().do_POST()
 
-    return TradingOnly
+    return browser_login(TradingOnly, username, password)
 
 
 def main():
