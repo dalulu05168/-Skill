@@ -37,8 +37,9 @@ class LoginTest(unittest.TestCase):
         self.assertEqual(status, 303)
         self.assertEqual(headers['Location'], '/login')
         self.assertNotIn('WWW-Authenticate', headers)
-        status, _, body = self.request('GET', '/login')
+        status, login_headers, body = self.request('GET', '/login')
         self.assertEqual(status, 200)
+        self.assertEqual(login_headers['Referrer-Policy'], 'same-origin')
         self.assertIn(b'autocomplete="current-password"', body)
         self.assertEqual(self.request('GET', '/api/trading/sim/state')[0], 401)
         form = {'Content-Type': 'application/x-www-form-urlencoded'}
