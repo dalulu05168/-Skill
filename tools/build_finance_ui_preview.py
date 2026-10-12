@@ -27,7 +27,7 @@ BANNER = (
     '<strong>界面验收预览 · 非正式业务后台</strong>'
     '<span>本预览直接根据 P004 页面源码构建，仅展示布局及65位既有人物的非敏感摘要。'
     '新闻审核、角色记忆保存、AI生成、交易记录与群消息操作未在此站点连接。'
-    '请勿输入账号、正文或私人资料。</span></section>'
+    '请勿输入账号、正文或私人资料。业务按钮在本预览中不可使用。</span></section>'
 )
 STYLE = """<style>
 .readonly-preview-banner { margin: 10px 0 18px; display: flex; gap: 12px;
@@ -110,6 +110,49 @@ def _roster_rows(people):
        for p in people
     )
 
+
+def _compose_trading_preview(page, people):
+    """Render confirmed public roster summaries without pretending an API exists."""
+    if len(people) != 65:
+        raise RuntimeError("Trading preview requires all 65 canonical members")
+    rows = _roster_rows(people)
+    table = ('<table class="sim-table"><thead><tr><th>成员</th><th>职业</th>'
+             '<th>城市</th><th>分类</th><th>在线状态</th><th>账本状态</th>'
+             '</tr></thead><tbody>' + rows + '</tbody></table>')
+    replacements = {
+      '<div class="sim-counters" id="sim-stats"><div class="sim-counter">加载中…</div></div>':
+        '<div class="sim-counters" id="sim-stats">'
+        '<div class="sim-counter"><strong>65</strong><small>正式人物档案摘要</small></div>'
+        '<div class="sim-counter"><strong>—</strong><small>模拟开户：未连接</small></div>'
+        '<div class="sim-counter"><strong>—</strong><small>模拟持仓：未连接</small></div>'
+        '<div class="sim-counter"><strong>—</strong><small>卖出记录：未连接</small></div></div>',
+      '<div class="status" id="sim-message">交易数据尚未载入。</div>':
+        '<div class="status" id="sim-message" role="status">'
+        '静态只读预览：已从正式 v4.1 人物库构建65人摘要；'
+        '交易账本、资金、持仓与保存 API 均未连接。请使用正式受保护后端。</div>',
+      '<div class="sim-tablewrap" id="sim-people-table" style="margin-top:12px"></div>':
+        '<div class="sim-tablewrap" id="sim-people-table" style="margin-top:12px">'
+        + table + '</div>',
+      '<div class="sim-tablewrap" id="sim-holdings"></div>':
+        '<div class="sim-tablewrap" id="sim-holdings"><p class="muted">'
+        '预览不读取任何模拟持仓；实际账本只在受保护服务端查看。</p></div>',
+      '<div class="sim-tablewrap" id="sim-transactions"></div>':
+        '<div class="sim-tablewrap" id="sim-transactions"><p class="muted">'
+        '预览不读取任何买卖记录；实际记录需要受保护的业务后端。</p></div>',
+      '<div id="sim-candidate-list" class="sim-recommend-host" aria-live="polite"></div>':
+        '<div id="sim-candidate-list" class="sim-recommend-host" aria-live="polite">'
+        '<p class="muted">静态预览不提供推荐、邀请或交易提交。</p></div>',
+      '<select id="tc-profile-select"><option value="">正在载入成员…</option></select>':
+        '<select id="tc-profile-select"><option value="">已确认65人摘要，完整档案请访问受保护后端</option></select>',
+      '<pre id="tc-profile-detail">选择人物后显示其完整档案。这里不修改角色记忆。</pre>':
+        '<pre id="tc-profile-detail">静态预览只显示正式人物摘要，不公开完整人物档案或模拟交易状态。</pre>',
+    }
+    for old, new in replacements.items():
+        if old not in page:
+            raise RuntimeError("Trading template contract changed: " + old[:80])
+        page = page.replace(old, new, 1)
+    return page
+
 def build():
     profiles=load_profiles()
     people=summaries(profiles)
@@ -145,6 +188,8 @@ def build():
             page=page.replace('id="ws-people-count">—', 'id="ws-people-count">65', 1)
             page=page.replace('正在读取65份正式档案…', '65份正式档案已随预览构建完成')
             page=page.replace('本地内部审核 · 无自动发布', '线上只读界面预览', 1)
+        if route=="trading":
+            page=_compose_trading_preview(page, people)
         if route=="skill":
             cards="".join('<article class="preview-member-card"><b>'+
                           _safe(p["character_id"])+ ' · '+_safe(p["name"])+
