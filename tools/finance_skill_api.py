@@ -18,8 +18,9 @@ from finance_skill_generate import generate_draft, model_status
 from chennan_writing import (load_profiles, summaries, empty_state, read_state,
                              write_state, make_prompt, validate_messages, adopt, save_doc)
 from chennan_writing_ui import PAGE as WRITING_PAGE
-from trading_65 import (read_state as read_trade_state, write_state as write_trade_state,
-                        summary as trade_summary, snapshot as trade_snapshot, apply as apply_trade)
+from trading_65 import (summary as trade_summary, snapshot as trade_snapshot, apply as apply_trade)
+from trading_65_storage import (read_trade_state, write_trade_state, is_durable as trade_is_durable,
+                                check_connection as check_trade_connection)
 from trading_center_ui import PAGE as TRADING_PAGE
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
@@ -308,6 +309,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, result)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(409, {"error": str(exc)})
+                except Exception:
+                    self.respond(503, {"error": "交易数据库暂不可用，请稍后重试"})
             elif urlsplit(self.path).path == "/api/trading/sim/snapshot":
                 try:
                     query = parse_qs(urlsplit(self.path).query)
@@ -319,6 +322,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, result)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(400, {"error": str(exc)})
+                except Exception:
+                    self.respond(503, {"error": "交易数据库暂不可用，请稍后重试"})
             elif self.path in ("/api/trading/people", "/api/writing/people"):
                 try:
                     p = load_profiles()
@@ -348,6 +353,13 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             elif self.path == "/api/model/status":
                 self.respond(200, model_status())
             elif self.path == "/healthz":
+                if os.environ.get("FINANCE_REQUIRE_DURABLE_STORAGE") == "1":
+                    try:
+                        if not trade_is_durable() or not check_trade_connection():
+                            raise RuntimeError("durable trade database not ready")
+                    except Exception:
+                        self.respond(503, {"status": "unavailable", "component": "trading_database"})
+                        return
                 self.respond(200, {"status": "ok", "mode": "password_protected_hosted_review" if public_mode else "loopback_internal_review_only"})
             else:
                 self.respond(404, {"error": "Not found"})
@@ -456,6 +468,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.respond(200, result)
             except (ValueError, TypeError, KeyError, OSError, RuntimeError, json.JSONDecodeError) as exc:
                 self.respond(400, {"error": str(exc)})
+            except Exception:
+                self.respond(503, {"error": "交易数据库暂不可用，请稍后重试"})
 
     return Handler
 
@@ -473,6 +487,14 @@ def main():
     password = os.environ.get("FINANCE_ACCESS_PASSWORD") if public_mode else None
     if public_mode and (not password or len(password) < 16):
         parser.error("Public binding requires FINANCE_ACCESS_PASSWORD of at least 16 characters")
+    if public_mode and os.environ.get("FINANCE_REQUIRE_DURABLE_STORAGE") == "1":
+        if not trade_is_durable():
+            parser.error("P004_TRADE_DATABASE_URL is required for hosted durable trading")
+        try:
+            if not check_trade_connection():
+                parser.error("Hosted trading database is not ready")
+        except Exception:
+            parser.error("Hosted trading database is unavailable; refusing ephemeral fallback")
     folder = Path(args.data_dir).expanduser().resolve()
     folder.mkdir(parents=True, exist_ok=True)
     server = ThreadingHTTPServer((args.host, args.port), make_handler(
