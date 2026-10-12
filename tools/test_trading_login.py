@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 from http.server import ThreadingHTTPServer
 from urllib.parse import urlencode
+from unittest.mock import patch
 
 from trading_65_server import trading_handler
 
@@ -61,6 +62,14 @@ class LoginTest(unittest.TestCase):
             'Content-Type': 'application/x-www-form-urlencoded',
             'Origin': 'https://evil.example', 'Sec-Fetch-Site': 'cross-site'})
         self.assertEqual(status, 403)
+
+    def test_render_public_origin_behind_proxy(self):
+        with patch.dict('os.environ', {'RENDER_EXTERNAL_URL': 'https://trading.example'}):
+            status, _, _ = self.request('POST', '/login', urlencode(
+                {'username': 'tester', 'password': 'test-password-123456'}), {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': 'https://trading.example', 'Host': 'internal-proxy:10000'})
+            self.assertEqual(status, 303)
 
     def test_login_rate_limit(self):
         for _ in range(5):

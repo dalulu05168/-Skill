@@ -1,6 +1,7 @@
 """Browser form authentication for the isolated trading service only."""
 import hashlib
 import hmac
+import os
 import secrets
 import time
 from http.cookies import SimpleCookie, CookieError
@@ -115,12 +116,19 @@ def browser_login(base, username, password):
             return self._redirect('/trading', cookie)
 
         def _same_origin(self):
-            if self.headers.get('Sec-Fetch-Site') == 'cross-site':
-                return False
             origin = self.headers.get('Origin')
             if not origin:
-                return True
+                return self.headers.get('Sec-Fetch-Site') != 'cross-site'
             parsed = urlsplit(origin)
-            return parsed.scheme in ('http', 'https') and parsed.netloc == self.headers.get('Host')
+            # Render terminates TLS at its reverse proxy; the upstream Host
+            # can differ from the browser's public origin. Trust only the
+            # platform-provided external URL, never X-Forwarded-Host.
+            external = os.environ.get('RENDER_EXTERNAL_URL', '').rstrip('/')
+            if external and origin == external:
+                return True
+            allowed = parsed.scheme in ('http', 'https') and parsed.netloc == self.headers.get('Host')
+            if not allowed:
+                self.log_message('Login origin rejected: origin=%r host=%r', origin, self.headers.get('Host'))
+            return allowed
 
     return BrowserLogin
