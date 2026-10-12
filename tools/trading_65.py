@@ -193,8 +193,14 @@ def summary(state, profiles):
                        "frequency": cfg.get("frequency", "MEDIUM"),
                        "required_today": cfg.get("required_today", False),
                        "hold_count": sum(h["person_id"] == pid for h in holds)})
+    stock_stats = [{"offer_id": o["id"], "symbol": o["symbol"],
+                    "holding_members": len({h["person_id"] for h in holds if h["offer_id"] == o["id"]}),
+                    "holding_count": sum(h["offer_id"] == o["id"] for h in holds),
+                    "sold_count": sum(h["offer_id"] == o["id"] and h["status"] == "sold" for h in state["holdings"])}
+                   for o in state["offers"]]
     return {"source": SOURCE, "simulation_only": True, "market_date": today(),
             "revision": state["revision"], "people": people, "offers": state["offers"],
+            "stock_stats": stock_stats,
             "recommendations": state["recommendations"], "buy_plans": state["buy_plans"],
             "holdings": state["holdings"], "transactions": state["transactions"],
             "metrics": {"people": 65, "opened": sum(p["opened"] for p in people),
@@ -273,6 +279,27 @@ def apply(state, profiles, action, data):
                  "discount_pct": _number(data.get("discount_pct", 0), "折扣比例", minimum=0, maximum=99),
                  "created_at": stamp, "simulation_only": True}
         state["offers"].append(offer)
+        result = offer
+    elif action == "edit_offer":
+        # Terms cannot change after a recommendation or a holding has been recorded.
+        offer = _offer(state, _text(data.get("offer_id"), "股票计划编号"))
+        if any(r["offer_id"] == offer["id"] for r in state["recommendations"]) or any(
+                h["offer_id"] == offer["id"] for h in state["holdings"]):
+            raise ValueError("已有推荐或交易记录的计划不可修改，以免改变历史事实")
+        symbol = _text(data.get("symbol", offer["symbol"]), "股票代码", 30).upper()
+        name = _text(data.get("name", offer["name"]), "股票名称")
+        market = _text(data.get("market", offer["market"]), "市场", 40)
+        currency = str(data.get("currency", offer["currency"])).upper()
+        if currency not in CURRENCIES:
+            raise ValueError("不支持的币种")
+        updated = {"symbol": symbol, "name": name, "market": market, "currency": currency,
+                   "unit_price": _number(data.get("unit_price", offer["unit_price"]), "模拟单价", minimum=0.000001),
+                   "min_shares": _number(data.get("min_shares", offer["min_shares"]), "最低股数", integer=True, minimum=1),
+                   "hold_days": _number(data.get("hold_days", offer["hold_days"]), "持有天数", integer=True, minimum=0, maximum=3650),
+                   "participant_count": _number(data.get("participant_count", offer["participant_count"]), "参与人数", integer=True, minimum=1, maximum=65),
+                   "discount_pct": _number(data.get("discount_pct", offer["discount_pct"]), "折扣比例", minimum=0, maximum=99)}
+        offer.update(updated)
+        offer["updated_at"] = stamp
         result = offer
     elif action == "recommend":
         offer = _offer(state, data.get("offer_id"))
