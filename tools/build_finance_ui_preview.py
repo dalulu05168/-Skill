@@ -126,7 +126,7 @@ def _compose_trading_preview(page, people):
         '<div class="sim-counter"><strong>—</strong><small>模拟开户：未连接</small></div>'
         '<div class="sim-counter"><strong>—</strong><small>模拟持仓：未连接</small></div>'
         '<div class="sim-counter"><strong>—</strong><small>卖出记录：未连接</small></div></div>',
-      '<div class="status" id="sim-message">交易数据尚未载入。</div>':
+      '<div class="status" id="sim-message" role="status" aria-live="polite">交易数据正在从受保护服务读取…</div>':
         '<div class="status" id="sim-message" role="status">'
         '静态只读预览：已从正式 v4.1 人物库构建65人摘要；'
         '交易账本、资金、持仓与保存 API 均未连接。请使用正式受保护后端。</div>',
