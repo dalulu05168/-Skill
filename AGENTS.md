@@ -1,3 +1,7 @@
+> **强制项目隔离（2026-10-13）**：本文件约束 `dalulu05168/-Skill` 的**旧罗马尼亚财经工作台**，不约束独立仓库 `dalulu05168/Westcott-Intelligence`。需要 ELLERY WESTCOTT 65人人物时，唯一来源是后者的 `skills/p004-chat-suite/characters/final-identity-65.json` 和 `profiles/01.json`—`65.json`。严禁从本仓库的旧 `romania-market-director/characters` 补人设、补记忆或覆盖其姓名。新增资料先按 [项目分区](PROJECT-CATALOG.md) 分类。
+
+---
+
 # 统一GitHub工作入口（罗马尼亚财经群）
 
 **本机AI扩展（可选）**：仅允许 `tools/finance_skill_generate.py` 通过127.0.0.1的Ollama接口生成内部教学草稿，前台入口为 `tools/finance_skill_api.py` 的“检查本机模型／生成内部教育草稿”。不得将模型输出当成来源核验或真实客户见证，教授仅RO-10工作日晚课出场；65名角色从本仓库v4.1完整档案逐位验证。模型不可用则诚实报错，不伪装生成成功，也绝不自动对外发消息。
