@@ -25,6 +25,7 @@ from workspace_theme import apply_visual_system
 from image_editor_ui import PAGE as IMAGE_EDITOR_PAGE
 from workspace_layout import wrap_page
 from workspace_overview import dashboard_summary, add_overview
+from trading_symbol_lookup import lookup_symbol, SymbolLookupError
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -275,15 +276,15 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path == "/image-editor":
-                # Preserve the existing website and its own same-origin chart APIs.
+            elif urlsplit(self.path).path == "/image-editor":
+                # Local image editor reads the same-origin simulation ledger only.
                 body = wrap_page(apply_visual_system(IMAGE_EDITOR_PAGE), "image").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy",
-                                 "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; "
-                                 "frame-src https://trade.sasakic.cc; object-src 'none'; "
+                                 "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
+                                 "img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; "
                                  "base-uri 'none'; form-action 'self'")
                 self.send_header("Referrer-Policy", "no-referrer")
                 self.send_header("Cache-Control", "no-store")
@@ -309,6 +310,15 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, summary)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/trading/symbol-lookup":
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    symbol = query.get("symbol", [""])[0]
+                    self.respond(200, lookup_symbol(symbol))
+                except ValueError as exc:
+                    self.respond(400, {"error": str(exc)})
+                except SymbolLookupError as exc:
+                    self.respond(502, {"error": str(exc)})
             elif self.path == "/api/trading/sim/state":
                 try:
                     with run_lock:

@@ -50,11 +50,13 @@ class ExternalTradeModuleTests(unittest.TestCase):
                     with urlopen(base+"/trade-platform") as response:
                         policy=response.headers.get("Content-Security-Policy", "")
                         self.assertEqual(response.url,base+"/image-editor")
-                        self.assertIn("frame-src https://trade.sasakic.cc", policy)
-                        self.assertIn("script-src 'none'", policy)
+                        self.assertIn("connect-src 'self'", policy)
+                        self.assertIn("script-src 'unsafe-inline'", policy)
+                        self.assertNotIn("frame-src", policy)
                         self.assertIn("no-store", response.headers.get("Cache-Control", ""))
                         text=response.read().decode("utf-8")
-                        self.assertIn("图片编辑 · 大宗交易通知", text)
+                        self.assertIn("交易图片与战绩", text)
+                        self.assertIn('id="templateFile"', text)
                     with urlopen(base + "/api/trading/people") as response:
                         self.assertEqual(json.load(response)["count"], 65)
                     with urlopen(base + "/healthz") as response:

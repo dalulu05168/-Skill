@@ -126,22 +126,22 @@ API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`
 
 ## 外部交易平台入口（第三个独立模块）
 
-- 工作台页面：`http://127.0.0.1:8765/trade-platform`，与 `/` 新闻推送、`/trading` 交易中心形成统一的三模块导航。
-- 用户提供的第三方站点：`https://trade.sasakic.cc/`。点击“打开交易平台”才在新浏览器标签打开真实外站；不在本地服务器代理，不复制页面，不绕过登录，不读取令牌、交易账户、订单、持仓或资产。
-- 目前无法从执行环境访问目标站点，也未确认其 iframe / CSP 规则，**不承诺站内嵌入可用**。页面清楚显示第三方网站可用性尚未验证；任何外部功能由原站点提供。
-- 统一65人 v4.1 人物仍由本仓库单一权威资料决定，外部平台没有人物关联或自动同步；原新闻审核、Ollama本地可选草稿及交易中心已确认记忆独立。
-- 若未来希望把真正的交易平台操作嵌入当前域名，需先提供可使用的正式API文档/源代码、必要授权和测试环境，并单独设计身份、隔离、审计及访问控制；不能仅凭网站URL实现实际交易数据合并。
-- 测试：`python -m unittest discover -s tools -p 'test_external_trade_module.py' -v`。只测试本地三页面导航、外站跳转标记、无iframe以及65人/新闻流程未被修改，不会触发站外交易。
+- `/trading` 是 65 人教学用模拟账本；只在人工确认后保存模拟买入和卖出，不会连接券商、提交订单或声称真实成交。
+- `/trade-platform` 为兼容旧收藏的入口，重定向到本工作台 `/image-editor`；现阶段不再把第三方网站嵌入页面，也不读取第三方账户或持仓。
+- 65 人 v4.1 人物资料仍由本仓库单一权威资料决定；新闻审核、Ollama 本地可选草稿及已确认人物记忆保持独立。
 
 
 ## 图片编辑器接入同一工作台（更正原外部交易平台误标）
 
-现有网站 https://trade.sasakic.cc/ 实际上是 Brantone Veylor Block Trade Studio 买入/卖出通知图片编辑器，不是证券委托下单平台。独立源站继续负责股票代码解析、TradingView图表获取、背景上传和浏览器本地3840×2160 PNG导出。
+`/image-editor` 是与模拟交易账本同源的本地图片编辑页，不是券商交易终端。
 
-- 内部入口 /image-editor，统一侧栏显示「图片」，使用受限 iframe 打开原站编辑器，并提供直接访问原站的备用按钮
-- 旧入口 /trade-platform 返回临时重定向至 /image-editor，避免旧收藏链接断开或继续误标为交易平台
-- 安全策略仅为该页面允许 iframe 的 frame-src https://trade.sasakic.cc；工作台其他页面不添加第三方嵌入权限
-- 未复制、重写或迁移原编辑器的源代码；框架里只嵌入远端网站，源站中断时编辑器仍可能无法使用
-- 不传递当前工作台登录凭据，不把编辑器当作65人模拟订单接口，也不改变新闻审核或人物历史
+- 用户上传 PNG/JPG/WebP 模板后，页面在浏览器内存中预览并绘制文字，导出最高 3840px 长边 PNG；模板和图片不会上传服务器。
+- 字段默认水平居中，包含成员、股票代码/名称、股数、买入及卖出时间、买卖模拟价格和模拟盈亏。根据账本自动填入；可改文字、字体大小、颜色及坐标，也可在预览图上拖动定位。
+- 模拟卖出确认成功后跳转至 `/image-editor?holding_id=...`，自动选中该笔持仓并预填字段。已卖出持仓也可从图片页战绩表或交易页再次打开。
+- 战绩表及买卖流水直接读取 `/api/trading/sim/state` 的持仓和已确认事件；按 `Europe/Bucharest` 显示时间，盈亏按模拟买卖价计算，不含费用，不宣称实际账户收益。
+- 股票代码识别先使用 Yahoo Finance 搜索接口（`https://query1.finance.yahoo.com/v1/finance/search`）：优先精确代码匹配；无后缀且存在唯一 BVB 股票时，映射为 Yahoo 代码（如 `TLV` → `TLV.RO`）。随后读取固定 chart 元数据接口（`https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d`），自动回填公司名、交易所、可用币种，并将有时间戳的参考报价预填到可编辑的模拟单价字段。参考报价不是成交价；无法唯一匹配或服务不可用时可手动填写。接口固定主机、校验代码格式、单请求超时 8 秒、最大响应 180 KB、15 分钟进程内缓存，不接收任意 URL。
+- 图片页的 CSP 只允许自身脚本与同源账本 API，并允许浏览器本地的 `data:` / `blob:` 图片；不再授予第三方 iframe 权限。
 
-验证：python -m unittest discover -s tools -p test_image_editor_module.py -v，并在真实浏览器检查嵌入视图及原站备用入口。
+验证：`python -m unittest discover -s tools -p 'test_image_editor_module.py' -v`、`python -m unittest discover -s tools -p 'test_trading_symbol_lookup.py' -v`，并在真实浏览器用模板图检查字段定位及 PNG 导出。
+
+Windows 10/11 x64 桌面包装、数据目录与 Actions 工件领取步骤见 [Windows 桌面版说明](WINDOWS-DESKTOP.md)。当前 Linux Sandbox 没有 Windows 构建器，因此它只准备 Windows runner 自动产出安装包；未声称已生成 `.exe`。

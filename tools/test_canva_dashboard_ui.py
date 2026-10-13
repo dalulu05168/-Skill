@@ -110,8 +110,10 @@ class UIContractTests(unittest.TestCase):
                             f"{i:02d}" for i in range(1,66)})
                     with urlopen(base+"/trade-platform") as r:
                         html=r.read().decode("utf-8")
-                        self.assertIn("https://trade.sasakic.cc/",html)
-                        self.assertIn("script-src 'none'",r.headers["Content-Security-Policy"])
+                        self.assertIn('id="templateFile"',html)
+                        self.assertIn('id="performance"',html)
+                        self.assertIn("script-src 'unsafe-inline'",r.headers["Content-Security-Policy"])
+                        self.assertNotIn("frame-src",r.headers["Content-Security-Policy"])
                     self.assertEqual(list(data.iterdir()),[])
                 finally:
                     server.shutdown();t.join(timeout=5)

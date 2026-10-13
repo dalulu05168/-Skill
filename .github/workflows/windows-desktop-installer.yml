@@ -1,0 +1,45 @@
+name: Windows Desktop Installer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/windows-desktop-installer.yml'
+      - 'tools/**'
+      - 'skills/**'
+      - '.agents/**'
+      - 'docs/**'
+      - 'scripts/windows/**'
+      - 'packaging/windows/**'
+      - 'requirements.txt'
+      - 'README.md'
+      - 'bundle-manifest.json'
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
+      - name: Run project regression tests
+        run: python -m unittest discover -s tools -p 'test_*.py'
+      - name: Install Inno Setup 6
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+      - name: Build Windows desktop installer
+        shell: pwsh
+        run: ./scripts/windows/build-installer.ps1
+      - name: Upload installable Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: RomaniaFinanceSkillHub-Windows-x64-Installer
+          path: dist/installer/RomaniaFinanceSkillHub-Setup.exe
+          if-no-files-found: error
+          retention-days: 14
