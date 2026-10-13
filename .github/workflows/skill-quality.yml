@@ -52,6 +52,7 @@ jobs:
         run: |
           python -m unittest discover -s tools -p 'test_image_editor_module.py' -v
           python -m unittest discover -s tools -p 'test_trading_symbol_lookup.py' -v
+          python -m unittest discover -s tools -p 'test_desktop_app.py' -v
       - name: Validate 65 complete character identities
         run: python skills/romania-market-director/scripts/validate_persona_roster.py
       - name: Validate accuracy pack references and SKILL structure

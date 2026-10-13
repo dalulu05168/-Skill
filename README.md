@@ -12,11 +12,11 @@
 
 ## 📰 新闻推送 × 💹 交易中心 × 🧠 财经 Skill × 图片战绩
 
-**同一工作台、四个清晰入口：**浏览器开发版双击 `START-FINANCE-SKILL.cmd` 后打开 `http://127.0.0.1:8765/`；Windows 安装版则从开始菜单启动桌面窗口。页面侧栏可切换“新闻推送”“交易中心”“财经 Skill”“图片”。人物资料从同一个65人v4.1正式来源读取，交易记录和已采用的会话记忆仍独立保存。
+**同一源码工作台、四个入口：**浏览器开发版双击 `START-FINANCE-SKILL.cmd` 后打开 `http://127.0.0.1:8765/`，保留“新闻推送”“交易中心”“财经 Skill”“图片”。Windows 安装版从开始菜单启动桌面窗口，界面只保留“新闻推送”“交易中心”“图片”，不显示财经 Skill。人物资料从同一个65人v4.1正式来源读取，交易记录仍独立保存。
 
 - **新闻推送：**沿用RSS候审、核验、16节点、65人身份约束与发布闸门。
 - **交易中心 `/trading`：**读取本仓库65份正式v4.1人物AI档案，提供人物资料、模拟开户及资金条件、股票计划、推荐与邀请、模拟买入、持仓、卖出和交易事实记录；页面不呈现课程、群聊脚本、会话记忆。
-- **财经 Skill `/skill`：**集中课程与文档、助理/教授原话和群聊脚本、正式采用会话、人物记忆规则及人物选角。旧 `/writing` 兼容访问 Skill；不覆盖65人固定档案。
+- **财经 Skill `/skill`（浏览器源码版）：**集中课程与文档、助理/教授原话和群聊脚本、正式采用会话、人物记忆规则及人物选角。Windows 桌面版不显示、不开放此模块；源码和资料仍保留，旧 `/writing` 在浏览器源码版兼容访问。
 - **图片编辑与战绩 `/image-editor`：**从65人模拟账本读取人工确认的买卖明细；卖出后可带记录跳转，上传模板后在浏览器本地生成 PNG，不嵌入远端网站。
 - **数据隔离：**人物身份仅以 `skills/romania-market-director/characters/profiles/` 为准，不跨库引入或按编号误认72人角色；写作状态单独保存在本机 `~/.romania-finance-skill-hub/chennan-writing-65.json`，不会覆盖新闻候审状态，也不自动导入旧项目已有历史。
 - **能力边界：**当前为**本地整合版**；Skill 的结构化多人草稿仍需复制提示词到现有ChatGPT生成、再粘贴JSON校验；交易中心的买卖记录仅为人工确认的模拟账本，新闻推送模块另提供可选本机Ollama单次教育草稿生成（需预先安装模型）。没有自动群发、实盘交易或云端同步。原独立72人旧站未被删除，原历史没有转换。
@@ -38,7 +38,7 @@
 
 ## Windows 10/11 桌面安装版
 
-本仓库提供 pywebview 桌面壳、PyInstaller 打包脚本、Inno Setup 安装器与 Windows CI 工作流。将本次改动提交到 GitHub 后，可在 **Actions → Windows Desktop Installer** 下载 `RomaniaFinanceSkillHub-Windows-x64-Installer` 工件。安装包为 64 位 `.exe`；最终用户不需要安装 Python。应用数据保存在 `%LOCALAPPDATA%\NUVEXA\RomaniaFinanceSkillHub`，卸载时不会删除该目录。注意：GitHub 工件不是公开 Release，默认保留14天；本工作目录尚未提交到 GitHub 时，Actions 工件尚不存在。
+本仓库提供 pywebview 桌面壳、PyInstaller 打包脚本、Inno Setup 安装器与 Windows CI 工作流。每次成功构建都可在 **Actions → Windows Desktop Installer** 下载 `RomaniaFinanceSkillHub-Windows-x64-Installer` 工件。安装包为 64 位 `.exe`；最终用户不需要安装 Python。应用数据保存在 `%LOCALAPPDATA%\NUVEXA\RomaniaFinanceSkillHub`，卸载时不会删除该目录。GitHub 工件不是公开 Release，默认保留14天。
 
 **新增本机 AI 教育草稿**：已把可选 Ollama 生成按钮接入工作台，可按当前16节点选择助理、教授或65名虚构成员。需要用户本机先安装 Ollama 与受支持模型，启动后才能实际生成；不使用模型时仍可运行资讯候审和规则审核。使用方式见[统一SKILL工作台](docs/UNIFIED-FINANCE-SKILL-HUB.md)。模型内容始终为未核实内部稿，不会自动群发。
 

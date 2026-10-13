@@ -186,7 +186,8 @@ document.querySelector('#generate').onclick=async()=>{
 </script></body></html>'''
 
 
-def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_password=None):
+def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_password=None,
+                 desktop_mode=False):
     if public_mode and (not auth_username or not auth_password):
         raise ValueError("Hosted mode requires an access username and password")
     state_path = data_dir / "bvb-news-review-state.json"
@@ -231,8 +232,14 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
                 self._challenge()
                 return
+            route = urlsplit(self.path).path
+            if desktop_mode and (route in ("/skill", "/writing", "/api/trading/state")
+                                 or route.startswith("/api/writing/")):
+                self.respond(404, {"error": "The Skill module is not included in the desktop edition."})
+                return
             if urlsplit(self.path).path == "/":
-                body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
+                body = wrap_page(apply_visual_system(add_overview(PAGE)), "news",
+                                 hidden_routes={"/skill"} if desktop_mode else ()).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -241,7 +248,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path == "/trading":
-                body = wrap_page(apply_visual_system(TRADING_PAGE), "trading").encode("utf-8")
+                body = wrap_page(apply_visual_system(TRADING_PAGE), "trading",
+                                 hidden_routes={"/skill"} if desktop_mode else ()).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -278,7 +286,8 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.wfile.write(body)
             elif urlsplit(self.path).path == "/image-editor":
                 # Local image editor reads the same-origin simulation ledger only.
-                body = wrap_page(apply_visual_system(IMAGE_EDITOR_PAGE), "image").encode("utf-8")
+                body = wrap_page(apply_visual_system(IMAGE_EDITOR_PAGE), "image",
+                                 hidden_routes={"/skill"} if desktop_mode else ()).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
@@ -375,6 +384,11 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
         def do_POST(self):
             if public_mode and not self._authorized():
                 self._challenge()
+                return
+            if desktop_mode and (self.path.startswith("/api/writing/") or self.path in (
+                    "/api/trading/prompt", "/api/trading/validate",
+                    "/api/trading/adopt", "/api/trading/docs")):
+                self.respond(404, {"error": "The Skill module is not included in the desktop edition."})
                 return
             if self.path not in ("/api/prepare", "/api/generate",
                                  "/api/trading/prompt", "/api/trading/validate",

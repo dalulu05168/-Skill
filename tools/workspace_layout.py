@@ -224,7 +224,7 @@ body{background:#ffffff;color:var(--ws-ink);font-family:Inter,"Noto Sans SC","Mi
 }
 '''
 
-def wrap_page(page, active):
+def wrap_page(page, active, *, hidden_routes=()):
     """Embed old, functioning body unchanged inside a three-module visual frame."""
     if active not in {"news","trading","external","skill","image"}:
         raise ValueError("Unknown workspace module")
@@ -239,6 +239,9 @@ def wrap_page(page, active):
         ("external", "/image-editor", "图片", active=="image"),
         ("review", "/#news-process", "审核", False),
     ]
+    hidden_routes = set(hidden_routes)
+    if hidden_routes:
+        menu = [item for item in menu if item[1] not in hidden_routes]
     links="".join(
         '<a class="ws-rail-link'+(" active" if selected else "")+
         '" href="'+href+'" title="'+escape(label)+'"'+(' aria-current="page"' if selected else "")+

@@ -10,7 +10,7 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 
 
-APP_TITLE = "NUVEXA 财经工作台"
+APP_TITLE = "NUVEXA 工作台"
 APP_DATA_NAME = "NUVEXA/RomaniaFinanceSkillHub"
 
 
@@ -62,7 +62,7 @@ def main() -> int:
         )
         return 1
 
-    handler = make_handler(data_dir)
+    handler = make_handler(data_dir, desktop_mode=True)
 
     class QuietHandler(handler):
         def log_message(self, _format: str, *args: object) -> None:

@@ -4,6 +4,8 @@
 
 Windows 10/11 x64。应用以独立桌面窗口运行，不要求最终用户安装 Python；安装器会在 WebView2 Runtime 缺失时调用微软签名的 WebView2 安装引导程序。
 
+桌面版只保留新闻审核、65人模拟交易和图片编辑，不显示“财经 Skill”入口，也屏蔽其桌面路由/API。浏览器源码版仍保留原来的 Skill 页面与资料，未删除仓库内容。
+
 ## 生成并领取安装器
 
 仓库包含 GitHub Actions 工作流 `.github/workflows/windows-desktop-installer.yml`。将本次项目改动提交到 GitHub 后：
