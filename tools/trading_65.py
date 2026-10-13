@@ -1,7 +1,6 @@
 """65-person educational trading ledger. No brokerage/orders/live data or synthetic executions.
 
-Ported and decoupled from growth-story-workspace trading-simulator.js and trade-dashboard.js.
-Trading figures are manually entered fictional simulation values, not actual holdings.
+Trading figures are explicitly recorded educational simulation values, not actual holdings or live brokerage executions.
 """
 from __future__ import annotations
 
@@ -193,10 +192,28 @@ def summary(state, profiles):
                        "frequency": cfg.get("frequency", "MEDIUM"),
                        "required_today": cfg.get("required_today", False),
                        "hold_count": sum(h["person_id"] == pid for h in holds)})
+    # Group actual saved active simulation holdings; never synthesize prices or owners.
+    grouped = {}
+    for h in holds:
+        key = (h["market"], h["currency"], h["symbol"])
+        group = grouped.setdefault(key, {"market": key[0], "currency": key[1],
+                                         "symbol": key[2], "member_ids": set(),
+                                         "holding_count": 0, "shares": 0, "cost_basis": 0.0})
+        group["member_ids"].add(h["person_id"])
+        group["holding_count"] += 1
+        group["shares"] += h["quantity"]
+        group["cost_basis"] += h["quantity"] * h["buy_price"]
+    stock_groups = [
+        {**{k: v for k, v in item.items() if k != "member_ids"},
+         "holding_members": len(item["member_ids"]),
+         "cost_basis": round(item["cost_basis"], 2)}
+        for item in sorted(grouped.values(), key=lambda x: (x["market"], x["currency"], x["symbol"]))
+    ]
     return {"source": SOURCE, "simulation_only": True, "market_date": today(),
             "revision": state["revision"], "people": people, "offers": state["offers"],
             "recommendations": state["recommendations"], "buy_plans": state["buy_plans"],
             "holdings": state["holdings"], "transactions": state["transactions"],
+            "stock_groups": stock_groups,
             "metrics": {"people": 65, "opened": sum(p["opened"] for p in people),
                         "holding_members": len({h["person_id"] for h in holds}),
                         "active_holdings": len(holds),
@@ -274,6 +291,35 @@ def apply(state, profiles, action, data):
                  "created_at": stamp, "simulation_only": True}
         state["offers"].append(offer)
         result = offer
+    elif action == "edit_offer":
+        offer = _offer(state, data.get("offer_id"))
+        # Once a plan participates in recommendations or holdings, historical terms are immutable.
+        if (any(r["offer_id"] == offer["id"] for r in state["recommendations"])
+                or any(p["offer_id"] == offer["id"] for p in state["buy_plans"])
+                or any(h["offer_id"] == offer["id"] for h in state["holdings"])):
+            raise ValueError("此股票计划已进入推荐或交易流程，历史计划参数不可修改")
+        patched = dict(offer)
+        for key in ("symbol", "name", "market", "currency", "unit_price", "min_shares",
+                    "hold_days", "participant_count", "discount_pct"):
+            if key in data:
+                patched[key] = data[key]
+        currency = str(patched["currency"]).upper()
+        if currency not in CURRENCIES:
+            raise ValueError("不支持的币种")
+        validated = {
+            "symbol": _text(patched["symbol"], "股票代码", 30).upper(),
+            "name": _text(patched["name"], "股票名称"),
+            "market": _text(patched["market"], "市场", 40),
+            "currency": currency,
+            "unit_price": _number(patched["unit_price"], "模拟单价", minimum=0.000001),
+            "min_shares": _number(patched["min_shares"], "最低股数", integer=True, minimum=1),
+            "hold_days": _number(patched["hold_days"], "持有天数", integer=True, minimum=0, maximum=3650),
+            "participant_count": _number(patched["participant_count"], "参与人数", integer=True, minimum=1, maximum=65),
+            "discount_pct": _number(patched["discount_pct"], "折扣比例", minimum=0, maximum=99),
+            "updated_at": stamp,
+        }
+        offer.update(validated)
+        result = offer
     elif action == "recommend":
         offer = _offer(state, data.get("offer_id"))
         day = _date(data.get("date") or today())
@@ -314,7 +360,7 @@ def apply(state, profiles, action, data):
                                            "offer_id": offer["id"], "date": day, "status": "planned", "source": "recommendation"})
         else:
             c["status"] = "rejected"
-            state["buy_plans"] = [x for x in state["buy_plans"] if not (x["offer_id"] == offer["id"] and x["person_id"] == pid and x["status"] == "planned")]
+            state["buy_plans"] = [x for x in state["buy_plans"] if not (x["offer_id"] == offer["id"] and x["person_id"] == pid and x["date"] == day and x["status"] == "planned")]
         result = {"person_id": pid, "status": c["status"]}
     elif action == "buy":
         offer = _offer(state, data.get("offer_id"))
@@ -345,6 +391,34 @@ def apply(state, profiles, action, data):
         event = _event(state, "buy", pid, offer["id"], holding["id"], quantity=qty,
                        unit_price=offer["unit_price"], currency=offer["currency"])
         result = {"holding": holding, "transaction": event}
+    elif action == "batch_sell":
+        identifiers = data.get("holding_ids")
+        if (not isinstance(identifiers, list) or not 1 <= len(identifiers) <= 65
+                or any(not isinstance(i, str) or not i for i in identifiers)
+                or len(set(identifiers)) != len(identifiers)):
+            raise ValueError("请选择1–65笔不重复的到期持仓")
+        price = _number(data.get("sell_price"), "模拟批次卖出价", minimum=0.000001)
+        selected = []
+        for hid in identifiers:
+            holding = next((h for h in state["holdings"] if h["id"] == hid), None)
+            if not holding:
+                raise ValueError("批次中存在未知持仓")
+            if holding["status"] != "holding":
+                raise ValueError("批次中存在已卖出的持仓")
+            if _iso(stamp) < _iso(holding["planned_sell_at"]):
+                raise ValueError("批次中存在未到期持仓")
+            selected.append(holding)
+        if len({h["offer_id"] for h in selected}) != 1:
+            raise ValueError("每次批量卖出必须属于同一股票计划，避免使用错误卖出价")
+        batch_id = "batch-" + uuid.uuid4().hex
+        records = []
+        for holding in selected:
+            holding.update({"status": "sold", "sold_at": stamp, "sold_price": price,
+                            "sell_batch_id": batch_id})
+            records.append(_event(state, "sell", holding["person_id"], holding["offer_id"],
+                                  holding["id"], quantity=holding["quantity"],
+                                  unit_price=price, currency=holding["currency"], batch_id=batch_id))
+        result = {"batch_id": batch_id, "holdings": selected, "transactions": records}
     elif action == "sell":
         hid = _text(data.get("holding_id"), "持仓编号")
         holding = next((h for h in state["holdings"] if h["id"] == hid), None) or _raise("持仓不存在")

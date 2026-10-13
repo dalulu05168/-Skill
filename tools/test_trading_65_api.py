@@ -37,6 +37,12 @@ class TradingAPIIntegration(unittest.TestCase):
                             html=r.read().decode('utf-8')
                             self.assertIn('data-tab="sim"',html)
                             self.assertIn('65人成员交易资料',html)
+                            self.assertIn('id="sim-stock-chart"', html)
+                            self.assertIn('id="sim-batch-sell"', html)
+                        with urlopen(base+'/favicon.svg') as favicon:
+                            self.assertEqual(favicon.status,200)
+                            self.assertIn('image/svg+xml',favicon.headers['Content-Type'])
+                            self.assertIn('<svg',favicon.read().decode('utf-8'))
                         state=get('/api/trading/sim/state')
                         self.assertEqual(len(state['people']),65)
                         self.assertEqual(state['metrics']['active_holdings'],0)
@@ -47,6 +53,9 @@ class TradingAPIIntegration(unittest.TestCase):
                         out=post('create_offer',symbol='TEST',name='演练',market='BVB',currency='RON',
                                  unit_price=10,min_shares=5,hold_days=2,participant_count=4,discount_pct=0)
                         oid=out['result']['id']
+                        post('edit_offer', offer_id=oid, symbol='TEST', name='演练',
+                             market='BVB', currency='RON', unit_price=10,
+                             min_shares=5, hold_days=2, participant_count=4, discount_pct=0)
                         day=state['market_date']
                         r=post('recommend',offer_id=oid,date=day)['result']
                         self.assertEqual(len(r['candidates']),1)

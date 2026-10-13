@@ -1,0 +1,43 @@
+name: 65 Person Trading Browser QA
+on:
+  pull_request:
+    paths:
+      - 'tools/trading_65.py'
+      - 'tools/trading_65_ui.py'
+      - 'tools/trading_center_ui.py'
+      - 'tools/finance_skill_api.py'
+      - 'tools/test_trading_65_browser.cjs'
+      - '.github/workflows/trading-browser-qa.yml'
+  workflow_dispatch:
+
+jobs:
+  browser-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser QA dependency
+        run: npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Install readable Chinese screenshot fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          fc-match 'Noto Sans CJK SC' | grep -i 'NotoSansCJK'
+      - name: Execute real Chromium buy/hold/sell browser flow
+        run: node tools/test_trading_65_browser.cjs
+      - name: Upload browser evidence, including on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trading-65-browser-evidence
+          path: build/trading-browser-qa/*.png
+          if-no-files-found: warn
+          retention-days: 14

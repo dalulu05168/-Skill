@@ -230,7 +230,15 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
                 self._challenge()
                 return
-            if urlsplit(self.path).path == "/":
+            if urlsplit(self.path).path == "/favicon.svg":
+                body = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"12\" fill=\"#262b34\"/><path d=\"M18 46V18l28 28V18\" fill=\"none\" stroke=\"#e8d3a0\" stroke-width=\"7\" stroke-linecap=\"round\"/></svg>".encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "image/svg+xml; charset=utf-8")
+                self.send_header("Cache-Control", "public, max-age=86400")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            elif urlsplit(self.path).path == "/":
                 body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")

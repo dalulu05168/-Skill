@@ -17,6 +17,54 @@ class Trading65Tests(unittest.TestCase):
     def rec(self):return apply(self.s,P,'recommend',{'offer_id':self.o['id'],'date':self.day})
     def invite(self):self.rec();return apply(self.s,P,'invite',{'offer_id':self.o['id'],'person_id':'01','date':self.day})
     def buy(self):self.invite();return apply(self.s,P,'buy',{'offer_id':self.o['id'],'person_id':'01','quantity':5,'date':self.day})
+    def test_edit_offer_before_first_recommendation(self):
+        result = apply(self.s, P, 'edit_offer', {
+            'offer_id': self.o['id'], 'unit_price': 12, 'symbol': 'new'})
+        self.assertEqual(result['unit_price'], 12)
+        self.assertEqual(result['symbol'], 'NEW')
+        self.rec()
+        with self.assertRaises(ValueError):
+            apply(self.s, P, 'edit_offer', {'offer_id': self.o['id'], 'unit_price': 13})
+
+    def test_stock_groups_count_distinct_members_without_fake_prices(self):
+        self.buy()
+        groups = summary(self.s, P)['stock_groups']
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]['holding_members'], 1)
+        self.assertEqual(groups[0]['shares'], 5)
+        self.assertEqual(groups[0]['cost_basis'], 50)
+
+    def test_batch_sell_is_atomic_and_records_individual_transactions(self):
+        first = self.buy()['holding']
+        apply(self.s, P, 'invite', {'offer_id': self.o['id'], 'date': self.day, 'person_id': '02'})
+        second = apply(self.s, P, 'buy', {'offer_id': self.o['id'], 'date': self.day,
+                                         'person_id': '02', 'quantity': 5})['holding']
+        with self.assertRaises(ValueError):
+            apply(self.s, P, 'batch_sell', {'holding_ids': [first['id'], second['id']],
+                                           'sell_price': 12})
+        self.assertEqual(first['status'], 'holding')
+        self.assertEqual(second['status'], 'holding')
+        for h in (first, second):
+            h['planned_sell_at'] = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
+        out = apply(self.s, P, 'batch_sell', {'holding_ids': [first['id'], second['id']],
+                                              'sell_price': 12})
+        self.assertEqual(len(out['transactions']), 2)
+        self.assertEqual(len({t['batch_id'] for t in out['transactions']}), 1)
+        self.assertEqual([h['status'] for h in (first, second)], ['sold', 'sold'])
+        with self.assertRaises(ValueError):
+            apply(self.s, P, 'batch_sell', {'holding_ids': [first['id']], 'sell_price': 12})
+
+    def test_rejection_keeps_another_days_buy_plan(self):
+        self.invite()
+        next_day = '2026-10-11'
+        apply(self.s, P, 'recommend', {'offer_id': self.o['id'], 'date': next_day})
+        apply(self.s, P, 'invite', {'offer_id': self.o['id'], 'date': next_day,
+                                    'person_id': '01'})
+        self.assertEqual(len(self.s['buy_plans']), 2)
+        apply(self.s, P, 'reject', {'offer_id': self.o['id'], 'date': self.day,
+                                    'person_id': '01'})
+        self.assertEqual([p['date'] for p in self.s['buy_plans']], [next_day])
+
     def test_authoritative_65(self):self.assertEqual(summary(self.s,P)['metrics']['people'],65)
     def test_old_roster_rejected(self):
         with self.assertRaises(ValueError):apply(self.s,{**P,'70':P['01']},'recommend',{'offer_id':self.o['id']})

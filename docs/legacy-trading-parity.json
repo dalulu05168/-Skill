@@ -1,80 +1,65 @@
 {
-  "schema_version": 1,
-  "evaluated_against": "-Skill main f65ab9cb2519ed53530f80fb58868a09e95ed469",
-  "scope": "legacy/005-trading vs tools/trading_65.py + tools/trading_65_ui.py",
+  "schema_version": 2,
+  "reference_before_cleanup": "dalulu05168/-Skill commit 23163f3ac5cc0fdf4a1194b264de8e1ce1dfa75e",
+  "archived_source_url": "https://github.com/dalulu05168/-Skill/tree/23163f3ac5cc0fdf4a1194b264de8e1ce1dfa75e/legacy/005-trading",
+  "scope": "canonical 65-person educational simulation only; old 70-person JavaScript trading code intentionally removed",
   "legacy_persona_count": 70,
   "canonical_persona_count": 65,
   "mapped_data": false,
-  "workflow_actions_verified": [
+  "legacy_removed": true,
+  "workflow_actions_verified_in_source": [
     "eligibility",
     "create_offer",
+    "edit_offer",
     "recommend",
     "invite",
     "reject",
     "buy",
-    "sell"
+    "sell",
+    "batch_sell"
   ],
-  "current_surface_verified": [
-    "member_configuration",
-    "new_offer",
-    "daily_recommendations",
-    "invite_reject",
-    "single_buy",
-    "holdings_table",
-    "single_sell",
-    "transaction_log",
-    "read_only_snapshot"
-  ],
-  "open_gaps": [
+  "enhancements": [
     {
       "id": "edit_existing_offer",
-      "legacy": "legacy/005-trading/trading-simulator.js::editOffer",
-      "current": "tools/trading_65.py::apply",
-      "condition": "Add validated edit action and UI, handle existing invited/held plans without rewriting historical purchases",
-      "status": "unverified"
+      "status": "implemented_in_source",
+      "condition": "Edit only before recommendation/buy plans/holdings exist; immutable historical offers"
     },
     {
       "id": "chart_unique_holders_by_stock",
-      "legacy": "legacy/005-trading/trading-simulator.js::stockGroups/renderStockChart",
-      "current": "tools/trading_65_ui.py::renderHoldings",
-      "condition": "Render a chart with unique person counts by market,currency,symbol; no fabricated quote series",
-      "status": "unverified"
+      "status": "implemented_in_source",
+      "condition": "Count unique people by market/currency/symbol from saved active simulation positions"
     },
     {
       "id": "batch_holdings_and_sale",
-      "legacy": "legacy/005-trading/trading-simulator.js::batches/renderBatches/openSellBatch",
-      "current": "tools/trading_65.py::apply(sell)",
-      "condition": "Group real simulation holdings by batch and support selective sold-ready members in one auditable operation, preserving each trade event",
-      "status": "unverified"
+      "status": "implemented_in_source",
+      "condition": "Same-offer, mature positions only, atomic persistence and individual auditable sell events"
     },
     {
       "id": "next_sale_countdown",
-      "legacy": "legacy/005-trading/trading-simulator.js::remaining/holdingStatus",
-      "current": "tools/trading_65_ui.py::renderHoldings",
-      "condition": "Show next eligible sale date, relative countdown and recently due positions without implying real-time market events",
-      "status": "unverified"
-    },
+      "status": "implemented_in_source",
+      "condition": "UI relative countdown sourced from each saved holding planned_sell_at"
+    }
+  ],
+  "intentionally_retired": [
     {
       "id": "manual_holding_input",
-      "legacy": "legacy/005-trading/trade-dashboard.js::openManualBuy/openHolding",
-      "current": "tools/trading_65.py::apply",
-      "condition": "Assess whether manual holding import is truly required; if added, validate identities, money and record provenance",
-      "status": "unverified"
+      "reason": "Do not import unverified fictional holdings from old 70-person state; explicit buy after invite is required"
     },
     {
       "id": "standalone_daily_buy_list",
-      "legacy": "legacy/005-trading/trade-dashboard.js::generateBuyList/renderBuy",
-      "current": "tools/trading_65.py::apply(recommend)",
-      "condition": "Verify independent daily buy-list behavior, preferences and candidate scoring semantics; avoid importing 70-person history",
-      "status": "unverified"
+      "reason": "Canonical offer/date-specific recommendation already uses explicit 65-person eligibility; do not import legacy independent 70-person rules"
     }
   ],
-  "deletion_preconditions": [
-    "No unverified gaps remain, or product owner explicitly signs off on removing the specific legacy-only functionality",
-    "No runtime or deployed branch depends on legacy JavaScript",
-    "Validate 65-person identity and reject 70/72 historical person ID auto-mapping",
-    "Recoverable backup of the original legacy source and any required user-owned transaction/history data exists",
-    "Run functional, browser/mobile, and end-to-end trade acceptance tests and record results",
-    "Confirm separately that live deployment points to the validated revision"
+  "safety_guards": [
+    "65 distinct authoritative canonical IDs required",
+    "70/72-person roster and JSON never mapped",
+    "No brokerage transactions or invented executions",
+    "No silent background buys or sells"
+  ],
+  "verification_pending": [
+    "GitHub Actions checks for change branch and PR",
+    "Actual browser/mobile click-path QA",
+    "Cloud disk backup/recovery verification",
+    "Confirm production revision and deploy only after review"
   ]
 }
