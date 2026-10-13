@@ -1,3 +1,7 @@
+> **仓库归属纠正（2026-10-13）：**本仓库保存的是旧罗马尼亚财经工作台及其兼容65人档案，**不是 ELLERY WESTCOTT 当前最终65人人物资料**。ELLERY WESTCOTT 的正式唯一来源为 [Westcott-Intelligence/skills/p004-chat-suite/characters/final-identity-65.json](https://github.com/dalulu05168/Westcott-Intelligence/blob/main/skills/p004-chat-suite/characters/final-identity-65.json)。请先查看 [项目分类与隔离规则](PROJECT-CATALOG.md) 和 [分项目目录](projects/)；不得把两个仓库的同编号角色混用。此旧档案目前仍受本仓库运行代码调用，删除前必须拆除依赖。
+
+---
+
 # 罗马尼亚财经导演资料包
 
 
