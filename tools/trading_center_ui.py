@@ -20,7 +20,7 @@ PAGE = (
     '<title>交易中心 · 65人模拟买卖与持仓</title><style>'
     + BASE_CSS + "\n" + SIM_CSS + """
 :root{color-scheme:light}
-body{background:#fff!important;color:#20242a}
+body{background:#f5f7f9!important;color:#26313e}
 .tc-note{margin:14px 0;padding:14px 16px;border:1px solid #e5e8ed;border-radius:12px;background:#fff;color:#535d67}
 .tc-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:13px 0}
 .tc-tools a{color:#29323c;border:1px solid #e1e5ea;background:#fff;border-radius:10px;padding:9px 13px;font-weight:700}
@@ -52,6 +52,7 @@ body{background:#fff!important;color:#20242a}
 <pre id="tc-profile-detail">选择人物后显示其完整档案。这里不修改角色记忆。</pre>
 </section>
 """
+    + '<script src="/static/vendor/html2canvas-1.4.1.js"></script>'
     + SCRIPT
     + """<script>
 (function(){

@@ -83,6 +83,11 @@ SECTION = r'''
  .sim-person-actions button{flex:1 1 auto}
  .sim-person-facts{grid-template-columns:1fr}
 }
+.sim-person-identity h3{font-size:16px}
+.sim-person-detail,.sim-person-facts b{font-size:14px}
+.sim-person-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 12px;border:1px solid #d2dae3;border-radius:8px;background:#fff;color:#30465d;text-decoration:none;font-size:13px;font-weight:750}
+.sim-person-actions a:hover{background:#f3f6f8}
+.sim-person-capture-status{font-size:12px;color:#536274;margin-top:6px;min-height:18px}
 </style>
 <div class="section" id="tab-sim">
 <div class="sim-alert">仅限65名虚构成员的教学模拟账本；买入、卖出、持仓、资金及成交价格均为用户填写的模拟数据，不是证券市场真实执行结果。未配置模拟开户与资金的成员不能自动买入。</div>
@@ -176,13 +181,14 @@ function renderRecs(){
  const cards=r.candidates.map(c=>{
    const p=person(c.person_id);if(!p)return '';
    const status=c.status,display={pending:'待邀请',invited:'已邀请',rejected:'已拒绝',bought:'已模拟买入'}[status]||'待核实';
-   const safeId=escapeHtml(p.id),traits=[...(Array.isArray(p.traits)?p.traits:[]),...(Array.isArray(p.investment_focus)?p.investment_focus.slice(0,2):[])].slice(0,5);
+   const safeId=escapeHtml(p.id),holding=[...(tradeData.holdings||[])].reverse().find(h=>h.offer_id===offer.id&&h.person_id===p.id),traits=[...(Array.isArray(p.traits)?p.traits:[]),...(Array.isArray(p.investment_focus)?p.investment_focus.slice(0,2):[])].slice(0,5);
    const amount=p.funds?.[offer.currency],fundText=amount===undefined?'未配置':money(amount,offer.currency);
    const source=p.persona_description||'暂无人物定位补充';
    const action=(status==='pending'||status==='rejected'?'<button data-sim-action="invite" data-person="'+safeId+'">确认邀请</button> ':'')
     +(status==='pending'||status==='invited'?'<button class="alt" data-sim-action="reject" data-person="'+safeId+'">拒绝</button> ':'')
     +(status==='invited'?'<input data-qty="'+safeId+'" type="number" min="'+escapeHtml(offer.min_shares)+'" step="1" value="'+escapeHtml(offer.min_shares)+'" aria-label="'+safeId+'号模拟买入股数"><button data-sim-action="buy" data-person="'+safeId+'">确认模拟买入</button>':'')
-    +(status==='bought'?'<span class="sim-tag good">已形成模拟持仓，可在持仓列表追踪</span>':'');
+    +(status==='bought'?'<span class="sim-tag good">已形成模拟持仓，可在持仓列表追踪</span>':'')
+    +(status==='bought'&&holding?'<a href="/image-editor?holding_id='+encodeURIComponent(holding.id)+'&event=buy&template=card">生成买入模板</a><button class="alt" type="button" data-person-capture="'+safeId+'">下载人员明细图片</button>':'');
    return '<article class="sim-candidate-card" data-person-card="'+safeId+'">'
     +'<div class="sim-person-head"><div class="sim-person-avatar" aria-hidden="true">'+safeId+'</div>'
     +'<div class="sim-person-identity"><h3>'+safeId+' · '+escapeHtml(p.name)+'</h3><small>'+escapeHtml([p.gender,p.age?p.age+'岁':'年龄未录入',p.role].join(' · '))+'</small></div>'
@@ -195,14 +201,15 @@ function renderRecs(){
     +'<div><small>该币种模拟资金上限</small><b>'+escapeHtml(fundText)+'</b></div>'
     +'<div><small>单票仓位偏好（人设）</small><b>'+escapeHtml(p.position_preference||'未注明')+'</b></div>'
     +'<div><small>计划最低购买</small><b>'+escapeHtml(offer.min_shares)+' 股 · '+escapeHtml(money(offer.min_shares*offer.unit_price,offer.currency))+'</b></div></div>'
-    +'<div class="sim-person-actions">'+action+'</div></article>';
+    +'<div class="sim-person-actions" data-capture-ignore="true">'+action+'</div><div class="sim-person-capture-status" data-capture-status="'+safeId+'" data-capture-ignore="true" aria-live="polite"></div></article>';
  }).join('');
  host.innerHTML=note+'<div class="sim-candidate-grid">'+cards+'</div>';
 }
-function renderHoldings(){const rows=[...tradeData.holdings].reverse().map(h=>{const p=person(h.person_id),end=new Date(h.planned_sell_at),ready=h.status==='holding'&&Date.now()>=end.getTime();const action=ready?'<input data-sell-price="'+escapeHtml(h.id)+'" type="number" min="0.000001" step="any" placeholder="模拟卖价"> <button data-sim-action="sell" data-holding="'+escapeHtml(h.id)+'">确认模拟卖出</button>':h.status==='sold'?'<a href="/image-editor?holding_id='+encodeURIComponent(h.id)+'" style="display:inline-block;padding:6px 9px;border:1px solid #718ba5;border-radius:6px;color:#294766;text-decoration:none">生成卖出图片</a>':'—';return '<tr><td>'+escapeHtml((p?.name||h.person_id)+' · '+h.symbol)+'</td><td>'+escapeHtml(h.quantity+'股 · '+money(h.buy_price,h.currency))+'</td><td>'+escapeHtml(h.status==='sold'?'已模拟卖出':ready?'符合卖出条件':'持有中')+'</td><td>'+escapeHtml(end.toLocaleString('zh-CN'))+'</td><td>'+action+'</td></tr>'});byid('sim-holdings').innerHTML=rows.length?rowTable(['成员/股票','模拟买入','状态','最早卖出','操作'],rows):empty('暂无模拟持仓');}
+function renderHoldings(){const rows=[...tradeData.holdings].reverse().map(h=>{const p=person(h.person_id),end=new Date(h.planned_sell_at),ready=h.status==='holding'&&Date.now()>=end.getTime();const action=ready?'<input data-sell-price="'+escapeHtml(h.id)+'" type="number" min="0.000001" step="any" placeholder="模拟卖价"> <button data-sim-action="sell" data-holding="'+escapeHtml(h.id)+'">确认模拟卖出</button>':h.status==='sold'?'<a href="/image-editor?holding_id='+encodeURIComponent(h.id)+'&event=sell&template=sell" style="display:inline-block;padding:7px 10px;border:1px solid #d2dae3;border-radius:8px;color:#30465d;text-decoration:none">生成卖出图片</a>':'—';return '<tr><td>'+escapeHtml((p?.name||h.person_id)+' · '+h.symbol)+'</td><td>'+escapeHtml(h.quantity+'股 · '+money(h.buy_price,h.currency))+'</td><td>'+escapeHtml(h.status==='sold'?'已模拟卖出':ready?'符合卖出条件':'持有中')+'</td><td>'+escapeHtml(end.toLocaleString('zh-CN'))+'</td><td>'+action+'</td></tr>'});byid('sim-holdings').innerHTML=rows.length?rowTable(['成员/股票','模拟买入','状态','最早卖出','操作'],rows):empty('暂无模拟持仓');}
+async function captureMemberCard(personId,button){const card=[...tradeRoot.querySelectorAll('[data-person-card]')].find(x=>x.dataset.personCard===personId);if(!card)return;const status=card.querySelector('[data-capture-status]');if(!window.html2canvas){if(status)status.textContent='截图组件未加载，请刷新页面。';return;}button.disabled=true;if(status)status.textContent='正在生成清晰的人员明细图片…';try{const image=await window.html2canvas(card,{backgroundColor:'#fff',scale:2,logging:false,useCORS:false,ignoreElements:el=>el.hasAttribute('data-capture-ignore')});const blob=await new Promise((resolve,reject)=>image.toBlob(b=>b?resolve(b):reject(new Error('PNG 编码失败')),'image/png'));const p=person(personId),safeName=String(p?.name||'member').replace(/[^\p{L}\p{N}_-]+/gu,'_'),day=val('sim-day')||new Date().toISOString().slice(0,10);const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`member-${personId}-${safeName}-${day}.png`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);if(status)status.textContent='人员明细 PNG 已下载（2倍清晰度）。';}catch(error){if(status)status.textContent='截图失败：'+error.message;}finally{button.disabled=false;}}
 function renderTx(){const rows=[...tradeData.transactions].reverse().map(t=>'<tr><td>'+escapeHtml(t.type==='buy'?'买入':'卖出')+'</td><td>'+escapeHtml((person(t.person_id)?.name)||t.person_id)+'</td><td>'+escapeHtml(t.quantity)+'</td><td>'+escapeHtml(money(t.unit_price,t.currency))+'</td><td>'+escapeHtml(new Date(t.created_at).toLocaleString('zh-CN'))+'</td></tr>');byid('sim-transactions').innerHTML=rows.length?rowTable(['类型','人物','股数','模拟价','记录时间'],rows):empty('尚无人工确认的买卖记录');}
 async function load(){tradeData=await api('/api/trading/sim/state');if(!byid('sim-day').value)byid('sim-day').value=tradeData.market_date;render();setMsg('读取成功：65人数据源'+tradeData.source+'；模拟账本版本 '+tradeData.revision);}
-async function act(action,payload){try{const r=await api('/api/trading/sim/action',{action,...payload});if(action==='sell'){const holdingId=r.result?.holding?.id||payload.holding_id;window.location.assign('/image-editor?holding_id='+encodeURIComponent(holdingId));return;}await load();setMsg('已保存：'+({'eligibility':'模拟交易设置','create_offer':'股票计划','recommend':'候选名单','invite':'邀请','reject':'拒绝','buy':'模拟买入','sell':'模拟卖出'}[action]||action)+'。账本版本 '+r.revision);}catch(e){setMsg('操作失败：'+e.message)}}
+async function act(action,payload){try{const r=await api('/api/trading/sim/action',{action,...payload});if(action==='sell'){const holdingId=r.result?.holding?.id||payload.holding_id;window.location.assign('/image-editor?holding_id='+encodeURIComponent(holdingId)+'&event=sell&template=sell');return;}await load();setMsg('已保存：'+({'eligibility':'模拟交易设置','create_offer':'股票计划','recommend':'候选名单','invite':'邀请','reject':'拒绝','buy':'模拟买入','sell':'模拟卖出'}[action]||action)+'。账本版本 '+r.revision);}catch(e){setMsg('操作失败：'+e.message)}}
 byid('sim-member').addEventListener('change',infoPerson);byid('sim-currency').addEventListener('change',infoPerson);byid('sim-people-search').addEventListener('input',()=>tradeData&&renderPeople());
 byid('sim-symbol').addEventListener('input',scheduleSymbolLookup);byid('sim-symbol').addEventListener('change',()=>{clearTimeout(symbolLookupTimer);recognizeSymbol();});byid('sim-stock-name').addEventListener('input',()=>{delete byid('sim-stock-name').dataset.lookupSymbol;});byid('sim-market').addEventListener('input',()=>{delete byid('sim-market').dataset.lookupSymbol;});byid('sim-offer-currency').addEventListener('change',()=>{delete byid('sim-offer-currency').dataset.lookupSymbol;delete byid('sim-offer-currency').dataset.previousValue;});byid('sim-price').addEventListener('input',()=>{delete byid('sim-price').dataset.lookupSymbol;});
 byid('sim-offer').addEventListener('change',renderRecs);byid('sim-day').addEventListener('change',renderRecs);
@@ -211,7 +218,7 @@ byid('sim-create-offer').onclick=()=>act('create_offer',{symbol:val('sim-symbol'
 byid('sim-recommend').onclick=()=>act('recommend',{offer_id:val('sim-offer'),date:val('sim-day')});
 byid('sim-refresh').onclick=()=>load().catch(e=>setMsg('刷新失败：'+e.message));
 byid('sim-snapshot').onclick=async()=>{try{const r=await api('/api/trading/sim/snapshot?date='+encodeURIComponent(val('sim-day'))+'&offer_id='+encodeURIComponent(val('sim-offer')));byid('sim-snapshot-out').hidden=false;byid('sim-snapshot-out').textContent=JSON.stringify(r,null,2);}catch(e){setMsg(e.message)}};
-tradeRoot.addEventListener('click',e=>{const b=e.target.closest('button[data-sim-action]');if(!b)return;const a=b.dataset.simAction,offer_id=val('sim-offer'),date=val('sim-day'),person_id=b.dataset.person;
+tradeRoot.addEventListener('click',e=>{const capture=e.target.closest('button[data-person-capture]');if(capture){captureMemberCard(capture.dataset.personCapture,capture);return;}const b=e.target.closest('button[data-sim-action]');if(!b)return;const a=b.dataset.simAction,offer_id=val('sim-offer'),date=val('sim-day'),person_id=b.dataset.person;
 if(a==='invite'||a==='reject')act(a,{offer_id,date,person_id});
 if(a==='buy'){const quantity=tradeRoot.querySelector('[data-qty="'+person_id+'"]')?.value;if(!confirm('确认保存这笔教学模拟买入记录？'))return;act('buy',{offer_id,date,person_id,quantity});}
 if(a==='sell'){const holding_id=b.dataset.holding,sell_price=[...tradeRoot.querySelectorAll('[data-sell-price]')].find(x=>x.dataset.sellPrice===holding_id)?.value;if(!confirm('确认保存这笔教学模拟卖出记录？'))return;act('sell',{holding_id,sell_price});}});

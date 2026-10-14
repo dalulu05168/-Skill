@@ -135,13 +135,14 @@ API：`GET /api/trading/people`、`GET /api/trading/profile?character_id=01`、`
 
 `/image-editor` 是与模拟交易账本同源的本地图片编辑页，不是券商交易终端。
 
-- 用户上传 PNG/JPG/WebP 模板后，页面在浏览器内存中预览并绘制文字，导出最高 3840px 长边 PNG；模板和图片不会上传服务器。
-- 字段默认水平居中，包含成员、股票代码/名称、股数、买入及卖出时间、买卖模拟价格和模拟盈亏。根据账本自动填入；可改文字、字体大小、颜色及坐标，也可在预览图上拖动定位。
-- 模拟卖出确认成功后跳转至 `/image-editor?holding_id=...`，自动选中该笔持仓并预填字段。已卖出持仓也可从图片页战绩表或交易页再次打开。
-- 战绩表及买卖流水直接读取 `/api/trading/sim/state` 的持仓和已确认事件；按 `Europe/Bucharest` 显示时间，盈亏按模拟买卖价计算，不含费用，不宣称实际账户收益。
+- 页面内置两份用户提供的 PPTX 模板背景：每日战绩表与推票/买卖卡；也可继续上传 PNG/JPG/WebP 自定义模板。模板像素和生成图均在本机浏览器处理，导出 3840 × 2160 PNG，不上传用户图片。
+- 推票/买卖卡由账本自动填入股票名称、市场、买入价/卖出价与成交日期；买入卡日期取确认买入时间，卖出卡日期取确认卖出时间，模板日期文字居中。卖出理由由用户手动填写；用户可继续调整目标价/止损价。
+- 卖出卡的走势图使用随应用本地打包的 TradingView Lightweight Charts 绘制，并读取 Yahoo Finance 日线收盘价；白色背景、隐藏网格、清晰价格/日期轴、带轻微阴影，页面自动截图并嵌入模板图表框。支持 6 个月、1 年和 5 年；行情不可用时明确显示错误，不拿模板旧样例图冒充行情。
+- 卖出确认后跳转至 `/image-editor?holding_id=...`；已买入人员卡有买入模板入口，日期自动预填。已卖出持仓可从交易页再次打开卖出卡。交易页的人员信息卡可一键下载 2 倍清晰度 PNG，按钮和提示不进入截图。
+- 战绩表及买卖流水直接读取 `/api/trading/sim/state` 的持仓和已确认事件；每页显示 19 笔并可分页/批量导出。按 `Europe/Bucharest` 日期与币种分开汇总：该币种当日已实现净盈亏 ÷ 当日卖出仓位买入成本；顶部为各币种每日百分比相加/相减，不含未实现盈亏、不做汇率换算、不是复利或真实账户收益。
 - 股票代码识别先使用 Yahoo Finance 搜索接口（`https://query1.finance.yahoo.com/v1/finance/search`）：优先精确代码匹配；无后缀且存在唯一 BVB 股票时，映射为 Yahoo 代码（如 `TLV` → `TLV.RO`）。随后读取固定 chart 元数据接口（`https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d`），自动回填公司名、交易所、可用币种，并将有时间戳的参考报价预填到可编辑的模拟单价字段。参考报价不是成交价；无法唯一匹配或服务不可用时可手动填写。接口固定主机、校验代码格式、单请求超时 8 秒、最大响应 180 KB、15 分钟进程内缓存，不接收任意 URL。
 - 图片页的 CSP 只允许自身脚本与同源账本 API，并允许浏览器本地的 `data:` / `blob:` 图片；不再授予第三方 iframe 权限。
 
-验证：`python -m unittest discover -s tools -p 'test_image_editor_module.py' -v`、`python -m unittest discover -s tools -p 'test_trading_symbol_lookup.py' -v`，并在真实浏览器用模板图检查字段定位及 PNG 导出。
+验证：`python -m unittest discover -s tools -p 'test_*.py'`；使用隔离模拟账本和 Chromium 验证买入日期自动填入、Yahoo 图表本地绘制/截图、卖出理由及 4K PNG、每日战绩 PNG 与人员卡片高清截图。实盘数据/真实成交均未参与测试。
 
 Windows 10/11 x64 桌面包装、数据目录与 Actions 工件领取步骤见 [Windows 桌面版说明](WINDOWS-DESKTOP.md)。当前 Linux Sandbox 没有 Windows 构建器，因此它只准备 Windows runner 自动产出安装包；未声称已生成 `.exe`。

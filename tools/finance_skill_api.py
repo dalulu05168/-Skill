@@ -5,6 +5,7 @@ import base64
 import binascii
 import hmac
 import json
+import mimetypes
 import os
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -26,6 +27,10 @@ from image_editor_ui import PAGE as IMAGE_EDITOR_PAGE
 from workspace_layout import wrap_page
 from workspace_overview import dashboard_summary, add_overview
 from trading_symbol_lookup import lookup_symbol, SymbolLookupError
+from trading_chart import get_history, ChartDataError
+from trading_performance import summarize_performance
+
+STATIC_ROOT = Path(__file__).resolve().parent / "static"
 
 PAGE = r'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -233,6 +238,28 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self._challenge()
                 return
             route = urlsplit(self.path).path
+            if route.startswith("/static/"):
+                relative = route.removeprefix("/static/")
+                if not relative or ".." in Path(relative).parts:
+                    self.respond(404, {"error": "Not found"})
+                    return
+                root = STATIC_ROOT.resolve()
+                asset = (root / relative).resolve()
+                if not asset.is_relative_to(root) or not asset.is_file():
+                    self.respond(404, {"error": "Not found"})
+                    return
+                payload = asset.read_bytes()
+                content_type = mimetypes.guess_type(str(asset))[0] or "application/octet-stream"
+                if content_type in ("text/javascript", "application/javascript"):
+                    content_type += "; charset=utf-8"
+                self.send_response(200)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Content-Length", str(len(payload)))
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.send_header("Cache-Control", "public, max-age=3600")
+                self.end_headers()
+                self.wfile.write(payload)
+                return
             if desktop_mode and (route in ("/skill", "/writing", "/api/trading/state")
                                  or route.startswith("/api/writing/")):
                 self.respond(404, {"error": "The Skill module is not included in the desktop edition."})
@@ -243,17 +270,23 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
-                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
+                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path == "/trading":
-                body = wrap_page(apply_visual_system(TRADING_PAGE), "trading",
+                trading_page = TRADING_PAGE
+                if desktop_mode:
+                    trading_page = (trading_page
+                        .replace('课程资料、群聊脚本、正式会话与人物记忆统一在\n<a href="/skill">财经 Skill</a> 处理；交易中心不再显示这些栏目。\n', '')
+                        .replace('<a href="/skill">财经 Skill</a>', '')
+                        .replace('<a href="/skill" class="btnlink">前往财经 Skill</a>', ''))
+                body = wrap_page(apply_visual_system(trading_page), "trading",
                                  hidden_routes={"/skill"} if desktop_mode else ()).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
-                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
+                self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
@@ -292,7 +325,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy",
-                                 "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
+                                 "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; "
                                  "img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; "
                                  "base-uri 'none'; form-action 'self'")
                 self.send_header("Referrer-Policy", "no-referrer")
@@ -328,12 +361,30 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(400, {"error": str(exc)})
                 except SymbolLookupError as exc:
                     self.respond(502, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/trading/chart":
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    symbol = query.get("symbol", [""])[0]
+                    range_name = query.get("range", ["1y"])[0]
+                    self.respond(200, get_history(symbol, range_name))
+                except ValueError as exc:
+                    self.respond(400, {"error": str(exc)})
+                except (ChartDataError, SymbolLookupError) as exc:
+                    self.respond(502, {"error": str(exc)})
             elif self.path == "/api/trading/sim/state":
                 try:
                     with run_lock:
                         ledger = read_trade_state(trade_path)
                         profiles = load_profiles()
                         result = trade_summary(ledger, profiles)
+                    self.respond(200, result)
+                except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(409, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/trading/sim/performance":
+                try:
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        result = summarize_performance(ledger)
                     self.respond(200, result)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(409, {"error": str(exc)})

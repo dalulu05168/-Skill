@@ -51,7 +51,7 @@ class ExternalTradeModuleTests(unittest.TestCase):
                         policy=response.headers.get("Content-Security-Policy", "")
                         self.assertEqual(response.url,base+"/image-editor")
                         self.assertIn("connect-src 'self'", policy)
-                        self.assertIn("script-src 'unsafe-inline'", policy)
+                        self.assertIn("script-src 'self' 'unsafe-inline'", policy)
                         self.assertNotIn("frame-src", policy)
                         self.assertIn("no-store", response.headers.get("Cache-Control", ""))
                         text=response.read().decode("utf-8")

@@ -40,6 +40,7 @@ $PyInstallerArgs = @(
     '--add-data', "$($Root)\skills;skills",
     '--add-data', "$($Root)\.agents;.agents",
     '--add-data', "$($Root)\docs;docs",
+    '--add-data', "$($Root)\tools\static;tools\static",
     '--add-data', "$($Root)\README.md;.",
     '--add-data', "$($Root)\bundle-manifest.json;.",
     (Join-Path $Root 'tools\desktop_app.py')

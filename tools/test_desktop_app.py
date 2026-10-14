@@ -43,6 +43,9 @@ class DesktopAppTests(unittest.TestCase):
                     self.assertIn('.ws-frame > .app > .top + nav,.ws-frame > .app > .top + .nav{display:none!important}', page)
                     self.assertIn('href="/trading"', page)
                     self.assertIn('href="/image-editor"', page)
+                    if route == "/trading":
+                        self.assertNotIn('<a href="/skill">财经 Skill</a>', page)
+                        self.assertNotIn('前往财经 Skill', page)
                 for route in ("/skill", "/writing", "/api/trading/state", "/api/writing/state"):
                     with self.assertRaises(HTTPError) as error:
                         urlopen(base + route)

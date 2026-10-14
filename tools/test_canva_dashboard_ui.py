@@ -111,8 +111,8 @@ class UIContractTests(unittest.TestCase):
                     with urlopen(base+"/trade-platform") as r:
                         html=r.read().decode("utf-8")
                         self.assertIn('id="templateFile"',html)
-                        self.assertIn('id="performance"',html)
-                        self.assertIn("script-src 'unsafe-inline'",r.headers["Content-Security-Policy"])
+                        self.assertIn('id="templateMode"',html)
+                        self.assertIn("script-src 'self' 'unsafe-inline'",r.headers["Content-Security-Policy"])
                         self.assertNotIn("frame-src",r.headers["Content-Security-Policy"])
                     self.assertEqual(list(data.iterdir()),[])
                 finally:
