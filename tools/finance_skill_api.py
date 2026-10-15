@@ -227,28 +227,34 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             self.wfile.write(body)
 
         def do_GET(self):
-            if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
+            # Match the route separately from its query so in-app filters never 404.
+            route = urlsplit(self.path).path
+            if public_mode and route != "/healthz" and not self._authorized():
                 self._challenge()
                 return
-            if urlsplit(self.path).path == "/":
+            if route == "/":
                 body = wrap_page(apply_visual_system(add_overview(PAGE)), "news").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Referrer-Policy", "no-referrer")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path == "/trading":
+            elif route == "/trading":
                 body = wrap_page(apply_visual_system(TRADING_PAGE), "trading").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Referrer-Policy", "no-referrer")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path in ("/skill", "/writing"):
+            elif route in ("/skill", "/writing"):
                 # Editorial scripts, courses, accepted conversations and role memory
                 # live in Skill, not on the trading buy/sell dashboard.
                 editorial = (WRITING_PAGE
@@ -270,36 +276,39 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                 body = wrap_page(apply_visual_system(editorial), "skill").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Referrer-Policy", "no-referrer")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path == "/trade-platform":
+            elif route == "/trade-platform":
                 body = wrap_page(apply_visual_system(EXTERNAL_TRADE_PAGE), "external").encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Referrer-Policy", "no-referrer")
                 self.send_header("X-Content-Type-Options", "nosniff")
                 self.send_header("Content-Security-Policy",
                                  "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; "
                                  "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'")
-                self.send_header("Cache-Control", "no-store")
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path == "/api/content/categories":
+            elif route == "/api/content/categories":
                 try:
                     self.respond(200, routing_snapshot())
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
-            elif self.path == "/api/dashboard/summary":
+            elif route == "/api/dashboard/summary":
                 try:
                     with run_lock:
                         summary = dashboard_summary(data_dir)
                     self.respond(200, summary)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
-            elif self.path == "/api/trading/sim/state":
+            elif route == "/api/trading/sim/state":
                 try:
                     with run_lock:
                         ledger = read_trade_state(trade_path)
@@ -308,7 +317,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, result)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(409, {"error": str(exc)})
-            elif urlsplit(self.path).path == "/api/trading/sim/snapshot":
+            elif route == "/api/trading/sim/snapshot":
                 try:
                     query = parse_qs(urlsplit(self.path).query)
                     day = query.get("date", [None])[0] or None
@@ -319,14 +328,14 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, result)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(400, {"error": str(exc)})
-            elif self.path in ("/api/trading/people", "/api/writing/people"):
+            elif route in ("/api/trading/people", "/api/writing/people"):
                 try:
                     p = load_profiles()
                     self.respond(200, {"roster_source": "finance-director-65-v4.1",
                                        "count": len(p), "people": summaries(p)})
                 except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
-            elif (self.path.startswith("/api/trading/profile?") or self.path.startswith("/api/writing/profile?")):
+            elif route in ("/api/trading/profile", "/api/writing/profile"):
                 try:
                     query = parse_qs(urlsplit(self.path).query)
                     requested = query.get("character_id", [""])[0]
@@ -336,7 +345,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, {"character_id": requested, "profile": p[requested]})
                 except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(400, {"error": str(exc)})
-            elif self.path in ("/api/trading/state", "/api/writing/state"):
+            elif route in ("/api/trading/state", "/api/writing/state"):
                 try:
                     with run_lock:
                         state = read_state(writing_path)
@@ -345,9 +354,9 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                                        "sessions": state["sessions"]})
                 except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(409, {"error": str(exc)})
-            elif self.path == "/api/model/status":
+            elif route == "/api/model/status":
                 self.respond(200, model_status())
-            elif self.path == "/healthz":
+            elif route == "/healthz":
                 self.respond(200, {"status": "ok", "mode": "password_protected_hosted_review" if public_mode else "loopback_internal_review_only"})
             else:
                 self.respond(404, {"error": "Not found"})
