@@ -20,6 +20,7 @@ from chennan_writing import (load_profiles, summaries, empty_state, read_state,
 from chennan_writing_ui import PAGE as WRITING_PAGE
 from trading_65 import (read_state as read_trade_state, write_state as write_trade_state,
                         summary as trade_summary, snapshot as trade_snapshot, apply as apply_trade)
+from trade_records import add_record as add_trade_record, csv_export as export_trade_records
 from trading_center_ui import PAGE as TRADING_PAGE
 from workspace_theme import apply_visual_system
 from external_trade_ui import PAGE as EXTERNAL_TRADE_PAGE
@@ -226,6 +227,17 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             self.end_headers()
             self.wfile.write(body)
 
+        def respond_csv(self, csv_body):
+            body = csv_body.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv; charset=utf-8")
+            self.send_header("Content-Disposition", 'attachment; filename="participant-trade-details.csv"')
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
         def do_GET(self):
             if public_mode and urlsplit(self.path).path != "/healthz" and not self._authorized():
                 self._challenge()
@@ -299,6 +311,20 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                     self.respond(200, summary)
                 except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
                     self.respond(503, {"error": str(exc)})
+            elif urlsplit(self.path).path == "/api/trading/records/export.csv":
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    take = lambda key: query.get(key, [None])[0]
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        profiles = load_profiles()
+                        contents = export_trade_records(
+                            ledger, profiles, person_id=take("person_id"),
+                            start_date=take("start_date"), end_date=take("end_date"),
+                            trade_type=take("trade_type"))
+                    self.respond_csv(contents)
+                except (ValueError, OSError, TypeError, KeyError, json.JSONDecodeError) as exc:
+                    self.respond(400, {"error": str(exc)})
             elif self.path == "/api/trading/sim/state":
                 try:
                     with run_lock:
@@ -359,7 +385,7 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
             if self.path not in ("/api/prepare", "/api/generate",
                                  "/api/trading/prompt", "/api/trading/validate",
                                  "/api/trading/adopt", "/api/trading/docs",
-                                 "/api/trading/sim/action",
+                                 "/api/trading/sim/action", "/api/trading/records/add",
                                  "/api/writing/prompt", "/api/writing/validate",
                                  "/api/writing/adopt", "/api/writing/docs"):
                 self.respond(404, {"error": "Not found"})
@@ -397,6 +423,16 @@ def make_handler(data_dir, *, public_mode=False, auth_username=None, auth_passwo
                         )
                         rss_intake.write_json(data_dir / "latest-ai-draft-internal.json", draft)
                     self.respond(200, draft)
+                    return
+                if self.path == "/api/trading/records/add":
+                    with run_lock:
+                        ledger = read_trade_state(trade_path)
+                        profiles = load_profiles()
+                        output = add_trade_record(ledger, profiles, request)
+                        write_trade_state(trade_path, ledger)
+                        revision = ledger["revision"]
+                    self.respond(200, {"result": output, "revision": revision,
+                                       "simulation_only": True, "actual_execution_verified": False})
                     return
                 if self.path == "/api/trading/sim/action":
                     with run_lock:
