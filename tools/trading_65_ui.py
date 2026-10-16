@@ -21,6 +21,12 @@ SECTION = r'''
 .sim-alert{font-size:12px;color:#6a655b;background:#faf6ea;border:1px solid #eae3d4;padding:12px 14px;border-radius:12px}
 .sim-label{font-size:12px;color:#596068;margin:2px 0}
 #sim-message{min-height:20px}
+.sim-batchbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0;padding:12px;border:1px solid #e4e8ed;background:#f8fafc;border-radius:12px}
+.sim-batchbar input{max-width:130px;min-height:40px;color:#192a3a;background:#fff;border:1px solid #d7dfe7;border-radius:9px;padding:8px 10px}
+.sim-batchbar button{min-height:40px;font-size:13px}
+.sim-batchbar label{font-size:13px;color:#304253}
+.sim-select-check{width:18px;height:18px;accent-color:#1e4b6e;flex:0 0 auto}
+@media(max-width:600px){.sim-batchbar{align-items:stretch}.sim-batchbar>*{flex:1 1 100%}.sim-batchbar input{max-width:none}}
 
 /* One-click recommendation: individual persona cards, never a flat anonymous row. */
 .sim-recommend-host{overflow:visible;max-height:none;border:0;background:transparent;border-radius:0}
@@ -92,15 +98,15 @@ SECTION = r'''
  <section class="card"><h2>01 · 65人成员交易资料</h2><p class="muted">姓名、职业等来自同一份65人v4.1正式人物资料；模拟开户、资金与参与频率独立设置，不修改人物原档案。</p>
  <label for="sim-member">选择人物</label><select id="sim-member"></select>
  <div class="sim-inline"><div><label for="sim-opened">模拟开户</label><select id="sim-opened"><option value="0">未配置 / 未开户</option><option value="1">已模拟开户</option></select></div><div><label for="sim-frequency">参与频率</label><select id="sim-frequency"><option value="MEDIUM">中</option><option value="HIGH">高</option><option value="LOW">低</option></select></div></div>
- <div class="sim-inline"><div><label for="sim-currency">模拟资金币种</label><select id="sim-currency"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>HKD</option><option>CNY</option></select></div><div><label for="sim-funds">模拟可用资金上限</label><input id="sim-funds" type="number" min="0" step="0.01" placeholder="留空则未配置"></div></div>
+ <div class="sim-inline"><div><label for="sim-currency">模拟资金币种</label><select id="sim-currency"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>HKD</option><option>CNY</option></select></div><div><label for="sim-funds">模拟初始资金（余额随交易变化）</label><input id="sim-funds" type="number" min="0" step="0.01" placeholder="留空则未配置"></div></div>
  <label for="sim-required">今天指定参与</label><select id="sim-required"><option value="0">否</option><option value="1">是</option></select>
  <div class="row"><button id="sim-save-member">保存本人成员交易设置</button></div>
  </section>
- <section class="card"><h2>02 · 建立股票模拟计划</h2><p class="muted">按旧规则设置股票、市场、币种、模拟单价、最低股数、持有天数和参与人数。没有自动填充假行情。</p>
+ <section class="card"><h2>02 · 建立股票模拟计划</h2><p class="muted">设置股票、市场、币种、模拟单价、最低股数和参与人数。买入后无需等待固定持有天数即可卖出。没有自动填充假行情。</p>
  <div class="sim-inline"><div><label for="sim-symbol">股票代码</label><input id="sim-symbol" maxlength="30" placeholder="如 TLV"></div><div><label for="sim-stock-name">股票名称</label><input id="sim-stock-name" maxlength="120" placeholder="手动输入"></div></div>
  <div class="sim-inline"><div><label for="sim-market">市场</label><input id="sim-market" value="BVB" maxlength="40"></div><div><label for="sim-offer-currency">币种</label><select id="sim-offer-currency"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>HKD</option><option>CNY</option></select></div></div>
  <div class="sim-inline"><div><label for="sim-price">模拟单价</label><input id="sim-price" type="number" min="0.000001" step="any" placeholder="必填"></div><div><label for="sim-min-shares">最低股数</label><input id="sim-min-shares" type="number" min="1" value="1"></div></div>
- <div class="sim-inline"><div><label for="sim-hold-days">最少持有天数</label><input id="sim-hold-days" type="number" min="0" value="3"></div><div><label for="sim-participants">参与人数（上限65）</label><input id="sim-participants" type="number" min="1" max="65" value="8"></div></div>
+ <label for="sim-participants">参与人数（上限65）</label><input id="sim-participants" type="number" min="1" max="65" value="8">
  <label for="sim-discount">计划折扣比例（仅说明字段，不改变手动单价）</label><input id="sim-discount" type="number" min="0" max="99" value="0">
  <div class="row"><button id="sim-create-offer">建立模拟股票计划</button></div>
  </section>
@@ -108,11 +114,21 @@ SECTION = r'''
 <section class="card" style="margin-top:16px"><h2>03 · 股票计划 / 推荐与邀请</h2>
 <div class="sim-inline"><div><label for="sim-offer">股票计划</label><select id="sim-offer"><option value="">尚无计划</option></select></div><div><label for="sim-day">罗马尼亚市场日期</label><input type="date" id="sim-day"></div></div>
 <div class="row"><button id="sim-recommend">一键推荐交易人员</button><button class="alt" id="sim-refresh">刷新交易账本</button><button class="alt" id="sim-snapshot">查看当前交易事实快照</button></div>
+<div class="sim-batchbar" aria-label="按可用资金比例批量买入">
+ <label for="sim-allocation-pct">每人可用资金购买比例（%）</label>
+ <input id="sim-allocation-pct" type="number" min="0.01" max="100" step="0.01" value="20">
+ <button id="sim-batch-buy" type="button">一键买入所选人员</button>
+ <span class="sim-label" id="sim-batch-preview">先生成候选名单，再选中人员并确认买入</span>
+</div>
 <div id="sim-candidate-list" class="sim-recommend-host" aria-live="polite"></div>
 <pre id="sim-snapshot-out" hidden></pre>
 </section>
 <div class="sim-grid">
-<section class="card"><h2>04 · 持仓及卖出</h2><div class="sim-tablewrap" id="sim-holdings"></div></section>
+<section class="card"><h2>04 · 持仓及卖出</h2>
+<div class="sim-batchbar"><label for="sim-batch-sell-price">当前股票计划批量卖出单价</label>
+<input id="sim-batch-sell-price" type="number" min="0.000001" step="any" placeholder="填写卖价">
+<button id="sim-batch-sell" type="button">一键卖出所选持仓</button></div>
+<div class="sim-tablewrap" id="sim-holdings"></div></section>
 <section class="card"><h2>05 · 买卖记录（仅人工确认后生成）</h2><div class="sim-tablewrap" id="sim-transactions"></div></section>
 </div>
 <section class="card"><h2>65人实际交易资格明细</h2><p class="muted">此处65名全量展示；不具备模拟开户/资金条件的成员仍保留人物资料，但不会冒充已成交。</p><input id="sim-people-search" type="search" placeholder="搜索人物编号、姓名、职业、城市"><div class="sim-tablewrap" id="sim-people-table" style="margin-top:12px"></div></section>
@@ -146,6 +162,7 @@ function empty(s){return '<p class="muted" style="padding:12px">'+escapeHtml(s)+
 function infoPerson(){const p=person(val('sim-member'));if(!p)return;
 byid('sim-opened').value=p.opened?'1':'0';byid('sim-frequency').value=p.frequency||'MEDIUM';byid('sim-required').value=p.required_today?'1':'0';
 byid('sim-funds').value=p.funds?.[val('sim-currency')]??'';
+byid('sim-message').title='当前可用余额：'+money(p.available_funds?.[val('sim-currency')]??0,val('sim-currency'));
 }
 function renderPeople(){const q=val('sim-people-search').toLowerCase().trim();const rows=tradeData.people.filter(p=>[p.id,p.name,p.occupation,p.city].join(' ').toLowerCase().includes(q)).map(p=>'<tr><td>'+escapeHtml(p.id)+'</td><td>'+escapeHtml(p.name)+'</td><td>'+escapeHtml(p.role)+'</td><td>'+escapeHtml(p.occupation)+'</td><td>'+escapeHtml(p.city)+'</td><td><span class="sim-tag '+(p.opened?'good':'warn')+'">'+(p.opened?'模拟已开户':'未配置开户')+'</span></td><td>'+p.hold_count+'</td></tr>');
 byid('sim-people-table').innerHTML=rows.length?rowTable(['编号','姓名','分类','职业','城市','模拟资格','持仓笔数'],rows):empty('没有匹配成员');}
@@ -161,7 +178,7 @@ renderPeople();renderRecs();renderHoldings();renderTx();
 function currentRec(){return tradeData?.recommendations.find(r=>r.offer_id===val('sim-offer')&&r.date===val('sim-day'))}
 function renderRecs(){
  const host=byid('sim-candidate-list'),r=currentRec();
- if(!r){host.innerHTML='<div class="sim-recommend-empty">选择股票计划，点击“一键推荐交易人员”。系统只从65人正式档案中挑选已明确设置模拟开户且资金满足条件的成员。</div>';return;}
+ if(!r){host.innerHTML='<div class="sim-recommend-empty">选择股票计划，点击“一键推荐交易人员”。系统只从65人正式档案中挑选已明确设置模拟开户且资金满足条件的成员。</div>';updateBatchPreview();return;}
  const offer=tradeData.offers.find(o=>o.id===r.offer_id);
  if(!offer){host.textContent='当前股票计划不存在';return;}
  const counts={pending:0,invited:0,rejected:0,bought:0};
@@ -172,36 +189,74 @@ function renderRecs(){
    const p=person(c.person_id);if(!p)return '';
    const status=c.status,display={pending:'待邀请',invited:'已邀请',rejected:'已拒绝',bought:'已模拟买入'}[status]||'待核实';
    const safeId=escapeHtml(p.id),traits=[...(Array.isArray(p.traits)?p.traits:[]),...(Array.isArray(p.investment_focus)?p.investment_focus.slice(0,2):[])].slice(0,5);
-   const amount=p.funds?.[offer.currency],fundText=amount===undefined?'未配置':money(amount,offer.currency);
+   const amount=p.available_funds?.[offer.currency],fundText=amount===undefined?'未配置':money(amount,offer.currency);
+   const percent=Number(val('sim-allocation-pct')),qty=Number.isFinite(percent)&&percent>0&&percent<=100?Math.floor((Number(amount)||0)*percent/100/offer.unit_price+1e-10):0;
+   const canBuy=(status==='pending'||status==='invited')&&qty>=offer.min_shares;
    const source=p.persona_description||'暂无人物定位补充';
    const action=(status==='pending'||status==='rejected'?'<button data-sim-action="invite" data-person="'+safeId+'">确认邀请</button> ':'')
     +(status==='pending'||status==='invited'?'<button class="alt" data-sim-action="reject" data-person="'+safeId+'">拒绝</button> ':'')
     +(status==='invited'?'<input data-qty="'+safeId+'" type="number" min="'+escapeHtml(offer.min_shares)+'" step="1" value="'+escapeHtml(offer.min_shares)+'" aria-label="'+safeId+'号模拟买入股数"><button data-sim-action="buy" data-person="'+safeId+'">确认模拟买入</button>':'')
     +(status==='bought'?'<span class="sim-tag good">已形成模拟持仓，可在持仓列表追踪</span>':'');
    return '<article class="sim-candidate-card" data-person-card="'+safeId+'">'
-    +'<div class="sim-person-head"><div class="sim-person-avatar" aria-hidden="true">'+safeId+'</div>'
+    +'<div class="sim-person-head">'
+    +(canBuy?'<input class="sim-select-check" type="checkbox" data-batch-person="'+safeId+'" checked aria-label="选择'+safeId+'号参与批量买入">':'')
+    +'<div class="sim-person-avatar" aria-hidden="true">'+safeId+'</div>'
     +'<div class="sim-person-identity"><h3>'+safeId+' · '+escapeHtml(p.name)+'</h3><small>'+escapeHtml([p.gender,p.age?p.age+'岁':'年龄未录入',p.role].join(' · '))+'</small></div>'
     +'<span class="sim-person-status">'+escapeHtml(display)+'</span></div>'
     +'<div class="sim-person-detail">'+escapeHtml(source)+'</div>'
     +'<div class="sim-person-tags">'+traits.map(t=>'<span>'+escapeHtml(t)+'</span>').join('')+'</div>'
+    +'<div class="sim-label">'+(canBuy?'本次按比例预计 '+qty+' 股 / '+escapeHtml(money(qty*offer.unit_price,offer.currency)):'按当前比例暂无可买股数')+'</div>'
     +'<div class="sim-person-facts"><div><small>工作 / 城市</small><b>'+escapeHtml((p.occupation||'未知')+' · '+(p.city||'未知'))+'</b></div>'
     +'<div><small>参与频率 / 持仓笔数</small><b>'+escapeHtml(({HIGH:'高',MEDIUM:'中',LOW:'低'}[p.frequency]||'未配置')+' / '+p.hold_count+'笔')+'</b></div>'
     +'<div><small>模拟开户状态</small><b>'+(p.opened?'已模拟开户':'未配置')+'</b></div>'
-    +'<div><small>该币种模拟资金上限</small><b>'+escapeHtml(fundText)+'</b></div>'
+    +'<div><small>当前可用资金</small><b>'+escapeHtml(fundText)+'</b></div>'
     +'<div><small>单票仓位偏好（人设）</small><b>'+escapeHtml(p.position_preference||'未注明')+'</b></div>'
     +'<div><small>计划最低购买</small><b>'+escapeHtml(offer.min_shares)+' 股 · '+escapeHtml(money(offer.min_shares*offer.unit_price,offer.currency))+'</b></div></div>'
     +'<div class="sim-person-actions">'+action+'</div></article>';
  }).join('');
  host.innerHTML=note+'<div class="sim-candidate-grid">'+cards+'</div>';
+ updateBatchPreview();
 }
-function renderHoldings(){const rows=[...tradeData.holdings].reverse().map(h=>{const p=person(h.person_id),end=new Date(h.planned_sell_at),ready=h.status==='holding'&&Date.now()>=end.getTime();return '<tr><td>'+escapeHtml((p?.name||h.person_id)+' · '+h.symbol)+'</td><td>'+escapeHtml(h.quantity+'股 · '+money(h.buy_price,h.currency))+'</td><td>'+escapeHtml(h.status==='sold'?'已模拟卖出':ready?'符合卖出条件':'持有中')+'</td><td>'+escapeHtml(end.toLocaleString('zh-CN'))+'</td><td>'+(ready?'<input data-sell-price="'+escapeHtml(h.id)+'" type="number" min="0.000001" step="any" placeholder="模拟卖价"> <button data-sim-action="sell" data-holding="'+escapeHtml(h.id)+'">确认卖出</button>':'—')+'</td></tr>'});byid('sim-holdings').innerHTML=rows.length?rowTable(['成员/股票','模拟买入','状态','最早卖出','操作'],rows):empty('暂无模拟持仓');}
+function updateBatchPreview(){
+ const selected=[...tradeRoot.querySelectorAll('[data-batch-person]:checked')].map(c=>c.dataset.batchPerson);
+ const o=tradeData?.offers.find(x=>x.id===val('sim-offer')),percent=Number(val('sim-allocation-pct'));
+ const total=o&&percent>0&&percent<=100?selected.reduce((sum,id)=>sum+Math.floor((Number(person(id)?.available_funds?.[o.currency])||0)*percent/100/o.unit_price+1e-10)*o.unit_price,0):0;
+ byid('sim-batch-preview').textContent=selected.length+'人已选 · 预计 '+(o?money(total,o.currency):'请选择计划')+' · 实际数量由后端再次计算';
+}
+function renderHoldings(){
+ const offer=tradeData.offers.find(o=>o.id===val('sim-offer'));
+ const rows=[...tradeData.holdings].reverse().map(h=>{
+ const p=person(h.person_id),holding=h.status==='holding',matched=holding&&offer&&h.offer_id===offer.id;
+ return '<tr><td>'+(matched?'<input class="sim-select-check" type="checkbox" data-batch-holding="'+escapeHtml(h.id)+'" checked aria-label="选择该持仓批量卖出"> ':'')+escapeHtml((p?.name||h.person_id)+' · '+h.symbol)+'</td>'
+ +'<td>'+escapeHtml(h.quantity+'股 · '+money(h.buy_price,h.currency))+'</td>'
+ +'<td>'+escapeHtml(holding?'可立即卖出':'已模拟卖出')+'</td>'
+ +'<td>'+(holding?'<input data-sell-price="'+escapeHtml(h.id)+'" type="number" min="0.000001" step="any" placeholder="模拟卖价"> <button data-sim-action="sell" data-holding="'+escapeHtml(h.id)+'">确认卖出</button>':'—')+'</td></tr>';
+ });
+ byid('sim-holdings').innerHTML=rows.length?rowTable(['选择 / 成员及股票','模拟买入','状态','操作'],rows):empty('暂无模拟持仓');
+}
 function renderTx(){const rows=[...tradeData.transactions].reverse().map(t=>'<tr><td>'+escapeHtml(t.type==='buy'?'买入':'卖出')+'</td><td>'+escapeHtml((person(t.person_id)?.name)||t.person_id)+'</td><td>'+escapeHtml(t.quantity)+'</td><td>'+escapeHtml(money(t.unit_price,t.currency))+'</td><td>'+escapeHtml(new Date(t.created_at).toLocaleString('zh-CN'))+'</td></tr>');byid('sim-transactions').innerHTML=rows.length?rowTable(['类型','人物','股数','模拟价','记录时间'],rows):empty('尚无人工确认的买卖记录');}
 async function load(){tradeData=await api('/api/trading/sim/state');if(!byid('sim-day').value)byid('sim-day').value=tradeData.market_date;render();setMsg('读取成功：65人数据源'+tradeData.source+'；模拟账本版本 '+tradeData.revision);}
-async function act(action,payload){try{const r=await api('/api/trading/sim/action',{action,...payload});await load();setMsg('已保存：'+({'eligibility':'模拟交易设置','create_offer':'股票计划','recommend':'候选名单','invite':'邀请','reject':'拒绝','buy':'模拟买入','sell':'模拟卖出'}[action]||action)+'。账本版本 '+r.revision);}catch(e){setMsg('操作失败：'+e.message)}}
+async function act(action,payload){try{const r=await api('/api/trading/sim/action',{action,...payload});await load();setMsg('已保存：'+({'eligibility':'模拟交易设置','create_offer':'股票计划','recommend':'候选名单','invite':'邀请','reject':'拒绝','buy':'模拟买入','sell':'模拟卖出','batch_buy':'批量买入','batch_sell':'批量卖出'}[action]||action)+'。账本版本 '+r.revision);}catch(e){setMsg('操作失败：'+e.message)}}
 byid('sim-member').addEventListener('change',infoPerson);byid('sim-currency').addEventListener('change',infoPerson);byid('sim-people-search').addEventListener('input',()=>tradeData&&renderPeople());
-byid('sim-offer').addEventListener('change',renderRecs);byid('sim-day').addEventListener('change',renderRecs);
+byid('sim-offer').addEventListener('change',()=>{renderRecs();renderHoldings()});
+byid('sim-allocation-pct').addEventListener('input',renderRecs);
+byid('sim-candidate-list').addEventListener('change',e=>{if(e.target.matches('[data-batch-person]'))updateBatchPreview()});
+byid('sim-batch-buy').onclick=()=>{
+ const offer_id=val('sim-offer'),date=val('sim-day'),allocation_pct=val('sim-allocation-pct');
+ const person_ids=[...tradeRoot.querySelectorAll('[data-batch-person]:checked')].map(c=>c.dataset.batchPerson);
+ if(!person_ids.length){setMsg('先选择至少一位可购买成员');return;}
+ if(!confirm('确认按每人当前可用资金的'+allocation_pct+'%批量买入 '+person_ids.length+' 人？全部成功才会保存。'))return;
+ act('batch_buy',{offer_id,date,allocation_pct,person_ids});
+};
+byid('sim-batch-sell').onclick=()=>{
+ const holding_ids=[...tradeRoot.querySelectorAll('[data-batch-holding]:checked')].map(c=>c.dataset.batchHolding);
+ const sell_price=val('sim-batch-sell-price');if(!holding_ids.length){setMsg('先选择当前股票计划的持仓');return;}
+ if(!(Number(sell_price)>0)){setMsg('请先填写正确的批量卖出单价');return;}
+ if(!confirm('按 '+sell_price+' 单价一次卖出 '+holding_ids.length+' 笔模拟持仓？全部成功才会保存。'))return;
+ act('batch_sell',{offer_id:val('sim-offer'),holding_ids,sell_price});
+};byid('sim-day').addEventListener('change',renderRecs);
 byid('sim-save-member').onclick=()=>act('eligibility',{person_id:val('sim-member'),opened:val('sim-opened')==='1',frequency:val('sim-frequency'),required_today:val('sim-required')==='1',currency:val('sim-currency'),funds:val('sim-funds')});
-byid('sim-create-offer').onclick=()=>act('create_offer',{symbol:val('sim-symbol'),name:val('sim-stock-name'),market:val('sim-market'),currency:val('sim-offer-currency'),unit_price:val('sim-price'),min_shares:val('sim-min-shares'),hold_days:val('sim-hold-days'),participant_count:val('sim-participants'),discount_pct:val('sim-discount')});
+byid('sim-create-offer').onclick=()=>act('create_offer',{symbol:val('sim-symbol'),name:val('sim-stock-name'),market:val('sim-market'),currency:val('sim-offer-currency'),unit_price:val('sim-price'),min_shares:val('sim-min-shares'),participant_count:val('sim-participants'),discount_pct:val('sim-discount')});
 byid('sim-recommend').onclick=()=>act('recommend',{offer_id:val('sim-offer'),date:val('sim-day')});
 byid('sim-refresh').onclick=()=>load().catch(e=>setMsg('刷新失败：'+e.message));
 byid('sim-snapshot').onclick=async()=>{try{const r=await api('/api/trading/sim/snapshot?date='+encodeURIComponent(val('sim-day'))+'&offer_id='+encodeURIComponent(val('sim-offer')));byid('sim-snapshot-out').hidden=false;byid('sim-snapshot-out').textContent=JSON.stringify(r,null,2);}catch(e){setMsg(e.message)}};
