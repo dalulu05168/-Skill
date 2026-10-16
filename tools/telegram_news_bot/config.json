@@ -1,0 +1,17 @@
+{
+  "timezone": "Asia/Kuala_Lumpur",
+  "poll_minutes": 30,
+  "daily_summary_hour": 20,
+  "daily_summary_minute": 7,
+  "max_items_per_feed": 30,
+  "max_daily_items": 25,
+  "major_keywords": ["emergency", "breaking", "urgent", "war", "invasion", "ceasefire", "earthquake", "tsunami", "nuclear", "coup", "sanctions", "default", "bankruptcy", "rate decision", "interest rate", "assassination", "market halt", "suspend trading", "insolvency", "takeover", "重大", "突发", "紧急", "战争", "停火", "地震", "海啸", "核", "制裁", "破产", "降息", "加息", "央行", "总统", "袭击"],
+  "feeds": [
+    {"id":"BVB","region":"罗马尼亚","publisher":"Bursa de Valori Bucuresti","url":"https://www.bvb.ro/Rss/StiriBVB.ashx","kind":"official"},
+    {"id":"BVB_DISCLOSURES","region":"罗马尼亚","publisher":"Bursa de Valori Bucuresti","url":"https://www.bvb.ro/Rss2/LastFinancialData.ashx?lang=ro","kind":"official"},
+    {"id":"FED","region":"美国","publisher":"Federal Reserve","url":"https://www.federalreserve.gov/feeds/press_all.xml","kind":"official"},
+    {"id":"ECB","region":"欧洲/法国相关","publisher":"European Central Bank","url":"https://www.ecb.europa.eu/rss/press.html","kind":"official"},
+    {"id":"UN","region":"全球","publisher":"United Nations News","url":"https://news.un.org/feed/subscribe/en/news/all/rss.xml","kind":"official"}
+  ],
+  "notes": ["Only headlines, short descriptions and links are redistributed.", "No source article text or images are copied/rehosted.", "Add France-specific feeds only after checking their current feed URL and terms.", "Images are best-effort: only image URLs explicitly provided in RSS media/enclosure fields are used."]
+}
