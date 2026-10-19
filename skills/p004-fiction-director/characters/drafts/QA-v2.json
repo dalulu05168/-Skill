@@ -1,0 +1,53 @@
+{
+  "version": "draft-v2",
+  "status": "DRAFT_STRUCTURE_PASS_EDITORIAL_PENDING",
+  "checked_at": "2026-10-11",
+  "review_scope": "JS字段和内容检查；不是Python CI或罗马尼亚母语审稿",
+  "checks": {
+    "correct_story": true,
+    "draft_status": true,
+    "sixty_five": true,
+    "sequential_ids": true,
+    "unique_names": true,
+    "ages_40_to_68": true,
+    "group_distribution": true,
+    "different_secondary": true,
+    "unique_tics": true,
+    "unique_zh_samples": true,
+    "unique_ro_samples": true,
+    "retiree_cues_repaired": true,
+    "none_approved": true,
+    "samples_not_history": true,
+    "no_prior_events_or_relationships": true,
+    "can_remain_silent": true,
+    "no_matching_old_names": true
+  },
+  "summary": {
+    "total": 65,
+    "gender": {
+      "女": 35,
+      "男": 30
+    },
+    "age_min": 40,
+    "age_max": 68,
+    "cities": 30,
+    "occupations": 64,
+    "roles": {
+      "追随者": 11,
+      "观望者": 12,
+      "提问者": 12,
+      "反驳者": 9,
+      "独立研究者": 7,
+      "情绪型": 6,
+      "幽默生活型": 5,
+      "少言型": 3
+    }
+  },
+  "pending": [
+    "正式用户批准",
+    "罗马尼亚母语口吻和文化细节审稿",
+    "65人多场动态剧情实测",
+    "与模块二实际模拟成交ID映射",
+    "最终编剧自动QA与发布流程"
+  ]
+}

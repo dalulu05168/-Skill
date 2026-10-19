@@ -1,0 +1,14 @@
+{
+  "simulation_only": true,
+  "source_status": "HYPOTHETICAL",
+  "story_date": "2026-10-14",
+  "daypart": "afternoon",
+  "scene_id": "fiction-demo-20261014-pm",
+  "topic_keywords": [
+    "能源",
+    "交通"
+  ],
+  "max_members": 8,
+  "recent_member_ids": [],
+  "director_override": "白天先讨论能源成本，再根据有兴趣的角色安排提问、反驳和生活例子。没有发生过的过去记录不能编造。"
+}

@@ -1,0 +1,2751 @@
+{
+  "version": "draft-v2",
+  "story_id": "p004-fiction-director-independent",
+  "status": "DRAFT_NOT_APPROVED",
+  "fictional_educational_story": true,
+  "note": "全新65人零历史草案，不是旧65人v4.1迁移。人物详情和分类均待用户确认；绝不可写入approved-roster.json或当作真实成员。",
+  "provisional_age_range": "40-68; final range not confirmed",
+  "type_counts": {
+    "追随者": 11,
+    "观望者": 12,
+    "反驳者": 9,
+    "提问者": 12,
+    "独立研究者": 7,
+    "情绪型": 6,
+    "幽默生活型": 5,
+    "少言型": 3
+  },
+  "people": [
+    {
+      "id": "01",
+      "name": "Gabriela Păun",
+      "gender": "女",
+      "age": 53,
+      "region": "Ploiești",
+      "occupation": "急诊护士",
+      "family_motivation": "女儿的大学学费",
+      "main_behavior": "追随者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：先学明白再说",
+        "catchphrases": [
+          "先学明白再说"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Mai întâi să pricep pașii. După tură mă uit mai atent.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "医疗行业与家庭保障"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间轮班后",
+      "first_scene_example_zh": "先不着急，我愿意按步骤试着观察。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先复述自己理解的一点，再问可以做的练习",
+        "pacing": "先停一拍，再指出一个具体细节",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "02",
+      "name": "Ana-Maria Toader",
+      "gender": "女",
+      "age": 48,
+      "region": "București",
+      "occupation": "诊所行政",
+      "family_motivation": "医疗支出",
+      "main_behavior": "观望者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：我再核一下",
+        "catchphrases": [
+          "我再核一下"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Pun linkul deoparte. Vreau și data, nu doar titlul.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "医药消费"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午间",
+      "first_scene_example_zh": "我先存好资料，等数据齐了再说。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "担心条件不完整，通常先收藏资料",
+        "pacing": "有时一句反问就结束交流",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "03",
+      "name": "Roxana Varga",
+      "gender": "女",
+      "age": 42,
+      "region": "Târgu Mureș",
+      "occupation": "儿童摄影师",
+      "family_motivation": "孩子课程费",
+      "main_behavior": "提问者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "喜欢简短问号，不连发；常用自我表达：我怕问得太简单",
+        "catchphrases": [
+          "我怕问得太简单"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Stați puțin... dividendul intră automat în cont?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "股票入门"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "分红是自动进账户吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "举一个简单反例确认自己有没有理解错",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "04",
+      "name": "Horia Popa",
+      "gender": "男",
+      "age": 51,
+      "region": "București",
+      "occupation": "印刷厂经理",
+      "family_motivation": "工资发放",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：讲点实在的",
+        "catchphrases": [
+          "讲点实在的"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Bun, dar comenzile și încasările unde sunt?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "企业现金流"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "你说乐观，订单和回款在哪里？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "抓住一句具体断言质疑前提，而不是为了吵架",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "05",
+      "name": "Ilinca Bodea",
+      "gender": "女",
+      "age": 52,
+      "region": "București",
+      "occupation": "农业经济顾问",
+      "family_motivation": "乡村家庭支持",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：拆成两件事",
+        "catchphrases": [
+          "拆成两件事"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Eu aș despărți recolta de profit. Nu-i același lucru.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "农产品价格"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "收成好，不代表农企利润也一定好。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "有独立判断，不为和教授观点一致而改口",
+        "pacing": "常以问题结尾，不长篇自说自话",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "06",
+      "name": "Oana Ciubotaru",
+      "gender": "女",
+      "age": 45,
+      "region": "Craiova",
+      "occupation": "花店经营者",
+      "family_motivation": "店面现金流",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：我有点急了",
+        "catchphrases": [
+          "我有点急了"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Azi au intrat mai puțini clienți în florărie. Mă cam neliniștește.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "消费景气"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "傍晚",
+      "first_scene_example_zh": "今天客人少，我就怕大家都不愿意花钱。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "情绪反应可明显，但不编造自身交易亏损",
+        "pacing": "在被纠正时可承认错误，不必永远捍卫原观点",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "07",
+      "name": "Raluca Frățilă",
+      "gender": "女",
+      "age": 48,
+      "region": "Sibiu",
+      "occupation": "婚礼花艺师",
+      "family_motivation": "孩子与家庭旅行",
+      "main_behavior": "幽默生活型",
+      "secondary_behavior": "提问者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：让我笑一下",
+        "catchphrases": [
+          "让我笑一下"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "La nuntă e plin de lume, dar facturile nu dansează cu noi. 😄",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "婚庆消费"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下午",
+      "first_scene_example_zh": "婚礼热闹不等于老板赚钱多，账可不会开玩笑。😄",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "用一个短小生活类比缓和场面",
+        "pacing": "先说自己感受，随后给一个事实要求",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "08",
+      "name": "Daria Țurcanu",
+      "gender": "女",
+      "age": 46,
+      "region": "Deva",
+      "occupation": "医学检验技师",
+      "family_motivation": "孩子学习",
+      "main_behavior": "少言型",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "标点简洁，较少emoji；常用自我表达：嗯我看看",
+        "catchphrases": [
+          "嗯我看看"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Linkul către raport?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "医药研发"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "夜间",
+      "first_scene_example_zh": "报告原文呢？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "通常安静，只有兴趣点命中才开口",
+        "pacing": "遇到兴奋观点会问一条反例",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "09",
+      "name": "Cezar Bratu",
+      "gender": "男",
+      "age": 46,
+      "region": "Arad",
+      "occupation": "汽车修理工",
+      "family_motivation": "孩子的职业教育",
+      "main_behavior": "追随者",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：修车也要听声音",
+        "catchphrases": [
+          "修车也要听声音"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "La mașină nu schimb piesa după zvonuri. La firmă ce verificăm întâi?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "制造业成本"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午休",
+      "first_scene_example_zh": "企业好不好，能不能从订单先看起？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "承认哪部分看懂了，哪部分暂时没有看懂",
+        "pacing": "耐心听完不同说法，再表达自己的看法",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "10",
+      "name": "Ilie Bălan",
+      "gender": "男",
+      "age": 64,
+      "region": "Bistrița",
+      "occupation": "退休测量员",
+      "family_motivation": "修缮老屋",
+      "main_behavior": "观望者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：量过才算",
+        "catchphrases": [
+          "量过才算"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Cu cât a crescut, față de ce zi?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "建筑与利率"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（朋友聚会与个人时间）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "清晨",
+      "first_scene_example_zh": "说涨之前，先告诉我和哪天比较。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先听证据再表达保留意见",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "11",
+      "name": "Dănuț Petrișor",
+      "gender": "男",
+      "age": 55,
+      "region": "Ploiești",
+      "occupation": "加油站收银主管",
+      "family_motivation": "照顾父母",
+      "main_behavior": "提问者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "喜欢简短问号，不连发；常用自我表达：问个实际的",
+        "catchphrases": [
+          "问个实际的"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Întreb și eu: dacă urcă petrolul, câștigă automat benzinăria?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "原油零售"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "交班后",
+      "first_scene_example_zh": "原油涨，油站的利润就一定涨吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先指出自己不明白的一处，允许继续追问",
+        "pacing": "会自然接别人的一句话，不强行重新开题",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "12",
+      "name": "Carmen Stere",
+      "gender": "女",
+      "age": 55,
+      "region": "Cluj-Napoca",
+      "occupation": "劳动法律顾问",
+      "family_motivation": "赡养父母",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：条款写明",
+        "catchphrases": [
+          "条款写明"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Frumos spus, dar unde scrie asta, concret?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "企业监管"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "见客后",
+      "first_scene_example_zh": "“通常会涨”不算依据，条件呢？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "能指出被忽略的成本或反例",
+        "pacing": "先停一拍，再指出一个具体细节",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "13",
+      "name": "Rareș Coman",
+      "gender": "男",
+      "age": 49,
+      "region": "Brașov",
+      "occupation": "设备检验工程师",
+      "family_motivation": "家庭维修资金",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：参数呢",
+        "catchphrases": [
+          "参数呢"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Stați, eu aș verifica și fluxul de numerar.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "工业设备"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "我更想看折旧和现金流。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先说明自己观察到的一个局部现象，再问边界",
+        "pacing": "有时一句反问就结束交流",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "14",
+      "name": "Laurențiu Mureșan",
+      "gender": "男",
+      "age": 54,
+      "region": "Târgu Mureș",
+      "occupation": "出租车司机",
+      "family_motivation": "车贷和学费",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：这事真气人",
+        "catchphrases": [
+          "这事真气人"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "La naiba, iar s-a scumpit combustibilul. Cum să-mi fac socotelile?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "油价物价"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "停车时",
+      "first_scene_example_zh": "油费变一下，我一天打算全乱了。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "感到急躁时话更多，冷静后会回到问题本身",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "15",
+      "name": "Sorin Bădoi",
+      "gender": "男",
+      "age": 59,
+      "region": "Focșani",
+      "occupation": "葡萄园经营者",
+      "family_motivation": "农场传承",
+      "main_behavior": "幽默生活型",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：老天不听指挥",
+        "catchphrases": [
+          "老天不听指挥"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Cu vița-de-vie știu un lucru: o zi însorită nu face toamna.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "农业天气"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚上",
+      "first_scene_example_zh": "投资要跟种葡萄一样？那可没法只看明天。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "允许闲聊，不一定次次写押韵俏皮话",
+        "pacing": "在被纠正时可承认错误，不必永远捍卫原观点",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "16",
+      "name": "Gheorghe Borș",
+      "gender": "男",
+      "age": 68,
+      "region": "Tulcea",
+      "occupation": "退休船员",
+      "family_motivation": "养老健康",
+      "main_behavior": "少言型",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "标点简洁，较少emoji；常用自我表达：我先听着",
+        "catchphrases": [
+          "我先听着"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Transportul cât costă?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "水运油耗"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（做饭及家庭聚会）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "清晨",
+      "first_scene_example_zh": "运费呢？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "偶尔只问两个到八个字，不应被强行解释长篇",
+        "pacing": "先说自己感受，随后给一个事实要求",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "17",
+      "name": "Lavinia Ursu",
+      "gender": "女",
+      "age": 58,
+      "region": "Sibiu",
+      "occupation": "小学教师",
+      "family_motivation": "孙辈教育",
+      "main_behavior": "追随者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：一步一步教我",
+        "catchphrases": [
+          "一步一步教我"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Nu râdeți, vă rog. Întrebarea e chiar de la început.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "新手学习方法"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "放学后",
+      "first_scene_example_zh": "这问题别笑，我真觉得得从头弄懂。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "愿意按课程做作业，遇到不解会直接问",
+        "pacing": "聊天轻松时会开小玩笑，严肃新闻里收敛",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "18",
+      "name": "Corina Bejan",
+      "gender": "女",
+      "age": 54,
+      "region": "Brașov",
+      "occupation": "民宿经营者",
+      "family_motivation": "淡旺季现金流",
+      "main_behavior": "观望者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：先别高兴",
+        "catchphrases": [
+          "先别高兴"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "La pensiune e plin uneori și tot rămân puțini bani.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "旅游与电价"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "客人多不等于挣得多，这我有体会。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "看两方争论，问到底在比较什么",
+        "pacing": "喜欢把大问题拆成一个小问题",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "19",
+      "name": "Delia Neagu",
+      "gender": "女",
+      "age": 50,
+      "region": "Bacău",
+      "occupation": "社区社工",
+      "family_motivation": "子女教育",
+      "main_behavior": "提问者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "喜欢简短问号，不连发；常用自我表达：等等我有问题",
+        "catchphrases": [
+          "等等我有问题"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Care-i diferența, pe înțelesul nostru, dintre acțiuni și depozite?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "家庭理财"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午休",
+      "first_scene_example_zh": "股票和银行存款到底有什么不同？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "从生活问题开口，不铺垫长长的背景",
+        "pacing": "遇到兴奋观点会问一条反例",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "20",
+      "name": "Valeriu Micu",
+      "gender": "男",
+      "age": 62,
+      "region": "Deva",
+      "occupation": "退休金属加工主管",
+      "family_motivation": "旧房维修",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：别绕弯子",
+        "catchphrases": [
+          "别绕弯子"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Fără o cifră clară, eu nu trag nicio concluzie.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "工业周期"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（朋友聚会与个人时间）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "下午",
+      "first_scene_example_zh": "这话好听，具体数据拿出来啊。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "要求原文或数据，遇到解释充分会承认",
+        "pacing": "耐心听完不同说法，再表达自己的看法",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "21",
+      "name": "Marcela Dinu",
+      "gender": "女",
+      "age": 63,
+      "region": "Alba Iulia",
+      "occupation": "退休统计教师",
+      "family_motivation": "养老计划",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：分母别错",
+        "catchphrases": [
+          "分母别错"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Procentul față de ce bază? Aici e problema.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "指数口径"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（探亲或料理家务）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "百分比先别报，和哪段时间比？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "关注口径、财报和时间顺序",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "22",
+      "name": "Violeta Chiriac",
+      "gender": "女",
+      "age": 60,
+      "region": "Buzău",
+      "occupation": "退休厨师",
+      "family_motivation": "家庭储备",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "提问者",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：我容易担心",
+        "catchphrases": [
+          "我容易担心"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Când aud iar de scumpiri, recunosc că mă ia cu grijă.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "食品涨价"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（社区活动和外出）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "一看到物价新闻，我心里就紧一下。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先表达生活中的感受，再联系市场条件",
+        "pacing": "有时一句反问就结束交流",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "23",
+      "name": "Cristina Dumbravă",
+      "gender": "女",
+      "age": 43,
+      "region": "Cluj-Napoca",
+      "occupation": "宠物美容店主",
+      "family_motivation": "扩张店铺",
+      "main_behavior": "幽默生活型",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：先讲个笑话",
+        "catchphrases": [
+          "先讲个笑话"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Și câinele meu face zgomot. Asta nu-l face analist. 🐶",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "服务消费"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "预约间隙",
+      "first_scene_example_zh": "狗叫得响不等于有理，这话放市场也挺合适。🐶",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "开玩笑后仍会补一句真实问题",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "24",
+      "name": "Amelia Vîlcu",
+      "gender": "女",
+      "age": 50,
+      "region": "Bacău",
+      "occupation": "档案管理员",
+      "family_motivation": "照顾父亲",
+      "main_behavior": "少言型",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "标点简洁，较少emoji；常用自我表达：话不多",
+        "catchphrases": [
+          "话不多"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Anul din tabel nu se potrivește.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "数据时间比较"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "两张表的年份不一样。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "言简意赅，有时只给一个关键纠错",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "25",
+      "name": "Emil Sava",
+      "gender": "男",
+      "age": 61,
+      "region": "Brăila",
+      "occupation": "城际巴士司机",
+      "family_motivation": "退休养老金",
+      "main_behavior": "追随者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：出车前要检查",
+        "catchphrases": [
+          "出车前要检查"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Când crește motorina, mă gândesc întâi la transportatori.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "油价与运输"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "停车后",
+      "first_scene_example_zh": "燃料价一变，我就能想到运输公司的账。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先复述自己理解的一点，再问可以做的练习",
+        "pacing": "常以问题结尾，不长篇自说自话",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "26",
+      "name": "Marian Istrate",
+      "gender": "男",
+      "age": 45,
+      "region": "Pitești",
+      "occupation": "零件采购员",
+      "family_motivation": "还房贷",
+      "main_behavior": "观望者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：细节说全",
+        "catchphrases": [
+          "细节说全"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Eu urmăresc comenzile. Restul... mai vedem.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "制造业订单"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "夜间",
+      "first_scene_example_zh": "我会先看订单，其他先留个问号。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "担心条件不完整，通常先收藏资料",
+        "pacing": "在被纠正时可承认错误，不必永远捍卫原观点",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "27",
+      "name": "Șerban Palade",
+      "gender": "男",
+      "age": 46,
+      "region": "București",
+      "occupation": "餐饮采购协调员",
+      "family_motivation": "房租",
+      "main_behavior": "提问者",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "喜欢简短问号，不连发；常用自我表达：能说简单点吗",
+        "catchphrases": [
+          "能说简单点吗"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Profitul înainte sau după impozit? M-am încurcat.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "餐饮成本"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下午",
+      "first_scene_example_zh": "看财报应该先看税前还是税后利润？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "举一个简单反例确认自己有没有理解错",
+        "pacing": "先说自己感受，随后给一个事实要求",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "28",
+      "name": "Sorina Bobe",
+      "gender": "女",
+      "age": 44,
+      "region": "Timișoara",
+      "occupation": "保险理赔专员",
+      "family_motivation": "家庭医疗保障",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：证据拿来",
+        "catchphrases": [
+          "证据拿来"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Un singur exemplu nu dovedește regula, serios acum.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "金融风险"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "一个例子怎么能证明所有公司都一样？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "抓住一句具体断言质疑前提，而不是为了吵架",
+        "pacing": "聊天轻松时会开小玩笑，严肃新闻里收敛",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "29",
+      "name": "Ștefan Vulpe",
+      "gender": "男",
+      "age": 44,
+      "region": "Timișoara",
+      "occupation": "软件自由职业者",
+      "family_motivation": "不稳定收入",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：变量先固定",
+        "catchphrases": [
+          "变量先固定"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Dacă schimbăm ipoteza, concluzia mai stă în picioare?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "科技估值"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "深夜",
+      "first_scene_example_zh": "这结论行不行，得先说假设。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "有独立判断，不为和教授观点一致而改口",
+        "pacing": "耐心听完不同说法，再表达自己的看法",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "30",
+      "name": "Silviu Leca",
+      "gender": "男",
+      "age": 42,
+      "region": "Pitești",
+      "occupation": "销售主管",
+      "family_motivation": "换大房子",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：别吊胃口",
+        "catchphrases": [
+          "别吊胃口"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Bine, dar avem o informație nouă sau doar vorbim mult?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "市场热度"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午间",
+      "first_scene_example_zh": "聊这么热闹，背后真有新消息吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "情绪反应可明显，但不编造自身交易亏损",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "31",
+      "name": "Costel Mărgineanu",
+      "gender": "男",
+      "age": 66,
+      "region": "Galați",
+      "occupation": "退休厨师",
+      "family_motivation": "轻松养老",
+      "main_behavior": "幽默生活型",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：锅铲打个比方",
+        "catchphrases": [
+          "锅铲打个比方"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Supa miroase bine, dar ai gustat-o înainte să lauzi bucătarul?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "食品消费"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（探亲或料理家务）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "这锅汤闻着香，盐没放对也难吃。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "用一个短小生活类比缓和场面",
+        "pacing": "会自然接别人的一句话，不强行重新开题",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "32",
+      "name": "Monica Olaru",
+      "gender": "女",
+      "age": 43,
+      "region": "Oradea",
+      "occupation": "药房店长",
+      "family_motivation": "日常家用",
+      "main_behavior": "追随者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "标点简洁，较少emoji；常用自我表达：说得实在些",
+        "catchphrases": [
+          "说得实在些"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Spuneți-mi direct ce să citesc, că n-am timp de un roman.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "消费行业"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "库存盘点后",
+      "first_scene_example_zh": "讲简单一点，我才知道回去查哪项。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "愿意按课程做作业，遇到不解会直接问",
+        "pacing": "先停一拍，再指出一个具体细节",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "33",
+      "name": "Rodica Florescu",
+      "gender": "女",
+      "age": 67,
+      "region": "Iași",
+      "occupation": "退休图书管理员",
+      "family_motivation": "退休储蓄",
+      "main_behavior": "观望者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：慢慢想",
+        "catchphrases": [
+          "慢慢想"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Nu m-am lămurit. Las subiectul până văd raportul.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "银行分红"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（照顾家人）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "我还没看懂，不反对也不赞成。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "看两方争论，问到底在比较什么",
+        "pacing": "有时一句反问就结束交流",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "34",
+      "name": "Ada Vintilă",
+      "gender": "女",
+      "age": 61,
+      "region": "Tulcea",
+      "occupation": "退休地理教师",
+      "family_motivation": "照顾老伴",
+      "main_behavior": "提问者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：我是不是弄反了",
+        "catchphrases": [
+          "我是不是弄反了"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Stați, leul mai slab de ce face importurile mai scumpe?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "汇率基础"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（整理旧资料或看书）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "列伊变弱，为什么进口东西可能更贵？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "从生活问题开口，不铺垫长长的背景",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "35",
+      "name": "Iulian Preda",
+      "gender": "男",
+      "age": 47,
+      "region": "Galați",
+      "occupation": "码头机械操作员",
+      "family_motivation": "转岗计划",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "喜欢简短问号，不连发；常用自我表达：等等不对吧",
+        "catchphrases": [
+          "等等不对吧"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Și scenariul prost? Pe acela cine îl ia în calcul?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "港口成本"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "夜间",
+      "first_scene_example_zh": "为什么总说最好的情况？坏情况就不算？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "要求原文或数据，遇到解释充分会承认",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "36",
+      "name": "Tamara Mitrea",
+      "gender": "女",
+      "age": 56,
+      "region": "Iași",
+      "occupation": "建筑审计员",
+      "family_motivation": "修缮资金",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：账上现金呢",
+        "catchphrases": [
+          "账上现金呢"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Profitul arată bine. Banii au intrat, însă?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "地产负债"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "出差归来",
+      "first_scene_example_zh": "净利润挺好看，钱真的到账了吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "关注口径、财报和时间顺序",
+        "pacing": "先说自己感受，随后给一个事实要求",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "37",
+      "name": "Dana Gherman",
+      "gender": "女",
+      "age": 51,
+      "region": "Brăila",
+      "occupation": "服装店营业员",
+      "family_motivation": "照顾父亲",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "提问者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：紧张话就多",
+        "catchphrases": [
+          "紧张话就多"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Mă uit la stocul din magazin și mă ia cu nervi, sincer.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "零售利润"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下午",
+      "first_scene_example_zh": "库存卖不动，谁看着不着急啊！",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先表达生活中的感受，再联系市场条件",
+        "pacing": "聊天轻松时会开小玩笑，严肃新闻里收敛",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "38",
+      "name": "Ioana Șoimaru",
+      "gender": "女",
+      "age": 55,
+      "region": "Constanța",
+      "occupation": "旅行社客服",
+      "family_motivation": "家庭旅游",
+      "main_behavior": "幽默生活型",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：哎呀有意思",
+        "catchphrases": [
+          "哎呀有意思"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Grupul e plin ca un autocar, dar cine a calculat costul biletelor? 😅",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "航空汇率"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "旅行团人满了也可能赚不到钱，机票成本呢？😅",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "开玩笑后仍会补一句真实问题",
+        "pacing": "喜欢把大问题拆成一个小问题",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "39",
+      "name": "Ovidiu Dascălu",
+      "gender": "男",
+      "age": 50,
+      "region": "Craiova",
+      "occupation": "物流调度员",
+      "family_motivation": "孩子购房",
+      "main_behavior": "追随者",
+      "secondary_behavior": "少言型",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：先看安排",
+        "catchphrases": [
+          "先看安排"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Pot să încerc exercițiul, dar nu mă grăbiți la decizii.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "交通能源"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "清晨与晚间",
+      "first_scene_example_zh": "我愿意跟着练习，但不是叫我马上做决定。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "承认哪部分看懂了，哪部分暂时没有看懂",
+        "pacing": "遇到兴奋观点会问一条反例",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "40",
+      "name": "Petru Apostol",
+      "gender": "男",
+      "age": 52,
+      "region": "Târgu Jiu",
+      "occupation": "电网维修工",
+      "family_motivation": "两代人开销",
+      "main_behavior": "观望者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "标点简洁，较少emoji；常用自我表达：线路怎么走",
+        "catchphrases": [
+          "线路怎么走"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "În ce rețele se duc investițiile? Eu asta vreau să văd.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "电力设施"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "非值班夜间",
+      "first_scene_example_zh": "新闻听着不错，钱具体投哪里了？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先听证据再表达保留意见",
+        "pacing": "耐心听完不同说法，再表达自己的看法",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "41",
+      "name": "Luca Bucur",
+      "gender": "男",
+      "age": 40,
+      "region": "Cluj-Napoca",
+      "occupation": "职业培训讲师",
+      "family_motivation": "孩子教育基金",
+      "main_behavior": "提问者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：能举个例子吗",
+        "catchphrases": [
+          "能举个例子吗"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Îmi arătați un exemplu cu două lumânări asemănătoare?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "技术图形"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "两根差不多的K线，为何意思会不一样？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先指出自己不明白的一处，允许继续追问",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "42",
+      "name": "Nicoleta Moga",
+      "gender": "女",
+      "age": 60,
+      "region": "Craiova",
+      "occupation": "退休化学实验员",
+      "family_motivation": "养老保值",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：我不爱猜",
+        "catchphrases": [
+          "我不爱猜"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Eu nu ghicesc. Spuneți-mi de unde vine profitul.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "化工能源"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（社区活动和外出）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "利润到底从哪里来，能不能讲明白？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "能指出被忽略的成本或反例",
+        "pacing": "会自然接别人的一句话，不强行重新开题",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "43",
+      "name": "Constantin Dobrin",
+      "gender": "男",
+      "age": 67,
+      "region": "Câmpina",
+      "occupation": "退休供热技师",
+      "family_motivation": "老伴健康",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "喜欢简短问号，不连发；常用自我表达：结构先看",
+        "catchphrases": [
+          "结构先看"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Cât costă să înlocuiască utilajele alea vechi?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "能源设施"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（照顾家人）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "清晨",
+      "first_scene_example_zh": "设备越来越旧，换新得花多少？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先说明自己观察到的一个局部现象，再问边界",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "44",
+      "name": "Grigore Banu",
+      "gender": "男",
+      "age": 63,
+      "region": "Baia Mare",
+      "occupation": "退休矿机维修员",
+      "family_motivation": "养老预算",
+      "main_behavior": "情绪型",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：脾气上来了",
+        "catchphrases": [
+          "脾气上来了"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Ce naiba, puneți cifrele pe masă și discutăm!",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "矿业与原料"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（整理旧资料或看书）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "有数字摆出来，别净叫我猜！",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "感到急躁时话更多，冷静后会回到问题本身",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "45",
+      "name": "Mirela Rădulescu",
+      "gender": "女",
+      "age": 47,
+      "region": "Buzău",
+      "occupation": "面包坊老板",
+      "family_motivation": "店面租金",
+      "main_behavior": "追随者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：先算一笔账",
+        "catchphrases": [
+          "先算一笔账"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Eu calculez întâi făina și curentul. Apoi vedem ce-a rămas.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "电费和食品原料"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后歇业",
+      "first_scene_example_zh": "店里人多，可成本不降，未必赚得多。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "承认哪部分看懂了，哪部分暂时没有看懂",
+        "pacing": "常以问题结尾，不长篇自说自话",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "46",
+      "name": "Georgiana Lăzărescu",
+      "gender": "女",
+      "age": 44,
+      "region": "Constanța",
+      "occupation": "港口报关员",
+      "family_motivation": "住房计划",
+      "main_behavior": "观望者",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：原件在哪",
+        "catchphrases": [
+          "原件在哪"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Pe Facebook scrie orice. Eu vreau anunțul oficial.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "航运与汇率"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下午",
+      "first_scene_example_zh": "朋友圈的话我不信，我要看公告。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先听证据再表达保留意见",
+        "pacing": "在被纠正时可承认错误，不必永远捍卫原观点",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "47",
+      "name": "Beatrice Cojocaru",
+      "gender": "女",
+      "age": 59,
+      "region": "Arad",
+      "occupation": "物业管理负责人",
+      "family_motivation": "子女住房",
+      "main_behavior": "提问者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：确认一下",
+        "catchphrases": [
+          "确认一下"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Dobânda la credit și prețul băncii merg mereu împreună?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "房贷与银行"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "银行股和贷款利率会一直同方向吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先指出自己不明白的一处，允许继续追问",
+        "pacing": "先说自己感受，随后给一个事实要求",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "48",
+      "name": "Sebastian Năstase",
+      "gender": "男",
+      "age": 43,
+      "region": "Oradea",
+      "occupation": "电商退货主管",
+      "family_motivation": "孩子教育",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "标点简洁，较少emoji；常用自我表达：钱谁出",
+        "catchphrases": [
+          "钱谁出"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Ați zis câștig. Comisioanele cine le plătește?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "平台交易费用"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "收益说得响，手续费怎么没人提？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "能指出被忽略的成本或反例",
+        "pacing": "聊天轻松时会开小玩笑，严肃新闻里收敛",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "49",
+      "name": "Paula Roșca",
+      "gender": "女",
+      "age": 41,
+      "region": "Oradea",
+      "occupation": "企业税务顾问",
+      "family_motivation": "孩子未来",
+      "main_behavior": "独立研究者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：别混税种",
+        "catchphrases": [
+          "别混税种"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Norma se aplică tuturor sau doar anumitor firme?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "企业税收政策"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午间",
+      "first_scene_example_zh": "新规定适用谁？别一锅端了。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先说明自己观察到的一个局部现象，再问边界",
+        "pacing": "喜欢把大问题拆成一个小问题",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "50",
+      "name": "Doru Câmpeanu",
+      "gender": "男",
+      "age": 65,
+      "region": "Alba Iulia",
+      "occupation": "退休铁路职员",
+      "family_motivation": "养老与健康",
+      "main_behavior": "追随者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：慢慢走更稳",
+        "catchphrases": [
+          "慢慢走更稳"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Am timp să învăț, dar nu vreau să alerg după fiecare zvon.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "公用事业"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（朋友聚会与个人时间）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "我愿意学新的，但别催得像赶火车。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "愿意按课程做作业，遇到不解会直接问",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "51",
+      "name": "Damian Cordea",
+      "gender": "男",
+      "age": 59,
+      "region": "Baia Mare",
+      "occupation": "木工厂主",
+      "family_motivation": "厂房更新",
+      "main_behavior": "观望者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "喜欢简短问号，不连发；常用自我表达：别只说好处",
+        "catchphrases": [
+          "别只说好处"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Dacă se scumpește lemnul, îmi schimb tot bugetul.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "建材需求"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "傍晚",
+      "first_scene_example_zh": "这事若影响木料价，我可得再盘算。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "看两方争论，问到底在比较什么",
+        "pacing": "会自然接别人的一句话，不强行重新开题",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "52",
+      "name": "Florentin Iancu",
+      "gender": "男",
+      "age": 53,
+      "region": "Suceava",
+      "occupation": "公路养护班长",
+      "family_motivation": "退休储备",
+      "main_behavior": "提问者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：问句实话",
+        "catchphrases": [
+          "问句实话"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "De ce uneori vine o veste bună și acțiunea scade?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "基建支出"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "好消息一出，股价为何反倒可能跌？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "从生活问题开口，不铺垫长长的背景",
+        "pacing": "先停一拍，再指出一个具体细节",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "53",
+      "name": "Olivia Crișan",
+      "gender": "女",
+      "age": 66,
+      "region": "Sibiu",
+      "occupation": "退休医院档案员",
+      "family_motivation": "养老旅行",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：给我原件",
+        "catchphrases": [
+          "给我原件"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Titlul sperie. În document ce scrie, de fapt?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "医疗公告"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（照顾家人）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "这个标题唬人，正文到底写了什么？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "要求原文或数据，遇到解释充分会承认",
+        "pacing": "有时一句反问就结束交流",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "54",
+      "name": "Anca Neacșu",
+      "gender": "女",
+      "age": 41,
+      "region": "Timișoara",
+      "occupation": "酒店前台主管",
+      "family_motivation": "家庭旅行计划",
+      "main_behavior": "追随者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：我喜欢有计划",
+        "catchphrases": [
+          "我喜欢有计划"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Mi-e mai ușor când am un plan. Revin cu întrebări diseară.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "旅游与汇率"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午后换班",
+      "first_scene_example_zh": "这事讲清楚了，我今晚再查原文。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "承认哪部分看懂了，哪部分暂时没有看懂",
+        "pacing": "有事就一句话，旁人追问时才补充",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "55",
+      "name": "Stela Frunză",
+      "gender": "女",
+      "age": 63,
+      "region": "Focșani",
+      "occupation": "退休护士",
+      "family_motivation": "孙女教育",
+      "main_behavior": "观望者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：等等也行",
+        "catchphrases": [
+          "等等也行"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Prefer să aștept până se limpezesc lucrurile.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "医疗养老"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（散步和锻炼）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "午后",
+      "first_scene_example_zh": "我宁愿晚点弄明白，也不急着点头。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先听证据再表达保留意见",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "56",
+      "name": "Mădălina Paraschiv",
+      "gender": "女",
+      "age": 47,
+      "region": "Constanța",
+      "occupation": "外贸单证员",
+      "family_motivation": "孩子留学",
+      "main_behavior": "提问者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "常用短语停顿，不写专业报告",
+        "register": "标点简洁，较少emoji；常用自我表达：是不是反了",
+        "catchphrases": [
+          "是不是反了"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Euro mai puternic ajută orice exportator? Chiar orice?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "汇率和出口"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "午间",
+      "first_scene_example_zh": "欧元涨，出口公司就一定受益？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先指出自己不明白的一处，允许继续追问",
+        "pacing": "常以问题结尾，不长篇自说自话",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "57",
+      "name": "Aurel Fodor",
+      "gender": "男",
+      "age": 58,
+      "region": "Reșița",
+      "occupation": "暖通承包商",
+      "family_motivation": "扩建住房",
+      "main_behavior": "反驳者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：别急着定性",
+        "catchphrases": [
+          "别急着定性"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Electricitatea mai scumpă e veste bună pentru toată lumea? Hai să fim serioși.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "能源施工"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下工后",
+      "first_scene_example_zh": "电价涨就全是利好？你漏了一半成本。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "能指出被忽略的成本或反例",
+        "pacing": "聊天轻松时会开小玩笑，严肃新闻里收敛",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "58",
+      "name": "Nelu Cazan",
+      "gender": "男",
+      "age": 56,
+      "region": "Galați",
+      "occupation": "焊接工",
+      "family_motivation": "支持儿子创业",
+      "main_behavior": "追随者",
+      "secondary_behavior": "观望者",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "语气有时省略半句，用省略号适度停顿；常用自我表达：这事得有凭据",
+        "catchphrases": [
+          "这事得有凭据"
+        ],
+        "emoji_style": "沉默型；表情很罕见",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Încerc și eu metoda. Unde nu pricep, întreb.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "钢铁工业"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "下班后",
+      "first_scene_example_zh": "方法我愿意试，没明白的地方还得问。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先复述自己理解的一点，再问可以做的练习",
+        "pacing": "喜欢把大问题拆成一个小问题",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "59",
+      "name": "Alexandru Darie",
+      "gender": "男",
+      "age": 42,
+      "region": "Cluj-Napoca",
+      "occupation": "软件售后主管",
+      "family_motivation": "房贷与陪孩子",
+      "main_behavior": "观望者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "说话不多，真正关心才解释",
+        "register": "喜欢简短问号，不连发；常用自我表达：看日志习惯了",
+        "catchphrases": [
+          "看日志习惯了"
+        ],
+        "emoji_style": "生活类比偶尔😂，不作为股价暗示",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "În raport lipsește parcă un pas din explicație.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "科技产业"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "夜间",
+      "first_scene_example_zh": "这句话中间少了一步，我先不下结论。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "担心条件不完整，通常先收藏资料",
+        "pacing": "遇到兴奋观点会问一条反例",
+        "confronted": "可以说自己尚不懂，不需要假装研究员",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "60",
+      "name": "Tudor Ilinca",
+      "gender": "男",
+      "age": 65,
+      "region": "Brașov",
+      "occupation": "退休数控技师",
+      "family_motivation": "安稳养老",
+      "main_behavior": "提问者",
+      "secondary_behavior": "独立研究者",
+      "voice": {
+        "sentence_length": "通常一至三句，爱反问",
+        "register": "用句号自然结束，不滥用感叹号；常用自我表达：老实说不懂",
+        "catchphrases": [
+          "老实说不懂"
+        ],
+        "emoji_style": "日常聊天偶尔一个🙂，严肃财经话题不用",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Dacă firma merge bine, cum de poate scădea acțiunea?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "估值与价格"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（朋友聚会与个人时间）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "上午",
+      "first_scene_example_zh": "公司值钱，股价为什么还能跌？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "举一个简单反例确认自己有没有理解错",
+        "pacing": "耐心听完不同说法，再表达自己的看法",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "61",
+      "name": "Tatiana Drăghici",
+      "gender": "女",
+      "age": 62,
+      "region": "Suceava",
+      "occupation": "退休裁缝",
+      "family_motivation": "照顾孙辈",
+      "main_behavior": "追随者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "口语直接，偶尔感叹",
+        "register": "口语逗号较多，但不写长报告；常用自我表达：针脚得扎实",
+        "catchphrases": [
+          "针脚得扎实"
+        ],
+        "emoji_style": "只在真正好笑的日常场景偶尔用表情",
+        "coarse_language_style": "烦躁时轻微口头抱怨，不辱骂人",
+        "romanian_audition_line": "Pun notițele aici și le citesc mai târziu, în liniște.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "通胀与家庭开支"
+      ],
+      "silence_cues": [
+        "退休后有自己的安排（探亲或料理家务）或没有兴趣时，可以沉默；不会被编剧随时召唤出场"
+      ],
+      "availability_note": "晚饭后",
+      "first_scene_example_zh": "我先记下来，晚上慢慢对着例子看。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先复述自己理解的一点，再问可以做的练习",
+        "pacing": "只在注意到时间/单位问题时才插话",
+        "confronted": "在争议变成人身攻击前主动退出，不替助理管场",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "62",
+      "name": "Lidia Pintea",
+      "gender": "女",
+      "age": 57,
+      "region": "Râmnicu Vâlcea",
+      "occupation": "超市合伙人",
+      "family_motivation": "店面与父亲照护",
+      "main_behavior": "观望者",
+      "secondary_behavior": "追随者",
+      "voice": {
+        "sentence_length": "通常一两句，先生活例子后观点",
+        "register": "句子长短不定，有时补一句自我修正；常用自我表达：看顾客钱包",
+        "catchphrases": [
+          "看顾客钱包"
+        ],
+        "emoji_style": "和熟人打趣时偶尔😅，不每次出现",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "La mine în magazin oamenii se uită de două ori la preț.",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "零售购买力"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚饭前",
+      "first_scene_example_zh": "客户少买一件，我就会想起消费数字。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "担心条件不完整，通常先收藏资料",
+        "pacing": "会自然接别人的一句话，不强行重新开题",
+        "confronted": "先承认有道理的部分，再指出自己的顾虑",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "63",
+      "name": "Silvia Teodorescu",
+      "gender": "女",
+      "age": 45,
+      "region": "Iași",
+      "occupation": "眼镜店销售主管",
+      "family_motivation": "家庭健康",
+      "main_behavior": "提问者",
+      "secondary_behavior": "幽默生活型",
+      "voice": {
+        "sentence_length": "想到相关经验时会连说两句",
+        "register": "解释时会用两个短句而不是分点列举；常用自我表达：说白一点",
+        "catchphrases": [
+          "说白一点"
+        ],
+        "emoji_style": "几乎不用表情；情绪用文字表达",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Indicele urcă, dar firma mică pe care o urmăresc stă pe loc. De ce?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "消费市场"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "晚间",
+      "first_scene_example_zh": "大盘涨了，小公司的股价为什么不动？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "举一个简单反例确认自己有没有理解错",
+        "pacing": "先停一拍，再指出一个具体细节",
+        "confronted": "受到质疑会问对方具体指哪一句",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "64",
+      "name": "Ionela Munteanu",
+      "gender": "女",
+      "age": 49,
+      "region": "Satu Mare",
+      "occupation": "幼儿园会计",
+      "family_motivation": "家庭储备",
+      "main_behavior": "观望者",
+      "secondary_behavior": "情绪型",
+      "voice": {
+        "sentence_length": "极简句，通常5至15字，必要时可多说",
+        "register": "标点简洁，较少emoji；常用自我表达：账得过目",
+        "catchphrases": [
+          "账得过目"
+        ],
+        "emoji_style": "别人解答后偶尔👍，与赞同投资操作无关",
+        "coarse_language_style": "偶尔说日常粗口，但只在有缘由的剧情冲突里",
+        "romanian_audition_line": "Comparați cu luna trecută sau cu anul trecut?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "存款利率"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "傍晚",
+      "first_scene_example_zh": "比的是昨天还是去年？不说清楚我看不下去。",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先听证据再表达保留意见",
+        "pacing": "喜欢拿熟悉生活场景比较，但不能句句拿职业打比方",
+        "confronted": "观点可以保持不变，直到有新的证据",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    },
+    {
+      "id": "65",
+      "name": "Emanoil Răducanu",
+      "gender": "男",
+      "age": 57,
+      "region": "Drobeta-Turnu Severin",
+      "occupation": "仓库安全员",
+      "family_motivation": "夫妻养老",
+      "main_behavior": "提问者",
+      "secondary_behavior": "反驳者",
+      "voice": {
+        "sentence_length": "多为单句，问题多于论断",
+        "register": "直接短句，句末偶尔感叹；常用自我表达：我就问一句",
+        "catchphrases": [
+          "我就问一句"
+        ],
+        "emoji_style": "偶尔一个🤔，不连续堆叠",
+        "coarse_language_style": "不说脏话",
+        "romanian_audition_line": "Și dacă vreau să vând, chiar găsesc cumpărător imediat?",
+        "romanian_audition_is_history": false
+      },
+      "interest_triggers": [
+        "交易流动性"
+      ],
+      "silence_cues": [
+        "工作或家庭事务繁忙、无法专心阅读时；没有引起个人兴趣时可以保持沉默"
+      ],
+      "availability_note": "夜间",
+      "first_scene_example_zh": "真想卖的时候，随时都能卖吗？",
+      "first_scene_example_is_history": false,
+      "initial_relationships": [],
+      "initial_history": [],
+      "fictional_only": true,
+      "approved_by_user": false,
+      "turn_taking": {
+        "starts_when": "先指出自己不明白的一处，允许继续追问",
+        "pacing": "常以问题结尾，不长篇自说自话",
+        "confronted": "对方给出来源后愿意改变表述，但不会立即全盘附和",
+        "may_decline_to_speak": true
+      },
+      "memory_policy": "仅正式采用的本故事台词、事件和来自模块二的已确认模拟交易；不得由演示对白自动添加历史"
+    }
+  ],
+  "design_revision": "修复16位退休人物的错误工作日常、拆开表情/标点规则，加入65条罗马尼亚语语感试听句与轮流发言/质疑反应；保留首次样稿的中文原句，仅供审阅，不构成发生过的剧情。"
+}
