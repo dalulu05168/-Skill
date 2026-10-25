@@ -70,5 +70,40 @@ class Parser(unittest.TestCase):
         self.assertEqual(len([x for x in outcomes if x["status"] in
                               ("HISTORICAL_SERIES_OK","RECENT_SERIES_AVAILABLE")]), 2)
 
+
+
+class DesktopIntradaySource(unittest.TestCase):
+    def test_desktop_real_soap_request_and_three_matching_series(self):
+        import importlib.util
+        from unittest.mock import MagicMock
+        src = Path(__file__).parent / "src" / "intraday.py"
+        spec = importlib.util.spec_from_file_location("ew_desktop_intraday", src)
+        app = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(app)
+        stamp = dt.datetime(2026, 10, 23, 13, 2, tzinfo=ZoneInfo("Europe/Bucharest"))
+        for symbol in m.SYMBOLS:
+            response = MagicMock(content=fixture(symbol))
+            with patch.object(app.requests, "post", return_value=response) as send, \
+                 patch.object(app.requests, "get") as get:
+                series = app.bvb_index_series(symbol, quote_time=stamp, last=100.2)
+            self.assertEqual(series["symbol"], symbol)
+            self.assertEqual(len(series["points"]), 3)
+            self.assertFalse(get.called)
+            self.assertIn(b"<code>" + symbol.encode("ascii") + b"</code>", send.call_args.kwargs["data"])
+            self.assertEqual(send.call_args.kwargs["headers"]["SOAPAction"],
+                             '"www.bvb.ro/IndicesDataSeries"')
+
+    def test_desktop_quote_uses_the_same_soap_transport(self):
+        import importlib.util
+        from unittest.mock import MagicMock
+        src = Path(__file__).parent / "src" / "intraday.py"
+        spec = importlib.util.spec_from_file_location("ew_desktop_intraday", src)
+        app = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(app)
+        with patch.object(app.requests, "post", return_value=MagicMock(content=quote_fixture("BET"))) as send:
+            app.bvb_xml("GetIndex", "BET")
+        self.assertEqual(send.call_args.kwargs["headers"]["SOAPAction"],
+                         '"www.bvb.ro/GetIndex"')
+
 if __name__=="__main__":
     unittest.main()
