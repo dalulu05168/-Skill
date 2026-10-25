@@ -59,6 +59,33 @@ def parse_series(xml, symbol):
         points[iso] = {"time": iso, "price": value}
     return [points[k] for k in sorted(points)]
 
+
+def parse_index_quote(xml, symbol):
+    """Only accept the matching official TypeIndices GetIndex quote."""
+    try:
+        root = ET.fromstring(xml)
+    except ET.ParseError as exc:
+        raise ValueError("quote_malformed_xml") from exc
+    if any(local(n.tag) == "Fault" for n in root.iter()):
+        raise ValueError("quote_soap_fault")
+    for row in root.iter():
+        if local(row.tag) != "TypeIndices":
+            continue
+        fields = {local(child.tag): (child.text or "").strip() for child in row}
+        if fields.get("Code") != symbol:
+            continue
+        try:
+            time = dt.datetime.fromisoformat(fields["LastUpdateTime"].replace("Z", "+00:00"))
+            if time.tzinfo is None:
+                time = time.replace(tzinfo=TZ)
+            price = float(fields["CurrentValue"])
+            if not (0 < price < 1e12):
+                continue
+            return {"time": time.astimezone(TZ).isoformat(), "price": price}
+        except (KeyError, ValueError):
+            continue
+    raise ValueError("matching_GetIndex_quote_missing")
+
 def request_service(symbol, operation="IndicesDataSeries", timeout=12):
     if symbol not in SYMBOLS or operation not in ("IndicesDataSeries", "GetIndex"):
         raise ValueError("invalid_service_operation")
@@ -132,6 +159,14 @@ def check(symbol, now=None):
         # is not the same as ready-to-publish, and must never imply LIVE.
         age = (now - dt.datetime.fromisoformat(latest)).total_seconds()
         info["age_minutes"] = round(age / 60, 2)
+        try:
+            quote = parse_index_quote(request_service(symbol, "GetIndex"), symbol)
+            info["getindex_time"] = quote["time"]
+            info["getindex_quote_verified"] = True
+            info["series_quote_relative_gap"] = round(abs(series[-1]["price"]/quote["price"]-1), 8)
+        except (ValueError, urllib.error.HTTPError, urllib.error.URLError, OSError) as exc:
+            info["getindex_quote_verified"] = False
+            info["getindex_error"] = type(exc).__name__ + ": " + str(exc)[:120]
         info["status"] = "HISTORICAL_SERIES_OK"
         if age < -120:
             info["status"] = "INVALID_FUTURE_TIMESTAMP"
@@ -152,7 +187,9 @@ def main(argv=None):
     results = [check(symbol) for symbol in SYMBOLS]
     ok = all(x["status"] in ("HISTORICAL_SERIES_OK", "RECENT_SERIES_AVAILABLE") for x in results)
     report = {"purpose": "non-publishing provider connectivity check",
-              "verified_3_of_3": ok, "release_approved": False,
+              "verified_3_of_3": ok,
+              "getindex_quotes_3_of_3": all(r.get("getindex_quote_verified") for r in results),
+              "release_approved": False,
               "actual_windows_template_tested": False,
               "results": results}
     from pathlib import Path
