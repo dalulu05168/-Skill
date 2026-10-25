@@ -23,6 +23,13 @@ def fixture(symbol):
             '</LastUpdateTime><CurrentValue>9999</CurrentValue></TypeIndicesSeries>'
             '</ArrayOfTypeIndicesSeries>').encode()
 
+
+def quote_fixture(symbol):
+    return ('<ArrayOfTypeIndices><TypeIndices>'
+            f'<Code>{symbol}</Code><LastUpdateTime>2026-10-23T13:02:00</LastUpdateTime>'
+            '<CurrentValue>100.2</CurrentValue><NetChange>0.2</NetChange>'
+            '<PrcChange>0.2</PrcChange></TypeIndices></ArrayOfTypeIndices>').encode()
+
 class Parser(unittest.TestCase):
     def test_all_three_codes_separate_and_sorted(self):
         for symbol in m.SYMBOLS:
@@ -48,13 +55,15 @@ class Parser(unittest.TestCase):
         self.assertEqual(x["error"], "insufficient_matching_points")
 
     def test_history_is_not_claimed_real_time(self):
-        with patch.object(m, "request_service", side_effect=lambda symbol: fixture(symbol)):
+        with patch.object(m, "request_service", side_effect=lambda symbol, operation="IndicesDataSeries": quote_fixture(symbol) if operation=="GetIndex" else fixture(symbol)):
             x = m.check("BET", now=dt.datetime(2026,10,25,12,0,tzinfo=ZoneInfo("Europe/Bucharest")))
         self.assertEqual(x["status"], "HISTORICAL_SERIES_OK")
 
     def test_3_of_3_gate_cannot_pass_with_two(self):
         good = fixture("BET")
-        def response(symbol):
+        def response(symbol, operation="IndicesDataSeries"):
+            if operation == "GetIndex":
+                return quote_fixture(symbol)
             return fixture(symbol) if symbol != "BET-FI" else b'<message>Access denied</message>'
         with patch.object(m, "request_service", side_effect=response):
             outcomes = [m.check(s) for s in m.SYMBOLS]
