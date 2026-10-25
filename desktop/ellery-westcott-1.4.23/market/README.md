@@ -11,9 +11,13 @@ The Windows program's latest local candidate sources are available in the existi
 
 `aaafbb8bc458006283e20ab3c3144dfca7bd0db0400d9fed032e4563bbc75dd1`
 
-This GitHub directory contains a standalone source probe and test suite. It does
-**not** claim that the above ZIP's 7 application files are uploaded here,
-that a BVB licensed feed is available, or that a Windows program has passed
+This GitHub directory now contains all seven interface-patch application source
+files under `src/` (intraday.py, market_data.py, canva_market.py,
+chart_draw.py, bridge.py, market.html, market.js), plus actual provider
+probe and tests. `src/intraday.py` is the corrected 2026-10-25 SOAP 1.1
+version; the other six are the original patch sources.
+This does **not** mean the complete Windows EXE/release/assets are hosted here,
+that data licensing is guaranteed, or that a Windows installation has passed
 live end-to-end verification. Keep P004 legacy 65-member data separate.
 
 ## Actual probe
@@ -35,6 +39,11 @@ Offline tests use synthetic XML fixtures and never represent live quotations.
 The network probe calls BVB directly and writes timestamp, source, instrument,
 number of matched observations, market session date and failure reason per index.
 A 3/3 pass requires >=2 actual matching observations for each of three codes.
+On 2026-10-25 GitHub run 40148470034 retrieved 1,296 BET,
+968 BET-NG and 84 BET-FI **actual historical** points (2026-10-23 session).
+The official GetIndex quotes also matched each series' last price exactly.
+BVB's SOAP 1.1 POST worked; ordinary GET and form POST returned HTTP 500.
+The Windows intraday source now uses the verified SOAP protocol.
 A successful Sunday probe is **history connectivity**, not proof of timely
 Monday open prices.
 
@@ -51,5 +60,8 @@ Monday open prices.
    export contains those same lines, and rise is green `+` / fall is red `−`.
 5. Only then merge or distribute a Windows installer. No credential in repo.
 
-Original 1.4.23 interface patch, current source ZIP and other modules are not
-modified by this GitHub branch.
+The GitHub branch is a draft PR, not a production deploy. Updated Windows
+source for intraday.py is also available as a separate one-file update ZIP
+`Westcott_BVB_SOAP_Real_ThreeCharts_20261025.zip`
+(SHA-256: `585c811be1ab8982865c39de77eaa5756cf52d2fe7ed5698b98f17d370435149`).
+The ZIP does not modify template images or other application modules.
