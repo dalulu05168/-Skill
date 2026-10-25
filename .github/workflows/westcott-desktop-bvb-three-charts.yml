@@ -26,6 +26,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install runtime dependency for desktop module tests
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Compile all seven uploaded desktop module source files
+        run: python -m py_compile desktop/ellery-westcott-1.4.23/market/src/*.py
       - name: Validate instrument isolation and XML parser (no network)
         run: python -m unittest discover -s desktop/ellery-westcott-1.4.23/market -p 'test_*.py' -v
       - name: Probe three BVB official delayed indices (real network)
