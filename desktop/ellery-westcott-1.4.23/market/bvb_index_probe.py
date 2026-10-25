@@ -101,6 +101,7 @@ def request_service(symbol, operation="IndicesDataSeries", timeout=12):
                 ET.fromstring(payload)  # reject HTML and malformed XML
                 if b"<html" in payload[:500].lower():
                     raise ValueError("unexpected_html")
+                print(f'BVB_TRANSPORT_SUCCESS symbol={symbol} method={label}', file=sys.stderr)
                 return payload
         except urllib.error.HTTPError as exc:
             errors.append(f"{label}_HTTP_{exc.code}")
