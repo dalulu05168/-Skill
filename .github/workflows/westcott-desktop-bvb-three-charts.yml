@@ -1,0 +1,48 @@
+name: Westcott desktop BVB 3-chart source gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/westcott-desktop-bvb-3chart-gate-20261025
+    paths:
+      - 'desktop/ellery-westcott-1.4.23/market/**'
+      - '.github/workflows/westcott-desktop-bvb-three-charts.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  three-index-source-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate instrument isolation and XML parser (no network)
+        run: python -m unittest discover -s desktop/ellery-westcott-1.4.23/market -p 'test_*.py' -v
+      - name: Probe three BVB official delayed indices (real network)
+        id: probe
+        continue-on-error: true
+        run: |
+          python desktop/ellery-westcott-1.4.23/market/bvb_index_probe.py --output build/market-bvb/evidence.json
+      - name: Upload provider evidence (not live trading or Windows approval)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: westcott-bvb-three-index-source-evidence
+          path: build/market-bvb/evidence.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Three-of-three source gate
+        if: always()
+        env:
+          PROVIDER_OUTCOME: ${{ steps.probe.outcome }}
+        run: |
+          echo "## ELLERY WESTCOTT source check" >> "$GITHUB_STEP_SUMMARY"
+          echo "BVB BET / BET-NG / BET-FI endpoint network check: **$PROVIDER_OUTCOME**" >> "$GITHUB_STEP_SUMMARY"
+          echo "Offline mocks alone are not proof of real market data." >> "$GITHUB_STEP_SUMMARY"
+          echo "This job does NOT approve Windows UI rendering, template 4K export, or intraday freshness during market hours." >> "$GITHUB_STEP_SUMMARY"
+          test "$PROVIDER_OUTCOME" = success
