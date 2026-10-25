@@ -63,17 +63,53 @@ def request_service(symbol, operation="IndicesDataSeries", timeout=12):
     if symbol not in SYMBOLS or operation not in ("IndicesDataSeries", "GetIndex"):
         raise ValueError("invalid_service_operation")
     qs = urllib.parse.urlencode({"code": symbol})
-    url = f"{ROOT}/{operation}?{qs}"
-    req = urllib.request.Request(url, headers={"User-Agent": "ELLERY-WESTCOTT-Source-Probe/1.4.23",
-                                              "Accept": "application/xml,text/xml",
-                                              "Cache-Control": "no-cache"})
-    # Public GET only: if vendor authorization is necessary, record the refusal.
-    # Do not put vendor credentials in Actions output or commit them in Git.
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        payload = resp.read(2_000_001)
-        if len(payload) > 2_000_000:
-            raise ValueError("oversized_response")
-        return payload
+    base_headers = {
+        "User-Agent": "ELLERY-WESTCOTT-Source-Probe/1.4.23",
+        "Accept": "application/xml,text/xml",
+        "Cache-Control": "no-cache",
+    }
+    endpoint = f"{ROOT}/{operation}"
+    envelope = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">'
+        '<soap:Header><Header xmlns="www.bvb.ro">'
+        '<User></User><Password></Password>'
+        '</Header></soap:Header>'
+        f'<soap:Body><{operation} xmlns="www.bvb.ro">'
+        f'<code>{symbol}</code></'
+        f'{operation}></soap:Body></soap:Envelope>'
+    ).encode("utf-8")
+    methods = [
+        ("GET", urllib.request.Request(f"{endpoint}?{qs}", headers=base_headers)),
+        ("FORM_POST", urllib.request.Request(
+            endpoint, data=qs.encode("ascii"), method="POST",
+            headers={**base_headers, "Content-Type": "application/x-www-form-urlencoded"})),
+        ("SOAP_1_1", urllib.request.Request(
+            ROOT, data=envelope, method="POST",
+            headers={**base_headers, "Content-Type": "text/xml; charset=utf-8",
+                     "SOAPAction": f'"www.bvb.ro/{operation}"'})),
+    ]
+    errors = []
+    for label, req in methods:
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                payload = resp.read(2_000_001)
+                if len(payload) > 2_000_000:
+                    raise ValueError("oversized_response")
+                if not payload.lstrip().startswith(b"<"):
+                    raise ValueError("response_not_xml")
+                ET.fromstring(payload)  # reject HTML and malformed XML
+                if b"<html" in payload[:500].lower():
+                    raise ValueError("unexpected_html")
+                return payload
+        except urllib.error.HTTPError as exc:
+            errors.append(f"{label}_HTTP_{exc.code}")
+        except urllib.error.URLError as exc:
+            errors.append(f"{label}_{type(exc.reason).__name__}")
+        except (TimeoutError, OSError, ET.ParseError, ValueError) as exc:
+            errors.append(f"{label}_{type(exc).__name__}")
+    raise ValueError(";".join(errors))
+
 
 def check(symbol, now=None):
     now = now or dt.datetime.now(TZ)
