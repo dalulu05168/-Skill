@@ -1,0 +1,38 @@
+name: Westcott 1.4.23 Windows template installer native smoke
+
+on:
+  push:
+    branches:
+      - fix/westcott-desktop-template-installer-20261025
+    paths:
+      - 'desktop/ellery-westcott-1.4.23/template-installer/**'
+      - '.github/workflows/westcott-template-installer-windows.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'desktop/ellery-westcott-1.4.23/template-installer/**'
+      - '.github/workflows/westcott-template-installer-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-powershell-native-smoke:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test real updater under Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          Write-Host "PowerShell engine: $($PSVersionTable.PSVersion)"
+          if ($PSVersionTable.PSVersion.Major -ne 5) { throw "Expected Windows PowerShell 5.1" }
+          & .\desktop\ellery-westcott-1.4.23\template-installer\installer_windows_smoke.ps1
+      - name: Explain limitations
+        if: always()
+        shell: powershell
+        run: |
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "Windows PowerShell 5.1 isolated installer smoke: syntax, read-only preflight, copied files, backups, protected module preservation, idempotency."
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "Fixture contains fabricated text file placeholders. This is NOT proof that the user's real installed EXE was updated, and does NOT validate live BVB data."
