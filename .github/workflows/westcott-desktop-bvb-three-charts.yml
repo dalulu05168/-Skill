@@ -2,6 +2,11 @@ name: Westcott desktop BVB 3-chart source gate
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'desktop/ellery-westcott-1.4.23/market/**'
+      - '.github/workflows/westcott-desktop-bvb-three-charts.yml'
   push:
     branches:
       - feature/westcott-desktop-bvb-3chart-gate-20261025
