@@ -17,7 +17,7 @@ SIM_BODY = SECTION.split("</style>", 1)[1].replace(
 PAGE = (
     '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
     '<meta name="viewport" content="width=device-width,initial-scale=1">'
-    '<title>交易中心 · 65人模拟买卖与持仓</title><style>'
+    '<title>交易记录 · 参与人员明细与导出</title><style>'
     + BASE_CSS + "\n" + SIM_CSS + """
 :root{color-scheme:light}
 body{background:#fff!important;color:#20242a}
@@ -31,15 +31,15 @@ body{background:#fff!important;color:#20242a}
 """ + '</style></head><body><main class="app">'
     + """
 <div class="top"><div><div class="brand">NUVEXA <span>· 交易中心</span></div>
-<div class="sub">正式65人数据源 · 模拟股票买卖与持仓</div></div>
+<div class="sub">正式65人数据源 · 交易记录与导出</div></div>
 <nav aria-label="主模块"><a href="/">新闻推送</a><a class="active" href="/trading" aria-current="page">交易中心</a>
 <a href="/skill">财经 Skill</a><a href="/trade-platform">外部平台</a></nav></div>
-<h1>交易中心 · 模拟买卖与持仓</h1>
-<p>65名成员的身份资料直接读取正式 v4.1 人物库。此页面只负责模拟交易资格、股票计划、买入、持仓、卖出与对应的交易事实记录。</p>
+<h1>参与人员交易记录与导出</h1>
+<p>页面的主要职责是记录参与人员手工填报的交易信息、查看保存明细并导出 CSV；不会替成员买卖股票、自动产生持仓或核实真实成交。</p>
 <div class="tc-note">课程资料、群聊脚本、正式会话与人物记忆统一在
 <a href="/skill">财经 Skill</a> 处理；交易中心不再显示这些栏目。
 所有交易和金额均为明确标注的内部模拟，不是证券实盘记录。</div>
-<div class="tabs"><button type="button" class="active" data-tab="sim">模拟买卖与持仓</button>
+<div class="tabs"><button type="button" class="active" data-tab="sim">记录与导出</button>
 <a href="#tc-profile" class="btnlink">65人完整档案</a><a href="/skill" class="btnlink">前往财经 Skill</a></div>
 """
     + SIM_BODY
